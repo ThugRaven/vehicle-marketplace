@@ -9,17 +9,25 @@ body {
 	margin: 0 auto;
 }
 
+body .ui-widget {
+	font-family: "Montserrat";
+}
+
 #header {
 	margin-top: 1em;
 }
 
-.ui-panel {
+body .ui-panel {
 	margin: 0 0.5em 1em 0.5em;
 	box-shadow: 0 10px 35px rgb(50 50 93/ 10%), 0 5px 15px rgb(0 0 0/ 7%);
+	border: 0;
+	border-radius: 0.5em;
 }
 
-.ui-panel-content {
+body .ui-panel .ui-panel-content {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	border: 0;
+	border-radius: 0.5em;
 }

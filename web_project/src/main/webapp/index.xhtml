@@ -7,11 +7,10 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <ui:composition template="/templates/page-template.xhtml">
-
 	<ui:define name="pageContent">
 		<p:panel>
-
 			<p:dataTable value="#{userListBB.getFullList()}" var="u">
+
 				<p:column>
 					<f:facet name="header">
 						<h:outputText value="Login" />
@@ -21,28 +20,28 @@
 
 				<p:column>
 					<f:facet name="header">
-						<h:outputText value="Imię" />
+						<h:outputText value="Name" />
 					</f:facet>
 					<h:outputText value="#{u.name}" />
 				</p:column>
 
 				<p:column>
 					<f:facet name="header">
-						<h:outputText value="Nazwisko" />
+						<h:outputText value="Surname" />
 					</f:facet>
 					<h:outputText value="#{u.surname}" />
 				</p:column>
 
 				<p:column>
 					<f:facet name="header">
-						<h:outputText value="Rola" />
+						<h:outputText value="Role" />
 					</f:facet>
 					<h:outputText value="#{u.userRole.roleName}" />
 				</p:column>
 
 				<p:column>
 					<f:facet name="header">
-						<h:outputText value="Data utworzenia" />
+						<h:outputText value="Create time" />
 					</f:facet>
 					<h:outputText value="#{u.createTime}">
 						<f:convertDateTime pattern="dd-MM-yyyy" />
@@ -50,9 +49,68 @@
 				</p:column>
 
 			</p:dataTable>
+		</p:panel>
 
+		<p:panel>
+			<p:dataTable value="#{offerListBB.getFullList()}" var="o">
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="ID" />
+					</f:facet>
+					<h:outputText value="#{o.idOffer}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Brand" />
+					</f:facet>
+					<h:outputText value="#{o.brand}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Model" />
+					</f:facet>
+					<h:outputText value="#{o.model}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Generation" />
+					</f:facet>
+					<h:outputText value="#{o.generation}" />
+				</p:column>
+
+			</p:dataTable>
+		</p:panel>
+
+		<p:panel>
+			<p:dataTable value="#{generationListBB.getFullList()}" var="g">
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Generation" />
+					</f:facet>
+					<h:outputText value="#{g.name}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Model" />
+					</f:facet>
+					<h:outputText value="#{g.model.name}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Brand" />
+					</f:facet>
+					<h:outputText value="#{g.model.brand.name}" />
+				</p:column>
+
+			</p:dataTable>
 		</p:panel>
 	</ui:define>
-
 </ui:composition>
 </html>
