@@ -9,8 +9,8 @@
 		<jta-data-source>java:/VehicleMarketplaceDS</jta-data-source>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
-			<!-- <property name="hibernate.show_sql" value="true" /> -->
-			<!-- <property name="hibernate.use_sql_comments" value="true" /> -->
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.use_sql_comments" value="true" />
 		</properties>
 	</persistence-unit>
 
