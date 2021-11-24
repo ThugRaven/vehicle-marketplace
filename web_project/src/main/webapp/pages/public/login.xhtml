@@ -12,15 +12,15 @@
 			<h:form id="form">
 				<h:panelGrid id="grid" columns="3" cellpadding="5">
 					<p:outputLabel for="login" value="Login" />
-					<p:inputText id="login" value="#{registerBB.user.login}" required="true"
-						requiredMessage="Login nie może być pusty"
+					<p:inputText id="login" value="#{loginBB.login}"
+						required="true" requiredMessage="Login nie może być pusty"
 						validatorMessage="Login musi być dłuższy niż 2 znaki">
 						<f:validateLength minimum="3" />
 					</p:inputText>
 					<p:message for="login" />
 
 					<p:outputLabel for="password" value="Hasło" />
-					<p:password id="password" value="#{registerBB.user.password}"
+					<p:password id="password" value="#{loginBB.password}"
 						feedback="true" required="true"
 						requiredMessage="Hasło nie może być puste"
 						validatorMessage="Hasło nie może być krótsze niż 5 znaków"
@@ -29,14 +29,8 @@
 					</p:password>
 					<p:message for="password" />
 
-					<p:outputLabel for="email" value="Email" />
-					<p:inputText id="email" value="#{registerBB.user.email}" required="true"
-						requiredMessage="Email nie może być pusty">
-					</p:inputText>
-					<p:message for="email" />
-
-					<p:commandButton value="Zarejestruj się" action="#{registerBB.register()}"
-						update="@form" />
+					<p:commandButton value="Zaloguj się"
+						action="#{loginBB.doLogin()}" update="@form" />
 				</h:panelGrid>
 
 				<p:messages id="msg" />

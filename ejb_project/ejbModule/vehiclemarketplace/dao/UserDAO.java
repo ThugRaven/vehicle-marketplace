@@ -45,4 +45,19 @@ public class UserDAO {
 
 		return list;
 	}
+
+	public User getUserByLogin(String login) {
+		User user = null;
+
+		Query query = em.createQuery("SELECT u FROM User u WHERE u.login = :login");
+		query.setParameter("login", login);
+
+		try {
+			user = (User) query.getSingleResult();
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+
+		return user;
+	}
 }

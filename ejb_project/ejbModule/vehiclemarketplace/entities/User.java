@@ -20,7 +20,7 @@ public class User implements Serializable {
 	@Column(name="id_user")
 	private int idUser;
 
-	private byte archived;
+	private boolean archived;
 
 	@Column(name="create_time")
 	private Timestamp createTime;
@@ -58,11 +58,11 @@ public class User implements Serializable {
 		this.idUser = idUser;
 	}
 
-	public byte getArchived() {
+	public boolean getArchived() {
 		return this.archived;
 	}
 
-	public void setArchived(byte archived) {
+	public void setArchived(boolean archived) {
 		this.archived = archived;
 	}
 

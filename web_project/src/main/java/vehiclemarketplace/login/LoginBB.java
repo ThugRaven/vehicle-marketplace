@@ -1,18 +1,13 @@
-package vehiclemarketplace.register;
+package vehiclemarketplace.login;
 
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.New;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.ejb.EJB;
@@ -20,23 +15,38 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
+import javax.faces.simplesecurity.RemoteClient;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import vehiclemarketplace.dao.UserDAO;
 import vehiclemarketplace.dao.UserRoleDAO;
 import vehiclemarketplace.entities.User;
-import vehiclemarketplace.entities.UserRole;
 
 @Named
 @RequestScoped
-public class RegisterBB {
-//	private static final String PAGE_PERSON_EDIT = "personEdit?faces-redirect=true";
+public class LoginBB {
 	private static final String PAGE_MAIN = "/pages/public/main?faces-redirect=true";
+	private static final String PAGE_LOGIN = "/pages/public/main?faces-redirect=true";
 	private static final String PAGE_STAY_AT_THE_SAME = null;
 
-	private User user = new User();
+	private String login;
+	private String password;
 
-	public User getUser() {
-		return user;
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	@Inject
@@ -53,61 +63,52 @@ public class RegisterBB {
 
 	@Inject
 	FacesContext ctx;
-	
-	public String register() {
-		if (userDAO.getUserByLogin(user.getLogin()) != null) {
-			ctx.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "U¿ytkownik o podanym loginie ju¿ istnieje!", null));
+
+	public String doLogin() {
+		FacesContext ctx = FacesContext.getCurrentInstance();
+
+		User user = userDAO.getUserByLogin(login);
+
+		if (user == null) {
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Niepoprawny login lub has³o", null));
 			return PAGE_STAY_AT_THE_SAME;
 		}
 
-		UserRole userRole = userRoleDAO.find(1);
-		user.setUserRole(userRole);
-
+		boolean matched = false;
 		try {
-			user.setPassword(generatePasswordHash(user.getPassword()));
+			matched = validatePassword(password, user.getPassword());
+			System.out.println(matched);
 		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 			e.printStackTrace();
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "B³¹d przy rejestracji konta!", null));
+			ctx.addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_FATAL, "B³¹d przy przetwarzaniu logowania!", null));
 			return PAGE_STAY_AT_THE_SAME;
 		}
 
-		userDAO.create(user);
+		if (!matched) {
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Niepoprawny login lub has³o", null));
+			return PAGE_STAY_AT_THE_SAME;
+		}
+
+		RemoteClient<User> client = new RemoteClient<User>();
+		client.setDetails(user);
+
+		String role = user.getUserRole().getRoleName();
+
+		if (role != null) {
+			client.getRoles().add(role);
+		}
+
+		HttpServletRequest request = (HttpServletRequest) ctx.getExternalContext().getRequest();
+		client.store(request);
+
 		return PAGE_MAIN;
 	}
 
-	private String generatePasswordHash(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
-		int iterations = 10000;
-		char[] chars = password.toCharArray();
-		byte[] salt = getSalt();
-		int keyLength = 64; // In characters
-
-		PBEKeySpec spec = new PBEKeySpec(chars, salt, iterations, keyLength * 4);
-		SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
-
-		byte[] hash = skf.generateSecret(spec).getEncoded();
-		System.out.println(toHex(salt) + ":" + toHex(hash));
-		return toHex(salt) + ":" + toHex(hash);
-	}
-
-	private byte[] getSalt() throws NoSuchAlgorithmException {
-		SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
-		int saltLength = 8; // In characters
-		byte[] salt = new byte[saltLength / 2];
-		sr.nextBytes(salt);
-		return salt;
-	}
-
-	private String toHex(byte[] array) throws NoSuchAlgorithmException {
-		BigInteger bi = new BigInteger(1, array);
-		String hex = bi.toString(16);
-
-		int paddingLength = (array.length * 2) - hex.length();
-		if (paddingLength > 0) {
-			return String.format("%0" + paddingLength + "d", 0) + hex;
-		} else {
-			return hex;
-		}
+	public String doLogout() {
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+		session.invalidate();
+		return PAGE_LOGIN;
 	}
 
 	private boolean validatePassword(String originalPassword, String storedPassword)

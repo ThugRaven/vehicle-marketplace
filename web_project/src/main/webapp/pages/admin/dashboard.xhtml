@@ -9,8 +9,14 @@
 <ui:composition template="/templates/page-template.xhtml">
 	<ui:define name="pageContent">
 		<p:panel>
+			<h:outputText
+				value="Zalogowany: #{remoteClient.details.login} #{remoteClient.details.name}" />
 			<h:form>
-				<p:commandLink action="/register?faces-redirect=true" value="Zarejestruj się" />
+				<p:commandLink action="/pages/public/register?faces-redirect=true"
+					value="Zarejestruj się" />
+				<p:commandLink action="/pages/public/login?faces-redirect=true"
+					value="Zaloguj się" />
+				<p:commandButton action="#{loginBB.doLogout()}" value="Wyloguj się" />
 			</h:form>
 			<p:dataTable value="#{userListBB.getFullList()}" var="u">
 

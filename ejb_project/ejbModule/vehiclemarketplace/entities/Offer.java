@@ -20,7 +20,7 @@ public class Offer implements Serializable {
 	@Column(name="id_offer")
 	private int idOffer;
 
-	private byte archived;
+	private boolean archived;
 
 	private String city;
 
@@ -45,22 +45,22 @@ public class Offer implements Serializable {
 	private String fuel;
 
 	@Column(name="is_accident_free")
-	private byte isAccidentFree;
+	private boolean isAccidentFree;
 
 	@Column(name="is_damaged")
-	private byte isDamaged;
+	private boolean isDamaged;
 
 	@Column(name="is_first_owner")
-	private byte isFirstOwner;
+	private boolean isFirstOwner;
 
 	@Column(name="is_new")
-	private byte isNew;
+	private boolean isNew;
 
 	@Column(name="is_registered")
-	private byte isRegistered;
+	private boolean isRegistered;
 
 	@Column(name="is_right_hand_drive")
-	private byte isRightHandDrive;
+	private boolean isRightHandDrive;
 
 	@Column(name="license_plate")
 	private String licensePlate;
@@ -91,6 +91,19 @@ public class Offer implements Serializable {
 	@JoinColumn(name="id_brand")
 	private Brand brand;
 
+	//bi-directional many-to-many association to Equipment
+	@ManyToMany
+	@JoinTable(
+		name="offer_equipment"
+		, joinColumns={
+			@JoinColumn(name="id_offer")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="id_equipment")
+			}
+		)
+	private List<Equipment> equipments;
+
 	//bi-directional many-to-one association to Generation
 	@ManyToOne
 	@JoinColumn(name="id_generation")
@@ -106,19 +119,6 @@ public class Offer implements Serializable {
 	@JoinColumn(name="id_user")
 	private User user;
 
-	//bi-directional many-to-many association to Equipment
-	@ManyToMany
-	@JoinTable(
-		name="offer_equipment"
-		, joinColumns={
-			@JoinColumn(name="id_offer")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="id_equipment")
-			}
-		)
-	private List<Equipment> equipments;
-
 	public Offer() {
 	}
 
@@ -130,11 +130,11 @@ public class Offer implements Serializable {
 		this.idOffer = idOffer;
 	}
 
-	public byte getArchived() {
+	public boolean getArchived() {
 		return this.archived;
 	}
 
-	public void setArchived(byte archived) {
+	public void setArchived(boolean archived) {
 		this.archived = archived;
 	}
 
@@ -210,51 +210,51 @@ public class Offer implements Serializable {
 		this.fuel = fuel;
 	}
 
-	public byte getIsAccidentFree() {
+	public boolean getIsAccidentFree() {
 		return this.isAccidentFree;
 	}
 
-	public void setIsAccidentFree(byte isAccidentFree) {
+	public void setIsAccidentFree(boolean isAccidentFree) {
 		this.isAccidentFree = isAccidentFree;
 	}
 
-	public byte getIsDamaged() {
+	public boolean getIsDamaged() {
 		return this.isDamaged;
 	}
 
-	public void setIsDamaged(byte isDamaged) {
+	public void setIsDamaged(boolean isDamaged) {
 		this.isDamaged = isDamaged;
 	}
 
-	public byte getIsFirstOwner() {
+	public boolean getIsFirstOwner() {
 		return this.isFirstOwner;
 	}
 
-	public void setIsFirstOwner(byte isFirstOwner) {
+	public void setIsFirstOwner(boolean isFirstOwner) {
 		this.isFirstOwner = isFirstOwner;
 	}
 
-	public byte getIsNew() {
+	public boolean getIsNew() {
 		return this.isNew;
 	}
 
-	public void setIsNew(byte isNew) {
+	public void setIsNew(boolean isNew) {
 		this.isNew = isNew;
 	}
 
-	public byte getIsRegistered() {
+	public boolean getIsRegistered() {
 		return this.isRegistered;
 	}
 
-	public void setIsRegistered(byte isRegistered) {
+	public void setIsRegistered(boolean isRegistered) {
 		this.isRegistered = isRegistered;
 	}
 
-	public byte getIsRightHandDrive() {
+	public boolean getIsRightHandDrive() {
 		return this.isRightHandDrive;
 	}
 
-	public void setIsRightHandDrive(byte isRightHandDrive) {
+	public void setIsRightHandDrive(boolean isRightHandDrive) {
 		this.isRightHandDrive = isRightHandDrive;
 	}
 
@@ -338,6 +338,14 @@ public class Offer implements Serializable {
 		this.brand = brand;
 	}
 
+	public List<Equipment> getEquipments() {
+		return this.equipments;
+	}
+
+	public void setEquipments(List<Equipment> equipments) {
+		this.equipments = equipments;
+	}
+
 	public Generation getGeneration() {
 		return this.generation;
 	}
@@ -360,14 +368,6 @@ public class Offer implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public List<Equipment> getEquipments() {
-		return this.equipments;
-	}
-
-	public void setEquipments(List<Equipment> equipments) {
-		this.equipments = equipments;
 	}
 
 }
