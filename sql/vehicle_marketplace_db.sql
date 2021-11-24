@@ -35,7 +35,7 @@ DROP TABLE IF EXISTS `vehicle_marketplace_db`.`user` ;
 CREATE TABLE IF NOT EXISTS `vehicle_marketplace_db`.`user` (
   `id_user` INT NOT NULL AUTO_INCREMENT,
   `login` VARCHAR(45) NOT NULL,
-  `password` CHAR(60) NOT NULL,
+  `password` CHAR(73) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
   `id_user_role` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
@@ -52,6 +52,8 @@ CREATE TABLE IF NOT EXISTS `vehicle_marketplace_db`.`user` (
 ENGINE = InnoDB;
 
 CREATE INDEX `fk_user_user_role_idx` ON `vehicle_marketplace_db`.`user` (`id_user_role` ASC);
+
+CREATE UNIQUE INDEX `login_UNIQUE` ON `vehicle_marketplace_db`.`user` (`login` ASC);
 
 
 -- -----------------------------------------------------
@@ -252,7 +254,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `vehicle_marketplace_db`;
-INSERT INTO `vehicle_marketplace_db`.`user` (`id_user`, `login`, `password`, `email`, `id_user_role`, `name`, `surname`, `phone_number`, `create_time`, `archived`) VALUES (1, 'admin', 'admin', 'admin@gmail.com', 2, 'Kamil', 'Wesołowski', '48123456789', '2021-11-18 21:05:00', 0);
+INSERT INTO `vehicle_marketplace_db`.`user` (`id_user`, `login`, `password`, `email`, `id_user_role`, `name`, `surname`, `phone_number`, `create_time`, `archived`) VALUES (1, 'admin', 'ef4cf0fd:4f230caf9dd674891e057a810500f5cc2ce550d45f36d62a6a72cbc8788d26e7', 'admin@gmail.com', 2, 'Kamil', 'Wesołowski', '48123456789', '2021-11-18 21:05:00', 0);
 
 COMMIT;
 
