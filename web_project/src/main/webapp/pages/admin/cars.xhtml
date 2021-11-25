@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/page-template.xhtml">
+	<ui:define name="pageContent">
+		<p:panel>
+			<h:outputText
+				value="Zalogowany: #{remoteClient.details.login} #{remoteClient.details.name}" />
+			<h:form>
+				<p:commandLink action="/pages/public/register?faces-redirect=true"
+					value="Zarejestruj się" />
+				<p:commandLink action="/pages/public/login?faces-redirect=true"
+					value="Zaloguj się" />
+				<p:commandButton action="#{loginBB.doLogout()}" value="Wyloguj się" />
+				<p:commandLink action="/pages/admin/dashboard?faces-redirect=true"
+					value="Admin dashboard" />
+			</h:form>
+		</p:panel>
+
+		<h:form>
+			<p:panel header="Dodaj markę">
+				<h:panelGrid id="grid" columns="3" cellpadding="5">
+					<p:outputLabel for="brand" value="Marka" />
+					<p:inputText id="brand" value="#{carsBB.brand.name}"
+						required="true" requiredMessage="Marka nie może być pusta" />
+					<p:message for="brand" />
+
+					<p:commandButton value="Dodaj" action="#{carsBB.addBrand()}"
+						update="@form" />
+				</h:panelGrid>
+
+				<p:messages id="msg" />
+			</p:panel>
+
+			<p:panel header="Marki" toggleable="true" toggleSpeed="300">
+				<p:dataTable value="#{carsBB.getBrandList()}" var="b">
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="ID" />
+						</f:facet>
+						<h:outputText value="#{b.idBrand}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Marka" />
+						</f:facet>
+						<h:outputText value="#{b.name}" />
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+
+		<h:form>
+			<p:panel header="Dodaj model">
+				<h:panelGrid id="grid" columns="3" cellpadding="5">
+					<p:outputLabel for="brand" value="Marka" />
+					<p:selectOneMenu id="brand" value="#{carsBB.brand.idBrand}"
+						dynamic="true">
+						<f:selectItem itemLabel="Wybierz markę" itemValue="" />
+						<f:selectItems value="#{carsBB.getBrandsMap()}" />
+						<p:ajax event="valueChange" update="@form" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="model" value="Model" />
+					<p:inputText id="model" value="#{carsBB.model.name}"
+						required="true" requiredMessage="Model nie może być pusty" />
+					<p:message for="model" />
+
+					<p:commandButton value="Dodaj" action="#{carsBB.addModel()}"
+						update="@form" />
+				</h:panelGrid>
+
+				<p:messages id="msg" />
+			</p:panel>
+
+			<p:panel header="Modele" toggleable="true" toggleSpeed="300">
+				<p:dataTable value="#{carsBB.getModelsByBrand()}" var="m">
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="ID" />
+						</f:facet>
+						<h:outputText value="#{m.idModel}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Model" />
+						</f:facet>
+						<h:outputText value="#{m.name}" />
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+
+		<h:form>
+			<p:panel header="Dodaj generację">
+				<h:panelGrid id="grid" columns="3" cellpadding="5">
+					<p:outputLabel for="brand" value="Marka" />
+					<p:selectOneMenu id="brand" value="#{carsBB.brand.idBrand}"
+						dynamic="true">
+						<f:selectItem itemLabel="Wybierz markę" itemValue="" />
+						<f:selectItems value="#{carsBB.getBrandsMap()}" />
+						<p:ajax event="valueChange" update="@form" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="model" value="Model" />
+					<p:selectOneMenu id="model" value="#{carsBB.model.idModel}"
+						dynamic="true">
+						<f:selectItem itemLabel="Wybierz model" itemValue="" />
+						<f:selectItems value="#{carsBB.getModelsMap()}" />
+						<p:ajax event="valueChange" update="@form" />
+					</p:selectOneMenu>
+
+					<p:outputLabel for="generation" value="Generacja" />
+					<p:inputText id="generation" value="#{carsBB.generation.name}"
+						required="true" requiredMessage="Generacja nie może być pusta" />
+					<p:message for="generation" />
+
+					<p:outputLabel for="productionStart"
+						value="Rok rozpoczęcia produkcji" />
+					<p:inputNumber id="productionStart"
+						value="#{carsBB.generation.productionStart}" required="true"
+						requiredMessage="Rok rozpoczęcia produkcji nie może być pusty"
+						validatorMessage="Bład formatu roku"
+						decimalPlaces="0">
+						<f:validateRegex pattern="^\d{4}$" />
+					</p:inputNumber>
+					<p:message for="productionStart" />
+
+					<p:outputLabel for="productionEnd"
+						value="Rok zakończenia produkcji" />
+					<p:inputNumber id="productionEnd"
+						value="#{carsBB.generation.productionEnd}"
+						validatorMessage="Bład formatu roku"
+						decimalPlaces="0">
+						<f:validateRegex pattern="^\d{4}$" />
+					</p:inputNumber>
+					<p:message for="productionEnd" />
+
+					<p:commandButton value="Dodaj" action="#{carsBB.addGeneration()}"
+						update="@form" />
+				</h:panelGrid>
+
+				<p:messages id="msg" />
+			</p:panel>
+
+			<p:panel header="Generacje" toggleable="true" toggleSpeed="300">
+				<p:dataTable value="#{carsBB.getGenerationsByModel()}" var="g">
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="ID" />
+						</f:facet>
+						<h:outputText value="#{g.idGeneration}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Model" />
+						</f:facet>
+						<h:outputText value="#{g.name}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Rok rozpoczęcia" />
+						</f:facet>
+						<h:outputText value="#{g.productionStart}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Rok zakończenia" />
+						</f:facet>
+						<h:outputText value="#{g.productionEnd}" />
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+
+		<p:panel>
+			<p:dataTable value="#{generationListBB.getFullList()}" var="g">
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Generation" />
+					</f:facet>
+					<h:outputText value="#{g.name}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Model" />
+					</f:facet>
+					<h:outputText value="#{g.model.name}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Brand" />
+					</f:facet>
+					<h:outputText value="#{g.model.brand.name}" />
+				</p:column>
+
+			</p:dataTable>
+		</p:panel>
+	</ui:define>
+</ui:composition>
+</html>

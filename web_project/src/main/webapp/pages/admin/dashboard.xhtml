@@ -17,7 +17,12 @@
 				<p:commandLink action="/pages/public/login?faces-redirect=true"
 					value="Zaloguj się" />
 				<p:commandButton action="#{loginBB.doLogout()}" value="Wyloguj się" />
+				<p:commandLink action="/pages/admin/cars?faces-redirect=true"
+					value="Dodaj informację o pojazdach" />
 			</h:form>
+		</p:panel>
+
+		<p:panel>
 			<p:dataTable value="#{userListBB.getFullList()}" var="u">
 
 				<p:column>

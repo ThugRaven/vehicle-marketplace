@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import vehiclemarketplace.entities.Generation;
+import vehiclemarketplace.entities.Model;
 
 @Stateless
 public class GenerationDAO {
@@ -36,6 +37,21 @@ public class GenerationDAO {
 		List<Generation> list = null;
 
 		Query query = em.createQuery("SELECT g FROM Generation g");
+
+		try {
+			list = query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
+
+	public List<Generation> getGenerationsByModelID(int id) {
+		List<Generation> list = null;
+
+		Query query = em.createQuery("SELECT g FROM Generation g WHERE g.model.idModel = :id");
+		query.setParameter("id", id);
 
 		try {
 			list = query.getResultList();
