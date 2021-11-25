@@ -53,11 +53,11 @@ public class RegisterBB {
 
 	@Inject
 	FacesContext ctx;
-	
+
 	public String register() {
 		if (userDAO.getUserByLogin(user.getLogin()) != null) {
 			ctx.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "U¿ytkownik o podanym loginie ju¿ istnieje!", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "UÅ¼ytkownik o podanym loginie juÅ¼ istnieje!", null));
 			return PAGE_STAY_AT_THE_SAME;
 		}
 
@@ -68,7 +68,7 @@ public class RegisterBB {
 			user.setPassword(generatePasswordHash(user.getPassword()));
 		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 			e.printStackTrace();
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "B³¹d przy rejestracji konta!", null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "BÅ‚Ä…d przy rejestracji konta!", null));
 			return PAGE_STAY_AT_THE_SAME;
 		}
 

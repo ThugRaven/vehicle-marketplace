@@ -21,10 +21,10 @@
 
 					<p:outputLabel for="password" value="Hasło" />
 					<p:password id="password" value="#{loginBB.password}"
-						feedback="true" required="true"
+						required="true"
 						requiredMessage="Hasło nie może być puste"
 						validatorMessage="Hasło nie może być krótsze niż 5 znaków"
-						toggleMask="true" redisplay="true">
+						toggleMask="true">
 						<f:validateLength minimum="3" />
 					</p:password>
 					<p:message for="password" />

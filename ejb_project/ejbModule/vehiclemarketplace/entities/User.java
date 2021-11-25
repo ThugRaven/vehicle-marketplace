@@ -5,24 +5,24 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
 
-
 /**
  * The persistent class for the user database table.
  * 
  */
 @Entity
-@NamedQuery(name="User.findAll", query="SELECT u FROM User u")
+@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_user")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_user")
 	private int idUser;
 
+//	@Column(nullable = false, columnDefinition = "TINYINT(1)")
 	private boolean archived;
 
-	@Column(name="create_time")
+	@Column(name = "create_time")
 	private Timestamp createTime;
 
 	private String email;
@@ -33,18 +33,18 @@ public class User implements Serializable {
 
 	private String password;
 
-	@Column(name="phone_number")
+	@Column(name = "phone_number")
 	private String phoneNumber;
 
 	private String surname;
 
-	//bi-directional many-to-one association to Offer
-	@OneToMany(mappedBy="user")
+	// bi-directional many-to-one association to Offer
+	@OneToMany(mappedBy = "user")
 	private List<Offer> offers;
 
-	//bi-directional many-to-one association to UserRole
+	// bi-directional many-to-one association to UserRole
 	@ManyToOne
-	@JoinColumn(name="id_user_role")
+	@JoinColumn(name = "id_user_role")
 	private UserRole userRole;
 
 	public User() {

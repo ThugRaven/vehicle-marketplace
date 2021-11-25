@@ -12,7 +12,7 @@ DROP SCHEMA IF EXISTS `vehicle_marketplace_db` ;
 -- -----------------------------------------------------
 -- Schema vehicle_marketplace_db
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `vehicle_marketplace_db` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS `vehicle_marketplace_db` DEFAULT CHARACTER SET utf8 COLLATE utf8_polish_ci ;
 USE `vehicle_marketplace_db` ;
 
 -- -----------------------------------------------------
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `vehicle_marketplace_db`.`user` (
   `surname` VARCHAR(45) NOT NULL,
   `phone_number` VARCHAR(15) NOT NULL,
   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `archived` TINYINT NOT NULL DEFAULT 0,
+  `archived` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id_user`),
   CONSTRAINT `fk_user_user_role`
     FOREIGN KEY (`id_user_role`)
@@ -151,13 +151,13 @@ CREATE TABLE IF NOT EXISTS `vehicle_marketplace_db`.`offer` (
   `license_plate` VARCHAR(15) NULL,
   `vin` CHAR(17) NULL,
   `first_registration` DATE NULL,
-  `is_new` TINYINT NOT NULL,
-  `is_damaged` TINYINT NOT NULL,
-  `is_accident_free` TINYINT NOT NULL,
-  `is_first_owner` TINYINT NULL,
-  `is_registered` TINYINT NOT NULL,
-  `is_right_hand_drive` TINYINT NOT NULL,
-  `archived` TINYINT NOT NULL DEFAULT 0,
+  `is_new` TINYINT(1) NOT NULL,
+  `is_damaged` TINYINT(1) NOT NULL,
+  `is_accident_free` TINYINT(1) NOT NULL,
+  `is_first_owner` TINYINT(1) NULL,
+  `is_registered` TINYINT(1) NOT NULL,
+  `is_right_hand_drive` TINYINT(1) NOT NULL,
+  `archived` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id_offer`),
   CONSTRAINT `fk_offer_generation1`
     FOREIGN KEY (`id_generation`)

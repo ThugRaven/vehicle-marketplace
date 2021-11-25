@@ -70,7 +70,7 @@ public class LoginBB {
 		User user = userDAO.getUserByLogin(login);
 
 		if (user == null) {
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Niepoprawny login lub has³o", null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Niepoprawny login lub hasÅ‚o", null));
 			return PAGE_STAY_AT_THE_SAME;
 		}
 
@@ -81,12 +81,12 @@ public class LoginBB {
 		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 			e.printStackTrace();
 			ctx.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_FATAL, "B³¹d przy przetwarzaniu logowania!", null));
+					new FacesMessage(FacesMessage.SEVERITY_FATAL, "BÅ‚Ä…d przy przetwarzaniu logowania!", null));
 			return PAGE_STAY_AT_THE_SAME;
 		}
 
 		if (!matched) {
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Niepoprawny login lub has³o", null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Niepoprawny login lub hasÅ‚o", null));
 			return PAGE_STAY_AT_THE_SAME;
 		}
 
