@@ -17,10 +17,10 @@ public class UserRole implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_user_role")
+	@Column(name="id_user_role", unique=true, nullable=false)
 	private int idUserRole;
 
-	@Column(name="role_name")
+	@Column(name="role_name", nullable=false, length=45)
 	private String roleName;
 
 	//bi-directional many-to-one association to User

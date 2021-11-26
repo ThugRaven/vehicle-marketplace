@@ -11,31 +11,38 @@ import java.util.List;
  * 
  */
 @Entity
+@Table(name="user")
 @NamedQuery(name="User.findAll", query="SELECT u FROM User u")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_user")
+	@Column(name="id_user", unique=true, nullable=false)
 	private int idUser;
 
+	@Column(nullable=false)
 	private boolean archived;
 
-	@Column(name="create_time")
+	@Column(name="create_time", nullable=false)
 	private Timestamp createTime;
 
+	@Column(nullable=false, length=255)
 	private String email;
 
+	@Column(nullable=false, length=45)
 	private String login;
 
+	@Column(nullable=false, length=45)
 	private String name;
 
+	@Column(nullable=false, length=73)
 	private String password;
 
-	@Column(name="phone_number")
+	@Column(name="phone_number", nullable=false, length=15)
 	private String phoneNumber;
 
+	@Column(nullable=false, length=45)
 	private String surname;
 
 	//bi-directional many-to-one association to Offer
@@ -44,7 +51,7 @@ public class User implements Serializable {
 
 	//bi-directional many-to-one association to UserRole
 	@ManyToOne
-	@JoinColumn(name="id_user_role")
+	@JoinColumn(name="id_user_role", nullable=false)
 	private UserRole userRole;
 
 	public User() {

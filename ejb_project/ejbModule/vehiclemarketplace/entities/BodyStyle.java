@@ -17,9 +17,10 @@ public class BodyStyle implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_body_style")
+	@Column(name="id_body_style", unique=true, nullable=false)
 	private int idBodyStyle;
 
+	@Column(nullable=false, length=45)
 	private String name;
 
 	//bi-directional many-to-one association to Offer

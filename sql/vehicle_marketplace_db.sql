@@ -96,8 +96,8 @@ DROP TABLE IF EXISTS `vehicle_marketplace_db`.`generation` ;
 CREATE TABLE IF NOT EXISTS `vehicle_marketplace_db`.`generation` (
   `id_generation` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
-  `production_start` YEAR NOT NULL,
-  `production_end` YEAR NULL,
+  `production_start` SMALLINT NOT NULL,
+  `production_end` SMALLINT NULL,
   `id_model` INT NOT NULL,
   PRIMARY KEY (`id_generation`),
   CONSTRAINT `fk_generation_model1`

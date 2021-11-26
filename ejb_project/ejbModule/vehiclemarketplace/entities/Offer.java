@@ -11,84 +11,98 @@ import java.util.List;
  * 
  */
 @Entity
+@Table(name="offer")
 @NamedQuery(name="Offer.findAll", query="SELECT o FROM Offer o")
 public class Offer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_offer")
+	@Column(name="id_offer", unique=true, nullable=false)
 	private int idOffer;
 
+	@Column(nullable=false)
 	private boolean archived;
 
+	@Column(nullable=false, length=255)
 	private String city;
 
+	@Column(length=20)
 	private String color;
 
-	@Column(name="color_type")
+	@Column(name="color_type", length=20)
 	private String colorType;
 
-	@Lob
+	@Column(columnDefinition = "TEXT")
 	private String description;
 
+	@Column(nullable=false)
 	private float displacement;
 
+	@Column(nullable=false)
 	private byte doors;
 
+	@Column(nullable=false, length=3)
 	private String drive;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="first_registration")
 	private Date firstRegistration;
 
+	@Column(nullable=false, length=20)
 	private String fuel;
 
-	@Column(name="is_accident_free")
+	@Column(name="is_accident_free", nullable=false)
 	private boolean isAccidentFree;
 
-	@Column(name="is_damaged")
+	@Column(name="is_damaged", nullable=false)
 	private boolean isDamaged;
 
 	@Column(name="is_first_owner")
 	private boolean isFirstOwner;
 
-	@Column(name="is_new")
+	@Column(name="is_new", nullable=false)
 	private boolean isNew;
 
-	@Column(name="is_registered")
+	@Column(name="is_registered", nullable=false)
 	private boolean isRegistered;
 
-	@Column(name="is_right_hand_drive")
+	@Column(name="is_right_hand_drive", nullable=false)
 	private boolean isRightHandDrive;
 
-	@Column(name="license_plate")
+	@Column(name="license_plate", length=15)
 	private String licensePlate;
 
+	@Column(nullable=false)
 	private int mileage;
 
+	@Column(nullable=false)
 	private short power;
 
+	@Column(nullable=false)
 	private int price;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="production_year")
+	@Column(name="production_year", nullable=false)
 	private Date productionYear;
 
+	@Column(nullable=false)
 	private byte seats;
 
+	@Column(nullable=false, length=15)
 	private String transmission;
 
+	@Column(length=17)
 	private String vin;
 
 	//bi-directional many-to-one association to BodyStyle
 	@ManyToOne
-	@JoinColumn(name="id_body_style")
+	@JoinColumn(name="id_body_style", nullable=false)
 	private BodyStyle bodyStyle;
 
 	//bi-directional many-to-one association to Brand
 	@ManyToOne
-	@JoinColumn(name="id_brand")
+	@JoinColumn(name="id_brand", nullable=false)
 	private Brand brand;
 
 	//bi-directional many-to-many association to Equipment
@@ -96,27 +110,27 @@ public class Offer implements Serializable {
 	@JoinTable(
 		name="offer_equipment"
 		, joinColumns={
-			@JoinColumn(name="id_offer")
+			@JoinColumn(name="id_offer", nullable=false)
 			}
 		, inverseJoinColumns={
-			@JoinColumn(name="id_equipment")
+			@JoinColumn(name="id_equipment", nullable=false)
 			}
 		)
 	private List<Equipment> equipments;
 
 	//bi-directional many-to-one association to Generation
 	@ManyToOne
-	@JoinColumn(name="id_generation")
+	@JoinColumn(name="id_generation", nullable=false)
 	private Generation generation;
 
 	//bi-directional many-to-one association to Model
 	@ManyToOne
-	@JoinColumn(name="id_model")
+	@JoinColumn(name="id_model", nullable=false)
 	private Model model;
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
-	@JoinColumn(name="id_user")
+	@JoinColumn(name="id_user", nullable=false)
 	private User user;
 
 	public Offer() {

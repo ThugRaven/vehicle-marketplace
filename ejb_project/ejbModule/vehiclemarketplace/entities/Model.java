@@ -10,15 +10,17 @@ import java.util.List;
  * 
  */
 @Entity
+@Table(name="model")
 @NamedQuery(name="Model.findAll", query="SELECT m FROM Model m")
 public class Model implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_model")
+	@Column(name="id_model", unique=true, nullable=false)
 	private int idModel;
 
+	@Column(nullable=false, length=45)
 	private String name;
 
 	//bi-directional many-to-one association to Generation
@@ -27,7 +29,7 @@ public class Model implements Serializable {
 
 	//bi-directional many-to-one association to Brand
 	@ManyToOne
-	@JoinColumn(name="id_brand")
+	@JoinColumn(name="id_brand", nullable=false)
 	private Brand brand;
 
 	//bi-directional many-to-one association to Offer

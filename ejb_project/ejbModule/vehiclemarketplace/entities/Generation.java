@@ -2,7 +2,6 @@ package vehiclemarketplace.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 
@@ -11,28 +10,28 @@ import java.util.List;
  * 
  */
 @Entity
+@Table(name="generation")
 @NamedQuery(name="Generation.findAll", query="SELECT g FROM Generation g")
 public class Generation implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_generation")
+	@Column(name="id_generation", unique=true, nullable=false)
 	private int idGeneration;
 
+	@Column(nullable=false, length=45)
 	private String name;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="production_end")
-	private Date productionEnd;
+	private Integer productionEnd;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="production_start")
-	private Date productionStart;
+	@Column(name="production_start", nullable=false)
+	private Integer productionStart;
 
 	//bi-directional many-to-one association to Model
 	@ManyToOne
-	@JoinColumn(name="id_model")
+	@JoinColumn(name="id_model", nullable=false)
 	private Model model;
 
 	//bi-directional many-to-one association to Offer
@@ -58,19 +57,19 @@ public class Generation implements Serializable {
 		this.name = name;
 	}
 
-	public Date getProductionEnd() {
+	public Integer getProductionEnd() {
 		return this.productionEnd;
 	}
 
-	public void setProductionEnd(Date productionEnd) {
+	public void setProductionEnd(Integer productionEnd) {
 		this.productionEnd = productionEnd;
 	}
 
-	public Date getProductionStart() {
+	public Integer getProductionStart() {
 		return this.productionStart;
 	}
 
-	public void setProductionStart(Date productionStart) {
+	public void setProductionStart(Integer productionStart) {
 		this.productionStart = productionStart;
 	}
 
