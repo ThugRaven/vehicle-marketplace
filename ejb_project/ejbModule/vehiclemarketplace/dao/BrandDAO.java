@@ -8,6 +8,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import vehiclemarketplace.entities.Brand;
+import vehiclemarketplace.entities.Model;
+import vehiclemarketplace.entities.User;
 
 @Stateless
 public class BrandDAO {
@@ -44,5 +46,20 @@ public class BrandDAO {
 		}
 
 		return list;
+	}
+
+	public Brand getBrandByName(String name) {
+		Brand brand = null;
+
+		Query query = em.createQuery("SELECT b FROM Brand b WHERE b.name = :name");
+		query.setParameter("name", name);
+
+		try {
+			brand = (Brand) query.getSingleResult();
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+
+		return brand;
 	}
 }

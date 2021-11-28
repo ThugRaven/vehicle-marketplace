@@ -3,6 +3,7 @@ package vehiclemarketplace.cars;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,8 +40,8 @@ public class CarsBB implements Serializable {
 	private Model modelGeneration = new Model();
 	private Generation generation = new Generation();
 
-	private Map<String, Integer> brandsMap = new HashMap<>();
-	private Map<String, Integer> modelsMap = new HashMap<>();
+	private List<Brand> brands;
+	private List<Model> models;
 
 	public Brand getBrandBrand() {
 		return brandBrand;
@@ -90,12 +91,12 @@ public class CarsBB implements Serializable {
 		this.generation = generation;
 	}
 
-	public Map<String, Integer> getBrandsMap() {
-		return brandsMap;
+	public List<Brand> getBrands() {
+		return brands;
 	}
 
-	public Map<String, Integer> getModelsMap() {
-		return modelsMap;
+	public List<Model> getModels() {
+		return models;
 	}
 
 	@Inject
@@ -118,31 +119,34 @@ public class CarsBB implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		brandsMap = getBrands();
+		brands = getBrandList();
 	}
 
-	public void addBrand() {
+	public String addBrand() {
+		if (brandDAO.getBrandByName(brandBrand.getName()) != null) {
+			ctx.addMessage("brandForm",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Marka o podanej nazwie już istnieje!", null));
+			return PAGE_STAY_AT_THE_SAME;
+		}
 		brandDAO.create(brandBrand);
 		brandBrand = new Brand();
-		brandsMap = getBrands();
+		brands = getBrandList();
+		return PAGE_STAY_AT_THE_SAME;
 	}
 
 	public List<Brand> getBrandList() {
 		return brandDAO.getFullList();
 	}
 
-	public Map<String, Integer> getBrands() {
-		List<Brand> brandList = getBrandList();
-		Map<String, Integer> brands = new HashMap<>();
-		for (Brand brand : brandList) {
-			brands.put(brand.getName(), brand.getIdBrand());
-		}
-		return brands;
-	}
-
 	public String addModel() {
-		Brand brandDB = brandDAO.find(brandModel.getIdBrand());
+		Model modelDB = modelDAO.getModelByNameAndID(modelModel.getName(), brandModel.getIdBrand());
+		if (modelDB != null) {
+			ctx.addMessage("modelForm",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Marka o podanej nazwie już istnieje!", null));
+			return PAGE_STAY_AT_THE_SAME;
+		}
 
+		Brand brandDB = brandDAO.find(brandModel.getIdBrand());
 		if (brandDB == null) {
 			ctx.addMessage("modelForm",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Brak marki o podanym ID!", null));
@@ -169,30 +173,25 @@ public class CarsBB implements Serializable {
 		return list;
 	}
 
-	public Map<String, Integer> getModels() {
-		List<Model> modelList = null;
-
-		if (brandGeneration.getIdBrand() != 0) {
-			modelList = modelDAO.getModelsByBrandID(brandGeneration.getIdBrand());
-		}
-
-		Map<String, Integer> models = new HashMap<>();
-		if (modelList != null) {
-			for (Model model : modelList) {
-				models.put(model.getName(), model.getIdModel());
-			}
-		}
-		return models;
-	}
-
 	public void changeBrand() {
-		modelsMap = getModels();
+		if (brandGeneration != null && brandGeneration.getIdBrand() != 0) {
+			models = modelDAO.getModelsByBrandID(brandGeneration.getIdBrand());
+		} else {
+			models = null;
+		}
 		modelGeneration = new Model();
 	}
 
 	public String addGeneration() {
-		Model modelDB = modelDAO.find(modelGeneration.getIdModel());
+		Generation generationDB = generationDAO.getGenerationByNameAndID(generation.getName(),
+				modelGeneration.getIdModel());
+		if (generationDB != null) {
+			ctx.addMessage("generationForm",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Generacja o podanej nazwie już istnieje!", null));
+			return PAGE_STAY_AT_THE_SAME;
+		}
 
+		Model modelDB = modelDAO.find(modelGeneration.getIdModel());
 		if (modelDB == null) {
 			ctx.addMessage("generationForm",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Brak modelu o podanym ID!", null));

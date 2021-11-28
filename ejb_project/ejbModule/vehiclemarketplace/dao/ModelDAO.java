@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import vehiclemarketplace.entities.Brand;
 import vehiclemarketplace.entities.Model;
 import vehiclemarketplace.entities.User;
 
@@ -46,7 +47,7 @@ public class ModelDAO {
 
 		return list;
 	}
-	
+
 	public List<Model> getModelsByBrandID(int id) {
 		List<Model> list = null;
 
@@ -60,5 +61,21 @@ public class ModelDAO {
 		}
 
 		return list;
+	}
+
+	public Model getModelByNameAndID(String name, int id) {
+		Model model = null;
+
+		Query query = em.createQuery("SELECT m FROM Model m WHERE m.name = :name AND m.brand.idBrand = :id");
+		query.setParameter("name", name);
+		query.setParameter("id", id);
+
+		try {
+			model = (Model) query.getSingleResult();
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+
+		return model;
 	}
 }

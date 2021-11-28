@@ -67,6 +67,8 @@ CREATE TABLE IF NOT EXISTS `vehicle_marketplace_db`.`brand` (
   PRIMARY KEY (`id_brand`))
 ENGINE = InnoDB;
 
+CREATE UNIQUE INDEX `name_UNIQUE` ON `vehicle_marketplace_db`.`brand` (`name` ASC);
+
 
 -- -----------------------------------------------------
 -- Table `vehicle_marketplace_db`.`model`

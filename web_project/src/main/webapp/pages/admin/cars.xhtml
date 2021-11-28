@@ -33,6 +33,8 @@
 					<p:commandButton value="Dodaj" action="#{carsBB.addBrand()}"
 						update="@form modelForm:brand generationForm:brand" />
 				</h:panelGrid>
+
+				<p:message for="brandForm" id="msg" />
 			</p:panel>
 
 			<p:panel header="Marki" toggleable="true" toggleableHeader="true"
@@ -62,11 +64,12 @@
 				<h:panelGrid id="grid" columns="3" cellpadding="5">
 					<p:outputLabel for="brand" value="Marka" />
 					<p:selectOneMenu id="brand" value="#{carsBB.brandModel.idBrand}"
-						dynamic="true" required="true"
-						requiredMessage="Marka nie może być pusta">
-						<f:selectItem itemLabel="Wybierz markę" itemValue="#{null}" />
-						<f:selectItems value="#{carsBB.brandsMap}" />
-						<p:ajax event="valueChange" update="modelTable" />
+						required="true" requiredMessage="Marka nie może być pusta">
+						<f:selectItem itemLabel="Wybierz markę" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{carsBB.brands}" var="brand"
+							itemLabel="#{brand.name}" itemValue="#{brand.idBrand}" />
+						<p:ajax update="modelTable" />
 					</p:selectOneMenu>
 					<p:message for="brand" />
 
@@ -110,22 +113,25 @@
 				<h:panelGrid id="grid" columns="3" cellpadding="5">
 					<p:outputLabel for="brand" value="Marka" />
 					<p:selectOneMenu id="brand"
-						value="#{carsBB.brandGeneration.idBrand}" dynamic="true"
-						required="true" requiredMessage="Marka nie może być pusta">
-						<f:selectItem itemLabel="Wybierz markę" itemValue="#{null}" />
-						<f:selectItems value="#{carsBB.brandsMap}" />
-						<p:ajax listener="#{carsBB.changeBrand}" event="valueChange"
-							update="model genTable" />
+						value="#{carsBB.brandGeneration.idBrand}" required="true"
+						requiredMessage="Marka nie może być pusta">
+						<f:selectItem itemLabel="Wybierz markę" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{carsBB.brands}" var="brand"
+							itemLabel="#{brand.name}" itemValue="#{brand.idBrand}" />
+						<p:ajax listener="#{carsBB.changeBrand}" update="model genTable" />
 					</p:selectOneMenu>
 					<p:message for="brand" />
 
 					<p:outputLabel for="model" value="Model" />
 					<p:selectOneMenu id="model"
-						value="#{carsBB.modelGeneration.idModel}" dynamic="true"
-						required="true" requiredMessage="Model nie może być pusty">
-						<f:selectItem itemLabel="Wybierz model" itemValue="#{null}" />
-						<f:selectItems value="#{carsBB.modelsMap}" />
-						<p:ajax event="valueChange" update="genTable" />
+						value="#{carsBB.modelGeneration.idModel}" required="true"
+						requiredMessage="Model nie może być pusty">
+						<f:selectItem itemLabel="Wybierz model" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{carsBB.models}" var="model"
+							itemLabel="#{model.name}" itemValue="#{model.idModel}" />
+						<p:ajax update="genTable" />
 					</p:selectOneMenu>
 					<p:message for="model" />
 
@@ -142,6 +148,7 @@
 						validatorMessage="Błąd formatu roku"
 						converterMessage="Błąd konwersji roku">
 						<f:validateLength minimum="4" maximum="4" />
+						<p:keyFilter mask="num" />
 					</p:inputText>
 					<p:message for="productionStart" />
 
@@ -152,6 +159,7 @@
 						validatorMessage="Błąd formatu roku"
 						converterMessage="Błąd konwersji roku">
 						<f:validateLength minimum="4" maximum="4" />
+						<p:keyFilter mask="num" />
 					</p:inputText>
 					<p:message for="productionEnd" />
 

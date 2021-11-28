@@ -61,4 +61,20 @@ public class GenerationDAO {
 
 		return list;
 	}
+
+	public Generation getGenerationByNameAndID(String name, int id) {
+		Generation generation = null;
+
+		Query query = em.createQuery("SELECT g FROM Generation g WHERE g.name = :name AND g.model.idModel = :id");
+		query.setParameter("name", name);
+		query.setParameter("id", id);
+
+		try {
+			generation = (Generation) query.getSingleResult();
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+
+		return generation;
+	}
 }
