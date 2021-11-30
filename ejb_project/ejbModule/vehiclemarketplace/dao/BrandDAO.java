@@ -48,6 +48,34 @@ public class BrandDAO {
 		return list;
 	}
 
+	public long countFullList() {
+		long count = 0;
+
+		Query query = em.createQuery("SELECT COUNT(b) FROM Brand b");
+
+		try {
+			count = (long) query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return count;
+	}
+
+	public List<Brand> getLazyFullList(int offset, int pageSize) {
+		List<Brand> list = null;
+
+		Query query = em.createQuery("SELECT b FROM Brand b").setFirstResult(offset).setMaxResults(pageSize);
+
+		try {
+			list = query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
+
 	public Brand getBrandByName(String name) {
 		Brand brand = null;
 

@@ -37,9 +37,13 @@
 				<p:message for="brandForm" id="msg" />
 			</p:panel>
 
-			<p:panel header="Marki" toggleable="true" toggleableHeader="true"
-				toggleSpeed="300">
-				<p:dataTable value="#{carsBB.getBrandList()}" var="b">
+			<p:panel header="Lista marek" toggleable="true"
+				toggleableHeader="true" toggleSpeed="300">
+				<p:dataTable var="b" value="#{carsBB.lazyBrands}" paginator="true"
+					rows="10"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" selectionMode="single"
+					selection="#{carsBB.selectedBrand}" id="brandTable">
 
 					<p:column>
 						<f:facet name="header">
@@ -54,6 +58,10 @@
 						</f:facet>
 						<h:outputText value="#{b.name}" />
 					</p:column>
+
+					<f:facet name="footer">
+						<span>W sumie jest #{carsBB.lazyBrands.rowCount} rekordów.</span>
+					</f:facet>
 
 				</p:dataTable>
 			</p:panel>

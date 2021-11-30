@@ -1,23 +1,22 @@
 package vehiclemarketplace.cars;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.persistence.Query;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortMeta;
 
 import vehiclemarketplace.dao.BrandDAO;
 import vehiclemarketplace.dao.GenerationDAO;
@@ -42,6 +41,10 @@ public class CarsBB implements Serializable {
 
 	private List<Brand> brands;
 	private List<Model> models;
+
+	private LazyDataModel<Brand> lazyBrands;
+
+	private Brand selectedBrand;
 
 	public Brand getBrandBrand() {
 		return brandBrand;
@@ -99,6 +102,18 @@ public class CarsBB implements Serializable {
 		return models;
 	}
 
+	public LazyDataModel<Brand> getLazyBrands() {
+		return lazyBrands;
+	}
+
+	public Brand getSelectedBrand() {
+		return selectedBrand;
+	}
+
+	public void setSelectedBrand(Brand selectedBrand) {
+		this.selectedBrand = selectedBrand;
+	}
+
 	@Inject
 	ExternalContext extcontext;
 
@@ -120,6 +135,37 @@ public class CarsBB implements Serializable {
 	@PostConstruct
 	public void init() {
 		brands = getBrandList();
+		lazyBrands = new LazyDataModel<Brand>() {
+			private static final long serialVersionUID = 1L;
+
+			private List<Brand> brands;
+
+			@Override
+			public Brand getRowData(String rowKey) {
+				for (Brand brand : brands) {
+					if (brand.getIdBrand() == Integer.parseInt(rowKey)) {
+						return brand;
+					}
+				}
+				return null;
+			}
+
+			@Override
+			public String getRowKey(Brand brand) {
+				return String.valueOf(brand.getIdBrand());
+			}
+
+			@Override
+			public List<Brand> load(int offset, int pageSize, Map<String, SortMeta> sortBy,
+					Map<String, FilterMeta> filterBy) {
+				brands = brandDAO.getLazyFullList(offset, pageSize);
+
+				int rowCount = (int) brandDAO.countFullList();
+				setRowCount(rowCount);
+
+				return brands;
+			}
+		};
 	}
 
 	public String addBrand() {
