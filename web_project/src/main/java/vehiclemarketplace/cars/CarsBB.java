@@ -14,6 +14,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.PrimeFaces;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
@@ -144,6 +146,7 @@ public class CarsBB implements Serializable {
 			public Brand getRowData(String rowKey) {
 				for (Brand brand : brands) {
 					if (brand.getIdBrand() == Integer.parseInt(rowKey)) {
+						System.out.println(brand.getName());
 						return brand;
 					}
 				}
@@ -178,6 +181,44 @@ public class CarsBB implements Serializable {
 		brandBrand = new Brand();
 		brands = getBrandList();
 		return PAGE_STAY_AT_THE_SAME;
+	}
+
+	public String editBrand() {
+		Brand brandOld = brandDAO.find(selectedBrand.getIdBrand());
+		Brand brandDB = brandDAO.getBrandByName(brandOld.getName());
+		System.out.println("edit: " + selectedBrand.getName() + " old: " + brandOld.getName() + " db: "
+				+ brandDB.getName() + " " + selectedBrand.getIdBrand());
+		if (brandDB != null && selectedBrand.getName().equals(brandDB.getName())) {
+			System.out.println("Same, no changes");
+			return PAGE_STAY_AT_THE_SAME;
+		}
+
+		Brand brandCheck = brandDAO.getBrandByName(selectedBrand.getName());
+		if (brandCheck != null) {
+			ctx.addMessage("brandDialogForm",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Marka o podanej nazwie już istnieje!", null));
+			selectedBrand = brandOld;
+			return PAGE_STAY_AT_THE_SAME;
+		}
+		brandDAO.merge(selectedBrand);
+		brands = getBrandList();
+		PrimeFaces.current().executeScript("PF('brandDialog').hide()");
+		return PAGE_STAY_AT_THE_SAME;
+	}
+
+	public void deleteBrand() {
+		System.out.println("delete: " + selectedBrand.getName() + " " + selectedBrand.getIdBrand());
+		brandDAO.remove(selectedBrand);
+		brands = getBrandList();
+		selectedBrand = null;
+	}
+
+	public int brandCountModels() {
+		return modelDAO.getModelsByBrandID(selectedBrand.getIdBrand()).size();
+	}
+
+	public void info() {
+		System.out.println("info: " + selectedBrand.getName() + " " + selectedBrand.getIdBrand());
 	}
 
 	public List<Brand> getBrandList() {
