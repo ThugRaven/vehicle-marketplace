@@ -36,8 +36,6 @@
 
 				<p:message for="brandForm" id="msg" />
 			</p:panel>
-			<p:messages for="brandForm" id="msgs" />
-
 
 			<p:panel header="Lista marek" toggleable="true"
 				toggleableHeader="true" toggleSpeed="300">
@@ -67,26 +65,37 @@
 
 				</p:dataTable>
 
-				<p:messages for="brandTable" id="asdf" />
-
 				<p:contextMenu for="brandTable">
 					<p:menuitem value="Edit" process="brandTable" update="brandEdit"
 						icon="pi pi-search" oncomplete="PF('brandDialog').show()" />
 					<p:menuitem value="Delete" process="@this brandTable"
 						action="#{carsBB.deleteBrand}"
 						update="@form modelForm:brand generationForm:brand"
-						icon="pi pi-times" />
+						icon="pi pi-times">
+						<p:confirm header="Potwierdzenie" message="Usunąć wybraną markę?"
+							icon="pi pi-exclamation-triangle" />
+					</p:menuitem>
 					<p:menuitem value="Info" process="@this brandTable"
 						action="#{carsBB.info}" icon="pi pi-search" />
 				</p:contextMenu>
-
 			</p:panel>
+
+			<p:growl id="growl" for="brandTable" showDetail="true"
+				skipDetailIfEqualsSummary="true" />
+
+			<p:confirmDialog global="true" showEffect="fade" responsive="true"
+				width="350">
+				<p:commandButton value="Nie" type="button"
+					styleClass="ui-confirmdialog-no ui-button-flat" />
+				<p:commandButton value="Tak" type="button"
+					styleClass="ui-confirmdialog-yes" />
+			</p:confirmDialog>
 		</h:form>
 
 		<p:dialog header="Edit brand" widgetVar="brandDialog" modal="true"
 			showEffect="fade" hideEffect="fade" resizable="false"
 			draggable="false">
-			<p:outputPanel id="brandEdit" style="text-align:center;">
+			<p:outputPanel id="brandEdit">
 				<p:column rendered="#{not empty carsBB.selectedBrand}">
 					<h:form id="brandDialogForm">
 						<h:panelGrid columns="3" cellpadding="5">
@@ -102,7 +111,7 @@
 						</h:panelGrid>
 
 						<p:commandButton value="Aktualizuj" action="#{carsBB.editBrand()}"
-							update="@form brandForm:brandTable modelForm:brand generationForm:brand brandEdit" />
+							update="@form brandForm:brandTable modelForm:brand generationForm:brand" />
 						<p:commandButton value="Anuluj" type="button"
 							onclick="PF('brandDialog').hide()" />
 

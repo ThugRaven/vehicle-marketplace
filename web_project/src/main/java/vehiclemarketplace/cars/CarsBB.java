@@ -206,11 +206,20 @@ public class CarsBB implements Serializable {
 		return PAGE_STAY_AT_THE_SAME;
 	}
 
-	public void deleteBrand() {
+	public String deleteBrand() {
 		System.out.println("delete: " + selectedBrand.getName() + " " + selectedBrand.getIdBrand());
+
+		if (brandCountModels() > 0) {
+			ctx.addMessage("brandTable", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błąd podczas usuwania rekordu",
+					"Marka nie może zostać usunięta ponieważ zawiera ona conajmniej jeden model!"));
+			return PAGE_STAY_AT_THE_SAME;
+		}
+
 		brandDAO.remove(selectedBrand);
 		brands = getBrandList();
 		selectedBrand = null;
+		ctx.addMessage("brandTable", new FacesMessage(FacesMessage.SEVERITY_INFO, "Pomyślnie usunięto rekord!", null));
+		return PAGE_STAY_AT_THE_SAME;
 	}
 
 	public int brandCountModels() {
