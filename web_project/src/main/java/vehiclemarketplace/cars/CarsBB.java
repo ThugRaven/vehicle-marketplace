@@ -23,6 +23,7 @@ import org.primefaces.model.SortMeta;
 import vehiclemarketplace.dao.BrandDAO;
 import vehiclemarketplace.dao.GenerationDAO;
 import vehiclemarketplace.dao.ModelDAO;
+import vehiclemarketplace.dao.OfferDAO;
 import vehiclemarketplace.entities.Brand;
 import vehiclemarketplace.entities.Generation;
 import vehiclemarketplace.entities.Model;
@@ -131,6 +132,9 @@ public class CarsBB implements Serializable {
 	@EJB
 	GenerationDAO generationDAO;
 
+	@EJB
+	OfferDAO offerDAO;
+
 	@Inject
 	FacesContext ctx;
 
@@ -224,6 +228,10 @@ public class CarsBB implements Serializable {
 
 	public int brandCountModels() {
 		return modelDAO.getModelsByBrandID(selectedBrand.getIdBrand()).size();
+	}
+
+	public int brandCountOffers() {
+		return offerDAO.getOffersByBrandID(selectedBrand.getIdBrand()).size();
 	}
 
 	public void info() {

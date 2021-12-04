@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import vehiclemarketplace.entities.Model;
 import vehiclemarketplace.entities.Offer;
 
 @Stateless
@@ -36,6 +37,21 @@ public class OfferDAO {
 		List<Offer> list = null;
 
 		Query query = em.createQuery("SELECT o FROM Offer o");
+
+		try {
+			list = query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
+
+	public List<Offer> getOffersByBrandID(int id) {
+		List<Offer> list = null;
+
+		Query query = em.createQuery("SELECT o FROM Offer o WHERE o.brand.idBrand = :id");
+		query.setParameter("id", id);
 
 		try {
 			list = query.getResultList();
