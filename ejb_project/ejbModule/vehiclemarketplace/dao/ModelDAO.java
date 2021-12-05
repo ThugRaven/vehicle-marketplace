@@ -48,6 +48,37 @@ public class ModelDAO {
 		return list;
 	}
 
+	public List<Model> getLazyModelsByBrandID(int id, int offset, int pageSize) {
+		List<Model> list = null;
+
+		Query query = em.createQuery("SELECT m FROM Model m WHERE m.brand.idBrand = :id").setFirstResult(offset)
+				.setMaxResults(pageSize);
+		query.setParameter("id", id);
+
+		try {
+			list = query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
+
+	public long countModelsByBrandID(int id) {
+		long count = 0;
+
+		Query query = em.createQuery("SELECT COUNT(m) FROM Model m WHERE m.brand.idBrand = :id");
+		query.setParameter("id", id);
+
+		try {
+			count = (long) query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return count;
+	}
+
 	public List<Model> getModelsByBrandID(int id) {
 		List<Model> list = null;
 
@@ -63,7 +94,7 @@ public class ModelDAO {
 		return list;
 	}
 
-	public Model getModelByNameAndID(String name, int id) {
+	public Model getModelByNameAndBrandID(String name, int id) {
 		Model model = null;
 
 		Query query = em.createQuery("SELECT m FROM Model m WHERE m.name = :name AND m.brand.idBrand = :id");

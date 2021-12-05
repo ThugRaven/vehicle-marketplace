@@ -24,13 +24,13 @@
 
 		<h:form id="brandForm">
 			<p:panel header="Dodaj markę">
-				<h:panelGrid id="grid" columns="3" cellpadding="5">
+				<h:panelGrid columns="3" cellpadding="5">
 					<p:outputLabel for="brand" value="Marka" />
-					<p:inputText id="brand" value="#{carsBB.brandBrand.name}"
+					<p:inputText id="brand" value="#{dashCarsBB.brandBrand.name}"
 						required="true" requiredMessage="Marka nie może być pusta" />
 					<p:message for="brand" />
 
-					<p:commandButton value="Dodaj" action="#{carsBB.addBrand()}"
+					<p:commandButton value="Dodaj" action="#{dashCarsBB.addBrand()}"
 						update="@form modelForm:brand generationForm:brand" />
 				</h:panelGrid>
 
@@ -39,11 +39,11 @@
 
 			<p:panel header="Lista marek" toggleable="true"
 				toggleableHeader="true" toggleSpeed="300">
-				<p:dataTable id="brandTable" var="b" value="#{carsBB.lazyBrands}"
-					paginator="true" rows="10"
+				<p:dataTable id="brandTable" var="b"
+					value="#{dashCarsBB.lazyBrands}" paginator="true" rows="10"
 					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15" selectionMode="single"
-					selection="#{carsBB.selectedBrand}" rowKey="#{b.idBrand}">
+					selection="#{dashCarsBB.selectedBrand}" rowKey="#{b.idBrand}">
 
 					<p:column>
 						<f:facet name="header">
@@ -60,7 +60,8 @@
 					</p:column>
 
 					<f:facet name="footer">
-						<span>W sumie jest #{carsBB.lazyBrands.rowCount} rekordów.</span>
+						<span>W sumie jest #{dashCarsBB.lazyBrands.rowCount}
+							rekordów.</span>
 					</f:facet>
 
 				</p:dataTable>
@@ -69,7 +70,7 @@
 					<p:menuitem value="Edytuj" process="brandTable" update="brandEdit"
 						icon="pi pi-search" oncomplete="PF('brandEditDialog').show()" />
 					<p:menuitem value="Usuń" process="@this brandTable"
-						action="#{carsBB.deleteBrand}"
+						action="#{dashCarsBB.deleteBrand}"
 						update="@form modelForm:brand generationForm:brand"
 						icon="pi pi-times">
 						<p:confirm header="Potwierdzenie" message="Usunąć wybraną markę?"
@@ -97,21 +98,20 @@
 			modal="true" showEffect="fade" hideEffect="fade" resizable="false"
 			draggable="false" closeOnEscape="true" responsive="true">
 			<p:outputPanel id="brandEdit">
-				<p:column rendered="#{not empty carsBB.selectedBrand}">
+				<p:column rendered="#{not empty dashCarsBB.selectedBrand}">
 					<h:form id="brandDialogForm">
 						<h:panelGrid columns="3" cellpadding="5">
-							<p:outputLabel for="brandDialog"
-								value="Marka: #{carsBB.selectedBrand.name}" />
-							<p:inputText id="brandDialog"
-								value="#{carsBB.selectedBrand.name}" required="true"
-								requiredMessage="Marka nie może być pusta" />
-							<p:message for="brandDialog" />
+							<p:outputLabel for="brand" value="Marka" />
+							<p:inputText id="brand" value="#{dashCarsBB.selectedBrand.name}"
+								required="true" requiredMessage="Marka nie może być pusta" />
+							<p:message for="brand" />
 
 							<h:outputText
-								value="Liczba modeli dla tej marki: #{carsBB.brandCountModels()}" />
+								value="Liczba modeli dla tej marki: #{dashCarsBB.brandCountModels()}" />
 						</h:panelGrid>
 
-						<p:commandButton value="Aktualizuj" action="#{carsBB.editBrand()}"
+						<p:commandButton value="Aktualizuj"
+							action="#{dashCarsBB.editBrand()}"
 							update="@form brandForm:brandTable modelForm:brand generationForm:brand" />
 						<p:commandButton value="Anuluj" type="button"
 							onclick="PF('brandEditDialog').hide()" />
@@ -126,14 +126,14 @@
 			modal="true" showEffect="fade" hideEffect="fade" resizable="false"
 			draggable="false" closeOnEscape="true" responsive="true">
 			<p:outputPanel id="brandDetails">
-				<p:column rendered="#{not empty carsBB.selectedBrand}">
-					<h:panelGrid id="grid" columns="1" cellpadding="5">
-						<h:outputText value="ID: #{carsBB.selectedBrand.idBrand}" />
-						<h:outputText value="Marka: #{carsBB.selectedBrand.name}" />
+				<p:column rendered="#{not empty dashCarsBB.selectedBrand}">
+					<h:panelGrid columns="1" cellpadding="5">
+						<h:outputText value="ID: #{dashCarsBB.selectedBrand.idBrand}" />
+						<h:outputText value="Marka: #{dashCarsBB.selectedBrand.name}" />
 						<h:outputText
-							value="Liczba modeli dla tej marki: #{carsBB.brandCountModels()}" />
+							value="Liczba modeli dla tej marki: #{dashCarsBB.brandCountModels()}" />
 						<h:outputText
-							value="Liczba ofert dla tej marki: #{carsBB.brandCountOffers()}" />
+							value="Liczba ofert dla tej marki: #{dashCarsBB.brandCountOffers()}" />
 					</h:panelGrid>
 				</p:column>
 			</p:outputPanel>
@@ -141,34 +141,38 @@
 
 		<h:form id="modelForm">
 			<p:panel header="Dodaj model">
-				<h:panelGrid id="grid" columns="3" cellpadding="5">
+				<h:panelGrid columns="3" cellpadding="5">
 					<p:outputLabel for="brand" value="Marka" />
-					<p:selectOneMenu id="brand" value="#{carsBB.brandModel.idBrand}"
-						required="true" requiredMessage="Marka nie może być pusta">
+					<p:selectOneMenu id="brand"
+						value="#{dashCarsBB.brandModel.idBrand}" required="true"
+						requiredMessage="Marka nie może być pusta">
 						<f:selectItem itemLabel="Wybierz markę" itemValue="#{null}"
 							noSelectionOption="true" />
-						<f:selectItems value="#{carsBB.brands}" var="brand"
+						<f:selectItems value="#{dashCarsBB.brands}" var="brand"
 							itemLabel="#{brand.name}" itemValue="#{brand.idBrand}" />
 						<p:ajax update="modelTable" />
 					</p:selectOneMenu>
 					<p:message for="brand" />
 
 					<p:outputLabel for="model" value="Model" />
-					<p:inputText id="model" value="#{carsBB.modelModel.name}"
+					<p:inputText id="model" value="#{dashCarsBB.modelModel.name}"
 						required="true" requiredMessage="Model nie może być pusty" />
 					<p:message for="model" />
 
-					<p:commandButton value="Dodaj" action="#{carsBB.addModel()}"
+					<p:commandButton value="Dodaj" action="#{dashCarsBB.addModel()}"
 						update="@form generationForm:brand generationForm:model" />
 				</h:panelGrid>
 
 				<p:message for="modelForm" id="msg" />
 			</p:panel>
 
-			<p:panel header="Modele" toggleable="true" toggleableHeader="true"
-				toggleSpeed="300">
-				<p:dataTable id="modelTable" value="#{carsBB.getModelsByBrand()}"
-					var="m">
+			<p:panel header="Lista modeli" toggleable="true"
+				toggleableHeader="true" toggleSpeed="300">
+				<p:dataTable id="modelTable" var="m"
+					value="#{dashCarsBB.lazyModels}" paginator="true" rows="10"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" selectionMode="single"
+					selection="#{dashCarsBB.selectedModel}" rowKey="#{m.idModel}">
 
 					<p:column>
 						<f:facet name="header">
@@ -184,46 +188,114 @@
 						<h:outputText value="#{m.name}" />
 					</p:column>
 
+					<f:facet name="footer">
+						<span>W sumie jest #{dashCarsBB.lazyModels.rowCount}
+							rekordów.</span>
+					</f:facet>
+
 				</p:dataTable>
+
+				<p:contextMenu for="modelTable">
+					<p:menuitem value="Edytuj" process="modelTable" update="modelEdit"
+						icon="pi pi-search" oncomplete="PF('modelEditDialog').show()" />
+					<p:menuitem value="Usuń" process="@this modelTable"
+						action="#{dashCarsBB.deleteModel}"
+						update="@form generationForm:model" icon="pi pi-times">
+						<p:confirm header="Potwierdzenie" message="Usunąć wybrany model?"
+							icon="pi pi-exclamation-triangle" />
+					</p:menuitem>
+					<p:menuitem value="Szczegóły" process="modelTable"
+						update="modelDetails" icon="pi pi-search"
+						oncomplete="PF('modelDetailsDialog').show()" />
+				</p:contextMenu>
 			</p:panel>
+
+			<p:growl id="growl" for="modelTable" showDetail="true"
+				skipDetailIfEqualsSummary="true" />
 		</h:form>
+
+		<p:dialog header="Edytuj model" widgetVar="modelEditDialog"
+			modal="true" showEffect="fade" hideEffect="fade" resizable="false"
+			draggable="false" closeOnEscape="true" responsive="true">
+			<p:outputPanel id="modelEdit">
+				<p:column rendered="#{not empty dashCarsBB.selectedModel}">
+					<h:form id="modelDialogForm">
+						<h:panelGrid columns="3" cellpadding="5">
+							<p:outputLabel for="model" value="Model" />
+							<p:inputText id="model" value="#{dashCarsBB.selectedModel.name}"
+								required="true" requiredMessage="Model nie może być pusty" />
+							<p:message for="model" />
+
+							<h:outputText
+								value="Liczba generacji dla tego modelu: #{dashCarsBB.modelCountGenerations()}" />
+						</h:panelGrid>
+
+						<p:commandButton value="Aktualizuj"
+							action="#{dashCarsBB.editModel()}"
+							update="@form modelForm:modelTable generationForm:model" />
+						<p:commandButton value="Anuluj" type="button"
+							onclick="PF('modelEditDialog').hide()" />
+
+						<p:messages for="modelDialogForm" id="msgs" />
+					</h:form>
+				</p:column>
+			</p:outputPanel>
+		</p:dialog>
+
+		<p:dialog header="Szczegóły modelu" widgetVar="modelDetailsDialog"
+			modal="true" showEffect="fade" hideEffect="fade" resizable="false"
+			draggable="false" closeOnEscape="true" responsive="true">
+			<p:outputPanel id="modelDetails">
+				<p:column rendered="#{not empty dashCarsBB.selectedModel}">
+					<h:panelGrid columns="1" cellpadding="5">
+						<h:outputText value="ID: #{dashCarsBB.selectedModel.idModel}" />
+						<h:outputText value="Marka: #{dashCarsBB.selectedModel.name}" />
+						<h:outputText
+							value="Liczba generacji dla tego modelu: #{dashCarsBB.modelCountGenerations()}" />
+						<h:outputText
+							value="Liczba ofert dla tego modelu: #{dashCarsBB.modelCountOffers()}" />
+					</h:panelGrid>
+				</p:column>
+			</p:outputPanel>
+		</p:dialog>
 
 		<h:form id="generationForm">
 			<p:panel header="Dodaj generację">
-				<h:panelGrid id="grid" columns="3" cellpadding="5">
+				<h:panelGrid columns="3" cellpadding="5">
 					<p:outputLabel for="brand" value="Marka" />
 					<p:selectOneMenu id="brand"
-						value="#{carsBB.brandGeneration.idBrand}" required="true"
+						value="#{dashCarsBB.brandGeneration.idBrand}" required="true"
 						requiredMessage="Marka nie może być pusta">
 						<f:selectItem itemLabel="Wybierz markę" itemValue="#{null}"
 							noSelectionOption="true" />
-						<f:selectItems value="#{carsBB.brands}" var="brand"
+						<f:selectItems value="#{dashCarsBB.brands}" var="brand"
 							itemLabel="#{brand.name}" itemValue="#{brand.idBrand}" />
-						<p:ajax listener="#{carsBB.changeBrand}" update="model genTable" />
+						<p:ajax listener="#{dashCarsBB.changeBrand}"
+							update="model genTable" />
 					</p:selectOneMenu>
 					<p:message for="brand" />
 
 					<p:outputLabel for="model" value="Model" />
 					<p:selectOneMenu id="model"
-						value="#{carsBB.modelGeneration.idModel}" required="true"
+						value="#{dashCarsBB.modelGeneration.idModel}" required="true"
 						requiredMessage="Model nie może być pusty">
 						<f:selectItem itemLabel="Wybierz model" itemValue="#{null}"
 							noSelectionOption="true" />
-						<f:selectItems value="#{carsBB.models}" var="model"
+						<f:selectItems value="#{dashCarsBB.models}" var="model"
 							itemLabel="#{model.name}" itemValue="#{model.idModel}" />
 						<p:ajax update="genTable" />
 					</p:selectOneMenu>
 					<p:message for="model" />
 
 					<p:outputLabel for="generation" value="Generacja" />
-					<p:inputText id="generation" value="#{carsBB.generation.name}"
+					<p:inputText id="generation" value="#{dashCarsBB.generation.name}"
 						required="true" requiredMessage="Generacja nie może być pusta" />
 					<p:message for="generation" />
 
 					<p:outputLabel for="productionStart"
 						value="Rok rozpoczęcia produkcji" />
 					<p:inputText id="productionStart"
-						value="#{carsBB.generation.productionStart}" required="true"
+						value="#{dashCarsBB.generation.productionStart}" required="true"
 						requiredMessage="Rok rozpoczęcia produkcji nie może być pusty"
 						validatorMessage="Błąd formatu roku"
 						converterMessage="Błąd konwersji roku">
@@ -235,7 +307,7 @@
 					<p:outputLabel for="productionEnd"
 						value="Rok zakończenia produkcji" />
 					<p:inputText id="productionEnd"
-						value="#{carsBB.generation.productionEnd}"
+						value="#{dashCarsBB.generation.productionEnd}"
 						validatorMessage="Błąd formatu roku"
 						converterMessage="Błąd konwersji roku">
 						<f:validateLength minimum="4" maximum="4" />
@@ -243,17 +315,21 @@
 					</p:inputText>
 					<p:message for="productionEnd" />
 
-					<p:commandButton value="Dodaj" action="#{carsBB.addGeneration()}"
-						update="@form" />
+					<p:commandButton value="Dodaj"
+						action="#{dashCarsBB.addGeneration()}" update="@form" />
 				</h:panelGrid>
 
 				<p:message for="generationForm" id="msg" />
 			</p:panel>
 
-			<p:panel header="Generacje" toggleable="true" toggleableHeader="true"
-				toggleSpeed="300">
-				<p:dataTable id="genTable" value="#{carsBB.getGenerationsByModel()}"
-					var="g">
+			<p:panel header="Lista generacji" toggleable="true"
+				toggleableHeader="true" toggleSpeed="300">
+				<p:dataTable id="genTable" var="g"
+					value="#{dashCarsBB.lazyGenerations}" paginator="true" rows="10"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" selectionMode="single"
+					selection="#{dashCarsBB.selectedGeneration}"
+					rowKey="#{g.idGeneration}">
 
 					<p:column>
 						<f:facet name="header">
@@ -283,9 +359,99 @@
 						<h:outputText value="#{g.productionEnd}" />
 					</p:column>
 
+					<f:facet name="footer">
+						<span>W sumie jest #{dashCarsBB.lazyGenerations.rowCount}
+							rekordów.</span>
+					</f:facet>
+
 				</p:dataTable>
+
+				<p:contextMenu for="genTable">
+					<p:menuitem value="Edytuj" process="genTable" update="genEdit"
+						icon="pi pi-search" oncomplete="PF('genEditDialog').show()" />
+					<p:menuitem value="Usuń" process="@this genTable"
+						action="#{dashCarsBB.deleteGeneration}" update="@form"
+						icon="pi pi-times">
+						<p:confirm header="Potwierdzenie"
+							message="Usunąć wybraną generację?"
+							icon="pi pi-exclamation-triangle" />
+					</p:menuitem>
+					<p:menuitem value="Szczegóły" process="genTable"
+						update="genDetails" icon="pi pi-search"
+						oncomplete="PF('genDetailsDialog').show()" />
+				</p:contextMenu>
 			</p:panel>
+
+			<p:growl id="growl" for="genTable" showDetail="true"
+				skipDetailIfEqualsSummary="true" />
 		</h:form>
+
+		<p:dialog header="Edytuj generację" widgetVar="genEditDialog"
+			modal="true" showEffect="fade" hideEffect="fade" resizable="false"
+			draggable="false" closeOnEscape="true" responsive="true">
+			<p:outputPanel id="genEdit">
+				<p:column rendered="#{not empty dashCarsBB.selectedGeneration}">
+					<h:form id="genDialogForm">
+						<h:panelGrid columns="3" cellpadding="5">
+							<p:outputLabel for="generation" value="Generacja" />
+							<p:inputText id="generation"
+								value="#{dashCarsBB.selectedGeneration.name}" required="true"
+								requiredMessage="Generacja nie może być pusta" />
+							<p:message for="generation" />
+
+							<p:outputLabel for="productionStart"
+								value="Rok rozpoczęcia produkcji" />
+							<p:inputText id="productionStart"
+								value="#{dashCarsBB.selectedGeneration.productionStart}"
+								required="true"
+								requiredMessage="Rok rozpoczęcia produkcji nie może być pusty"
+								validatorMessage="Błąd formatu roku"
+								converterMessage="Błąd konwersji roku">
+								<f:validateLength minimum="4" maximum="4" />
+								<p:keyFilter mask="num" />
+							</p:inputText>
+							<p:message for="productionStart" />
+
+							<p:outputLabel for="productionEnd"
+								value="Rok zakończenia produkcji" />
+							<p:inputText id="productionEnd"
+								value="#{dashCarsBB.selectedGeneration.productionEnd}"
+								validatorMessage="Błąd formatu roku"
+								converterMessage="Błąd konwersji roku">
+								<f:validateLength minimum="4" maximum="4" />
+								<p:keyFilter mask="num" />
+							</p:inputText>
+							<p:message for="productionEnd" />
+						</h:panelGrid>
+
+						<p:commandButton value="Aktualizuj"
+							action="#{dashCarsBB.editGeneration()}"
+							update="@form generationForm:genTable" />
+						<p:commandButton value="Anuluj" type="button"
+							onclick="PF('genEditDialog').hide()" />
+
+						<p:messages for="genDialogForm" id="msgs" />
+					</h:form>
+				</p:column>
+			</p:outputPanel>
+		</p:dialog>
+
+		<p:dialog header="Szczegóły generacji" widgetVar="genDetailsDialog"
+			modal="true" showEffect="fade" hideEffect="fade" resizable="false"
+			draggable="false" closeOnEscape="true" responsive="true">
+			<p:outputPanel id="genDetails">
+				<p:column rendered="#{not empty dashCarsBB.selectedGeneration}">
+					<h:panelGrid columns="1" cellpadding="5">
+						<h:outputText
+							value="ID: #{dashCarsBB.selectedGeneration.idGeneration}" />
+						<h:outputText
+							value="Generacja: #{dashCarsBB.selectedGeneration.name}" />
+						<h:outputText
+							value="Liczba ofert dla tej generacji: #{dashCarsBB.generationCountOffers()}" />
+					</h:panelGrid>
+				</p:column>
+			</p:outputPanel>
+		</p:dialog>
 	</ui:define>
 </ui:composition>
 </html>

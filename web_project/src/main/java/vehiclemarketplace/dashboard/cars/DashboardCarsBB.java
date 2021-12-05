@@ -1,4 +1,4 @@
-package vehiclemarketplace.cars;
+package vehiclemarketplace.dashboard.cars;
 
 import java.io.Serializable;
 import java.util.List;
@@ -28,9 +28,9 @@ import vehiclemarketplace.entities.Brand;
 import vehiclemarketplace.entities.Generation;
 import vehiclemarketplace.entities.Model;
 
-@Named
+@Named("dashCarsBB")
 @ViewScoped
-public class CarsBB implements Serializable {
+public class DashboardCarsBB implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private static final String PAGE_STAY_AT_THE_SAME = null;
@@ -46,8 +46,12 @@ public class CarsBB implements Serializable {
 	private List<Model> models;
 
 	private LazyDataModel<Brand> lazyBrands;
+	private LazyDataModel<Model> lazyModels;
+	private LazyDataModel<Generation> lazyGenerations;
 
 	private Brand selectedBrand;
+	private Model selectedModel;
+	private Generation selectedGeneration;
 
 	public Brand getBrandBrand() {
 		return brandBrand;
@@ -109,12 +113,36 @@ public class CarsBB implements Serializable {
 		return lazyBrands;
 	}
 
+	public LazyDataModel<Model> getLazyModels() {
+		return lazyModels;
+	}
+
+	public LazyDataModel<Generation> getLazyGenerations() {
+		return lazyGenerations;
+	}
+
 	public Brand getSelectedBrand() {
 		return selectedBrand;
 	}
 
 	public void setSelectedBrand(Brand selectedBrand) {
 		this.selectedBrand = selectedBrand;
+	}
+
+	public Model getSelectedModel() {
+		return selectedModel;
+	}
+
+	public void setSelectedModel(Model selectedModel) {
+		this.selectedModel = selectedModel;
+	}
+
+	public Generation getSelectedGeneration() {
+		return selectedGeneration;
+	}
+
+	public void setSelectedGeneration(Generation selectedGeneration) {
+		this.selectedGeneration = selectedGeneration;
 	}
 
 	@Inject
@@ -173,6 +201,72 @@ public class CarsBB implements Serializable {
 				return brands;
 			}
 		};
+
+		lazyModels = new LazyDataModel<Model>() {
+			private static final long serialVersionUID = 1L;
+
+			private List<Model> models;
+
+			@Override
+			public Model getRowData(String rowKey) {
+				for (Model model : models) {
+					if (model.getIdModel() == Integer.parseInt(rowKey)) {
+						System.out.println(model.getName());
+						return model;
+					}
+				}
+				return null;
+			}
+
+			@Override
+			public String getRowKey(Model model) {
+				return String.valueOf(model.getIdModel());
+			}
+
+			@Override
+			public List<Model> load(int offset, int pageSize, Map<String, SortMeta> sortBy,
+					Map<String, FilterMeta> filterBy) {
+				models = modelDAO.getLazyModelsByBrandID(brandModel.getIdBrand(), offset, pageSize);
+
+				int rowCount = (int) modelDAO.countModelsByBrandID(brandModel.getIdBrand());
+				setRowCount(rowCount);
+
+				return models;
+			}
+		};
+
+		lazyGenerations = new LazyDataModel<Generation>() {
+			private static final long serialVersionUID = 1L;
+
+			private List<Generation> generations;
+
+			@Override
+			public Generation getRowData(String rowKey) {
+				for (Generation generation : generations) {
+					if (generation.getIdGeneration() == Integer.parseInt(rowKey)) {
+						System.out.println(generation.getName());
+						return generation;
+					}
+				}
+				return null;
+			}
+
+			@Override
+			public String getRowKey(Generation generation) {
+				return String.valueOf(generation.getIdGeneration());
+			}
+
+			@Override
+			public List<Generation> load(int offset, int pageSize, Map<String, SortMeta> sortBy,
+					Map<String, FilterMeta> filterBy) {
+				generations = generationDAO.getLazyGenerationsByModelID(modelGeneration.getIdModel(), offset, pageSize);
+
+				int rowCount = (int) generationDAO.countGenerationsByModelID(modelGeneration.getIdModel());
+				setRowCount(rowCount);
+
+				return generations;
+			}
+		};
 	}
 
 	public String addBrand() {
@@ -206,7 +300,7 @@ public class CarsBB implements Serializable {
 		}
 		brandDAO.merge(selectedBrand);
 		brands = getBrandList();
-		PrimeFaces.current().executeScript("PF('brandDialog').hide()");
+		PrimeFaces.current().executeScript("PF('brandEditDialog').hide()");
 		return PAGE_STAY_AT_THE_SAME;
 	}
 
@@ -234,16 +328,12 @@ public class CarsBB implements Serializable {
 		return offerDAO.getOffersByBrandID(selectedBrand.getIdBrand()).size();
 	}
 
-	public void info() {
-		System.out.println("info: " + selectedBrand.getName() + " " + selectedBrand.getIdBrand());
-	}
-
 	public List<Brand> getBrandList() {
 		return brandDAO.getFullList();
 	}
 
 	public String addModel() {
-		Model modelDB = modelDAO.getModelByNameAndID(modelModel.getName(), brandModel.getIdBrand());
+		Model modelDB = modelDAO.getModelByNameAndBrandID(modelModel.getName(), brandModel.getIdBrand());
 		if (modelDB != null) {
 			ctx.addMessage("modelForm",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Marka o podanej nazwie już istnieje!", null));
@@ -260,11 +350,56 @@ public class CarsBB implements Serializable {
 		modelModel.setBrand(brandDB);
 		modelDAO.create(modelModel);
 		modelModel = new Model();
+		models = getModelsByBrand();
 		return PAGE_STAY_AT_THE_SAME;
 	}
 
-	public List<Model> getModelList() {
-		return modelDAO.getFullList();
+	public String editModel() {
+		Model modelOld = modelDAO.find(selectedModel.getIdModel());
+		Model modelDB = modelDAO.getModelByNameAndBrandID(modelOld.getName(), modelOld.getBrand().getIdBrand());
+		System.out.println("edit: " + selectedModel.getName() + " old: " + modelOld.getName() + " db: "
+				+ modelDB.getName() + " " + selectedModel.getIdModel());
+		if (modelDB != null && selectedModel.getName().equals(modelDB.getName())) {
+			System.out.println("Same, no changes");
+			return PAGE_STAY_AT_THE_SAME;
+		}
+
+		Model modelCheck = modelDAO.getModelByNameAndBrandID(selectedModel.getName(),
+				selectedModel.getBrand().getIdBrand());
+		if (modelCheck != null) {
+			ctx.addMessage("modelDialogForm",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Model o podanej nazwie już istnieje!", null));
+			selectedModel = modelOld;
+			return PAGE_STAY_AT_THE_SAME;
+		}
+		modelDAO.merge(selectedModel);
+		models = getModelsByBrand();
+		PrimeFaces.current().executeScript("PF('modelEditDialog').hide()");
+		return PAGE_STAY_AT_THE_SAME;
+	}
+
+	public String deleteModel() {
+		System.out.println("delete: " + selectedModel.getName() + " " + selectedModel.getIdModel());
+
+		if (modelCountGenerations() > 0) {
+			ctx.addMessage("modelTable", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błąd podczas usuwania rekordu",
+					"Model nie może zostać usunięty ponieważ zawiera ona conajmniej jedną generację!"));
+			return PAGE_STAY_AT_THE_SAME;
+		}
+
+		modelDAO.remove(selectedModel);
+		models = getModelsByBrand();
+		selectedModel = null;
+		ctx.addMessage("modelTable", new FacesMessage(FacesMessage.SEVERITY_INFO, "Pomyślnie usunięto rekord!", null));
+		return PAGE_STAY_AT_THE_SAME;
+	}
+
+	public int modelCountGenerations() {
+		return generationDAO.getGenerationsByModelID(selectedModel.getIdModel()).size();
+	}
+
+	public int modelCountOffers() {
+		return offerDAO.getOffersByModelID(selectedModel.getIdModel()).size();
 	}
 
 	public List<Model> getModelsByBrand() {
@@ -287,7 +422,7 @@ public class CarsBB implements Serializable {
 	}
 
 	public String addGeneration() {
-		Generation generationDB = generationDAO.getGenerationByNameAndID(generation.getName(),
+		Generation generationDB = generationDAO.getGenerationByNameAndModelID(generation.getName(),
 				modelGeneration.getIdModel());
 		if (generationDB != null) {
 			ctx.addMessage("generationForm",
@@ -308,13 +443,49 @@ public class CarsBB implements Serializable {
 		return PAGE_STAY_AT_THE_SAME;
 	}
 
-	public List<Generation> getGenerationsByModel() {
-		List<Generation> list = null;
-
-		if (modelGeneration.getIdModel() != 0) {
-			list = generationDAO.getGenerationsByModelID(modelGeneration.getIdModel());
+	public String editGeneration() {
+		Generation generationOld = generationDAO.find(selectedGeneration.getIdGeneration());
+		Generation generationDB = generationDAO.getGenerationByNameAndModelID(generationOld.getName(),
+				generationOld.getModel().getIdModel());
+		System.out.println("edit: " + selectedGeneration.getName() + " old: " + generationOld.getName() + " db: "
+				+ generationDB.getName() + " " + selectedGeneration.getIdGeneration());
+		if (generationDB != null && selectedGeneration.getName().equals(generationDB.getName())
+				&& selectedGeneration.getProductionStart().equals(generationDB.getProductionStart())
+				&& selectedGeneration.getProductionEnd().equals(generationDB.getProductionEnd())) {
+			System.out.println("Same, no changes");
+			return PAGE_STAY_AT_THE_SAME;
 		}
 
-		return list;
+		Generation generationCheck = generationDAO.getGenerationByNameAndModelID(selectedGeneration.getName(),
+				selectedGeneration.getModel().getIdModel());
+		if (generationCheck != null && selectedGeneration.getProductionStart().equals(generationDB.getProductionStart())
+				&& selectedGeneration.getProductionEnd().equals(generationDB.getProductionEnd())) {
+			ctx.addMessage("genDialogForm",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Generacja o podanej nazwie już istnieje!", null));
+			selectedGeneration = generationOld;
+			return PAGE_STAY_AT_THE_SAME;
+		}
+		generationDAO.merge(selectedGeneration);
+		PrimeFaces.current().executeScript("PF('genEditDialog').hide()");
+		return PAGE_STAY_AT_THE_SAME;
+	}
+
+	public String deleteGeneration() {
+		System.out.println("delete: " + selectedGeneration.getName() + " " + selectedGeneration.getIdGeneration());
+
+		if (generationCountOffers() > 0) {
+			ctx.addMessage("genTable", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błąd podczas usuwania rekordu",
+					"Generacja nie może zostać usunięta ponieważ zawiera ona conajmniej jedną ofertę!"));
+			return PAGE_STAY_AT_THE_SAME;
+		}
+
+		generationDAO.remove(selectedGeneration);
+		selectedGeneration = null;
+		ctx.addMessage("genTable", new FacesMessage(FacesMessage.SEVERITY_INFO, "Pomyślnie usunięto rekord!", null));
+		return PAGE_STAY_AT_THE_SAME;
+	}
+
+	public int generationCountOffers() {
+		return offerDAO.getOffersByGenerationID(selectedGeneration.getIdGeneration()).size();
 	}
 }

@@ -47,6 +47,37 @@ public class GenerationDAO {
 		return list;
 	}
 
+	public List<Generation> getLazyGenerationsByModelID(int id, int offset, int pageSize) {
+		List<Generation> list = null;
+
+		Query query = em.createQuery("SELECT g FROM Generation g WHERE g.model.idModel = :id").setFirstResult(offset)
+				.setMaxResults(pageSize);
+		query.setParameter("id", id);
+
+		try {
+			list = query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
+
+	public long countGenerationsByModelID(int id) {
+		long count = 0;
+
+		Query query = em.createQuery("SELECT COUNT(g) FROM Generation g WHERE g.model.idModel = :id");
+		query.setParameter("id", id);
+
+		try {
+			count = (long) query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return count;
+	}
+
 	public List<Generation> getGenerationsByModelID(int id) {
 		List<Generation> list = null;
 
@@ -62,7 +93,7 @@ public class GenerationDAO {
 		return list;
 	}
 
-	public Generation getGenerationByNameAndID(String name, int id) {
+	public Generation getGenerationByNameAndModelID(String name, int id) {
 		Generation generation = null;
 
 		Query query = em.createQuery("SELECT g FROM Generation g WHERE g.name = :name AND g.model.idModel = :id");

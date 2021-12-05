@@ -61,4 +61,34 @@ public class OfferDAO {
 
 		return list;
 	}
+
+	public List<Offer> getOffersByModelID(int id) {
+		List<Offer> list = null;
+
+		Query query = em.createQuery("SELECT o FROM Offer o WHERE o.model.idModel = :id");
+		query.setParameter("id", id);
+
+		try {
+			list = query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
+
+	public List<Offer> getOffersByGenerationID(int id) {
+		List<Offer> list = null;
+
+		Query query = em.createQuery("SELECT o FROM Offer o WHERE o.generation.idGeneration = :id");
+		query.setParameter("id", id);
+
+		try {
+			list = query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
 }
