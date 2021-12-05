@@ -1,6 +1,7 @@
 package vehiclemarketplace.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -47,11 +48,13 @@ public class GenerationDAO {
 		return list;
 	}
 
-	public List<Generation> getLazyGenerationsByModelID(int id, int offset, int pageSize) {
+	public List<Generation> getLazyGenerationsByModelID(Map<String, String> sortBy, int id, int offset, int pageSize) {
 		List<Generation> list = null;
 
-		Query query = em.createQuery("SELECT g FROM Generation g WHERE g.model.idModel = :id").setFirstResult(offset)
-				.setMaxResults(pageSize);
+		String order = getOrderBy(sortBy);
+		System.out.println(order);
+		Query query = em.createQuery("SELECT g FROM Generation g WHERE g.model.idModel = :id" + order)
+				.setFirstResult(offset).setMaxResults(pageSize);
 		query.setParameter("id", id);
 
 		try {
@@ -61,6 +64,28 @@ public class GenerationDAO {
 		}
 
 		return list;
+	}
+
+	public String getOrderBy(Map<String, String> sortBy) {
+		String orderBy = "";
+
+		if (sortBy != null) {
+			for (Map.Entry<String, String> entry : sortBy.entrySet()) {
+				String field = entry.getKey();
+				String order = entry.getValue();
+
+				order = order.equals("ASCENDING") ? "ASC" : "DESC";
+
+				if (orderBy.isEmpty()) {
+					orderBy = " ORDER BY ";
+				} else {
+					orderBy = orderBy.concat(", ");
+				}
+				orderBy = orderBy.concat("g." + field + " " + order);
+			}
+		}
+
+		return orderBy;
 	}
 
 	public long countGenerationsByModelID(int id) {

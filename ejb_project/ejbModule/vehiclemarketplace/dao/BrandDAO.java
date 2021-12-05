@@ -1,6 +1,7 @@
 package vehiclemarketplace.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -62,10 +63,12 @@ public class BrandDAO {
 		return count;
 	}
 
-	public List<Brand> getLazyFullList(int offset, int pageSize) {
+	public List<Brand> getLazyFullList(Map<String, String> sortBy, int offset, int pageSize) {
 		List<Brand> list = null;
 
-		Query query = em.createQuery("SELECT b FROM Brand b").setFirstResult(offset).setMaxResults(pageSize);
+		String order = getOrderBy(sortBy);
+		System.out.println(order);
+		Query query = em.createQuery("SELECT b FROM Brand b" + order).setFirstResult(offset).setMaxResults(pageSize);
 
 		try {
 			list = query.getResultList();
@@ -74,6 +77,28 @@ public class BrandDAO {
 		}
 
 		return list;
+	}
+
+	public String getOrderBy(Map<String, String> sortBy) {
+		String orderBy = "";
+
+		if (sortBy != null) {
+			for (Map.Entry<String, String> entry : sortBy.entrySet()) {
+				String field = entry.getKey();
+				String order = entry.getValue();
+
+				order = order.equals("ASCENDING") ? "ASC" : "DESC";
+
+				if (orderBy.isEmpty()) {
+					orderBy = " ORDER BY ";
+				} else {
+					orderBy = orderBy.concat(", ");
+				}
+				orderBy = orderBy.concat("b." + field + " " + order);
+			}
+		}
+
+		return orderBy;
 	}
 
 	public Brand getBrandByName(String name) {

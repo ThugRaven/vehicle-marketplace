@@ -43,16 +43,17 @@
 					value="#{dashCarsBB.lazyBrands}" paginator="true" rows="10"
 					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15" selectionMode="single"
-					selection="#{dashCarsBB.selectedBrand}" rowKey="#{b.idBrand}">
+					selection="#{dashCarsBB.selectedBrand}" rowKey="#{b.idBrand}"
+					allowUnsorting="true" sortMode="single">
 
-					<p:column>
+					<p:column sortBy="#{b.idBrand}">
 						<f:facet name="header">
 							<h:outputText value="ID" />
 						</f:facet>
 						<h:outputText value="#{b.idBrand}" />
 					</p:column>
 
-					<p:column>
+					<p:column sortBy="#{b.name}">
 						<f:facet name="header">
 							<h:outputText value="Marka" />
 						</f:facet>
@@ -172,16 +173,17 @@
 					value="#{dashCarsBB.lazyModels}" paginator="true" rows="10"
 					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15" selectionMode="single"
-					selection="#{dashCarsBB.selectedModel}" rowKey="#{m.idModel}">
+					selection="#{dashCarsBB.selectedModel}" rowKey="#{m.idModel}"
+					allowUnsorting="true" sortMode="single">
 
-					<p:column>
+					<p:column sortBy="#{m.idModel}">
 						<f:facet name="header">
 							<h:outputText value="ID" />
 						</f:facet>
 						<h:outputText value="#{m.idModel}" />
 					</p:column>
 
-					<p:column>
+					<p:column sortBy="#{m.name}">
 						<f:facet name="header">
 							<h:outputText value="Model" />
 						</f:facet>
@@ -329,30 +331,30 @@
 					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15" selectionMode="single"
 					selection="#{dashCarsBB.selectedGeneration}"
-					rowKey="#{g.idGeneration}">
+					rowKey="#{g.idGeneration}" allowUnsorting="true" sortMode="single">
 
-					<p:column>
+					<p:column sortBy="#{g.idGeneration}">
 						<f:facet name="header">
 							<h:outputText value="ID" />
 						</f:facet>
 						<h:outputText value="#{g.idGeneration}" />
 					</p:column>
 
-					<p:column>
+					<p:column sortBy="#{g.name}">
 						<f:facet name="header">
 							<h:outputText value="Model" />
 						</f:facet>
 						<h:outputText value="#{g.name}" />
 					</p:column>
 
-					<p:column>
+					<p:column sortBy="#{g.productionStart}">
 						<f:facet name="header">
 							<h:outputText value="Rok rozpoczęcia" />
 						</f:facet>
 						<h:outputText value="#{g.productionStart}" />
 					</p:column>
 
-					<p:column>
+					<p:column sortBy="#{g.productionEnd}">
 						<f:facet name="header">
 							<h:outputText value="Rok zakończenia" />
 						</f:facet>

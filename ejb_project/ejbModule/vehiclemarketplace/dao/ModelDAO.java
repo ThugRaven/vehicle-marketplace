@@ -1,6 +1,7 @@
 package vehiclemarketplace.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -48,10 +49,12 @@ public class ModelDAO {
 		return list;
 	}
 
-	public List<Model> getLazyModelsByBrandID(int id, int offset, int pageSize) {
+	public List<Model> getLazyModelsByBrandID(Map<String, String> sortBy, int id, int offset, int pageSize) {
 		List<Model> list = null;
 
-		Query query = em.createQuery("SELECT m FROM Model m WHERE m.brand.idBrand = :id").setFirstResult(offset)
+		String order = getOrderBy(sortBy);
+		System.out.println(order);
+		Query query = em.createQuery("SELECT m FROM Model m WHERE m.brand.idBrand = :id" + order).setFirstResult(offset)
 				.setMaxResults(pageSize);
 		query.setParameter("id", id);
 
@@ -62,6 +65,28 @@ public class ModelDAO {
 		}
 
 		return list;
+	}
+
+	public String getOrderBy(Map<String, String> sortBy) {
+		String orderBy = "";
+
+		if (sortBy != null) {
+			for (Map.Entry<String, String> entry : sortBy.entrySet()) {
+				String field = entry.getKey();
+				String order = entry.getValue();
+
+				order = order.equals("ASCENDING") ? "ASC" : "DESC";
+
+				if (orderBy.isEmpty()) {
+					orderBy = " ORDER BY ";
+				} else {
+					orderBy = orderBy.concat(", ");
+				}
+				orderBy = orderBy.concat("m." + field + " " + order);
+			}
+		}
+
+		return orderBy;
 	}
 
 	public long countModelsByBrandID(int id) {

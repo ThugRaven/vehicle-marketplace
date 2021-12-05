@@ -1,6 +1,7 @@
 package vehiclemarketplace.dashboard.cars;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -193,7 +194,13 @@ public class DashboardCarsBB implements Serializable {
 			@Override
 			public List<Brand> load(int offset, int pageSize, Map<String, SortMeta> sortBy,
 					Map<String, FilterMeta> filterBy) {
-				brands = brandDAO.getLazyFullList(offset, pageSize);
+
+				Map<String, String> sortMap = new HashMap<String, String>();
+				for (SortMeta sortMeta : sortBy.values()) {
+					sortMap.put(sortMeta.getField(), sortMeta.getOrder().toString());
+				}
+
+				brands = brandDAO.getLazyFullList(sortMap, offset, pageSize);
 
 				int rowCount = (int) brandDAO.countFullList();
 				setRowCount(rowCount);
@@ -226,7 +233,13 @@ public class DashboardCarsBB implements Serializable {
 			@Override
 			public List<Model> load(int offset, int pageSize, Map<String, SortMeta> sortBy,
 					Map<String, FilterMeta> filterBy) {
-				models = modelDAO.getLazyModelsByBrandID(brandModel.getIdBrand(), offset, pageSize);
+
+				Map<String, String> sortMap = new HashMap<String, String>();
+				for (SortMeta sortMeta : sortBy.values()) {
+					sortMap.put(sortMeta.getField(), sortMeta.getOrder().toString());
+				}
+
+				models = modelDAO.getLazyModelsByBrandID(sortMap, brandModel.getIdBrand(), offset, pageSize);
 
 				int rowCount = (int) modelDAO.countModelsByBrandID(brandModel.getIdBrand());
 				setRowCount(rowCount);
@@ -259,7 +272,14 @@ public class DashboardCarsBB implements Serializable {
 			@Override
 			public List<Generation> load(int offset, int pageSize, Map<String, SortMeta> sortBy,
 					Map<String, FilterMeta> filterBy) {
-				generations = generationDAO.getLazyGenerationsByModelID(modelGeneration.getIdModel(), offset, pageSize);
+
+				Map<String, String> sortMap = new HashMap<String, String>();
+				for (SortMeta sortMeta : sortBy.values()) {
+					sortMap.put(sortMeta.getField(), sortMeta.getOrder().toString());
+				}
+
+				generations = generationDAO.getLazyGenerationsByModelID(sortMap, modelGeneration.getIdModel(), offset,
+						pageSize);
 
 				int rowCount = (int) generationDAO.countGenerationsByModelID(modelGeneration.getIdModel());
 				setRowCount(rowCount);
