@@ -91,4 +91,19 @@ public class OfferDAO {
 
 		return list;
 	}
+
+	public List<Offer> getOffersByUserID(int id) {
+		List<Offer> list = null;
+
+		Query query = em.createQuery("SELECT o FROM Offer o WHERE o.user.idUser = :id");
+		query.setParameter("id", id);
+
+		try {
+			list = query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
 }

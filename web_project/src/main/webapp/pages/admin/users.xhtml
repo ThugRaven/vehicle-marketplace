@@ -55,7 +55,6 @@
 							value="#{u.archived == true ? 'Zablokowany' : 'Normalny'}" />
 					</p:column>
 
-
 					<f:facet name="footer">
 						<span>W sumie jest #{dashUsersBB.lazyUsers.rowCount}
 							użytkowników.</span>
@@ -63,14 +62,20 @@
 
 				</p:dataTable>
 
-				<p:contextMenu for="userTable">
+				<p:contextMenu id="contextMenu" for="userTable">
 					<p:menuitem value="Edytuj" process="userTable" update="userEdit"
-						icon="pi pi-search" oncomplete="PF('userEditDialog').show()" />
+						icon="pi pi-user-edit" oncomplete="PF('userEditDialog').show()" />
 					<p:menuitem value="Zablokuj" process="@this userTable"
-						action="#{dashUsersBB.blockUser}" update="@form"
-						icon="pi pi-times">
+						action="#{dashUsersBB.blockUser}" update="@form" icon="pi pi-lock">
 						<p:confirm header="Potwierdzenie"
 							message="Zablokować podanego użytkownika?"
+							icon="pi pi-exclamation-triangle" />
+					</p:menuitem>
+					<p:menuitem value="Odblokuj" process="@this userTable"
+						action="#{dashUsersBB.unblockUser}" update="@form"
+						icon="pi pi-unlock">
+						<p:confirm header="Potwierdzenie"
+							message="Odblokować podanego użytkownika?"
 							icon="pi pi-exclamation-triangle" />
 					</p:menuitem>
 					<p:menuitem value="Szczegóły" process="userTable"
@@ -138,7 +143,8 @@
 							value="Rola: #{dashUsersBB.selectedUser.userRole.roleName}" />
 						<h:outputText
 							value="Data utworzenia: #{dashUsersBB.selectedUser.createTime}" />
-						<h:outputText value="Stan: #{dashUsersBB.selectedUser.archived}" />
+						<h:outputText
+							value="Stan: #{dashUsersBB.selectedUser.archived == true ? 'Zablokowany' : 'Normalny'}" />
 
 						<h:outputText
 							value="Liczba ofert tego użytkownika: #{dashUsersBB.userCountOffers()}" />

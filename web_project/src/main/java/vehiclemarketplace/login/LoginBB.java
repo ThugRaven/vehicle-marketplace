@@ -74,6 +74,11 @@ public class LoginBB {
 			return PAGE_STAY_AT_THE_SAME;
 		}
 
+		if (user.getArchived()) {
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Twoje konto jest zablokowane!", null));
+			return PAGE_STAY_AT_THE_SAME;
+		}
+
 		boolean matched = false;
 		try {
 			matched = validatePassword(password, user.getPassword());

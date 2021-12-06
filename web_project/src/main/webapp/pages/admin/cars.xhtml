@@ -69,7 +69,7 @@
 
 				<p:contextMenu for="brandTable">
 					<p:menuitem value="Edytuj" process="brandTable" update="brandEdit"
-						icon="pi pi-search" oncomplete="PF('brandEditDialog').show()" />
+						icon="pi pi-pencil" oncomplete="PF('brandEditDialog').show()" />
 					<p:menuitem value="Usuń" process="@this brandTable"
 						action="#{dashCarsBB.deleteBrand}"
 						update="@form modelForm:brand generationForm:brand"

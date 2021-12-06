@@ -22,6 +22,7 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
 
 import vehiclemarketplace.dao.BrandDAO;
+import vehiclemarketplace.dao.OfferDAO;
 import vehiclemarketplace.dao.UserDAO;
 import vehiclemarketplace.entities.User;
 
@@ -58,6 +59,9 @@ public class DashboardUsersBB implements Serializable {
 
 	@EJB
 	UserDAO userDAO;
+
+	@EJB
+	OfferDAO offerDAO;
 
 	@Inject
 	FacesContext ctx;
@@ -107,6 +111,12 @@ public class DashboardUsersBB implements Serializable {
 	public String blockUser() {
 		System.out.println("block: " + selectedUser.getIdUser() + " " + selectedUser.getLogin());
 
+		if (selectedUser.getArchived()) {
+			ctx.addMessage("userTable",
+					new FacesMessage(FacesMessage.SEVERITY_WARN, "Użytkownik jest już zablokowany!", null));
+			return PAGE_STAY_AT_THE_SAME;
+		}
+
 		User user = selectedUser;
 		user.setArchived(true);
 		userDAO.merge(user);
@@ -114,6 +124,28 @@ public class DashboardUsersBB implements Serializable {
 		ctx.addMessage("userTable",
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Pomyślnie zablokowano użytkownika!", null));
 		return PAGE_STAY_AT_THE_SAME;
+	}
+
+	public String unblockUser() {
+		System.out.println("unblock: " + selectedUser.getIdUser() + " " + selectedUser.getLogin());
+
+		if (!selectedUser.getArchived()) {
+			ctx.addMessage("userTable",
+					new FacesMessage(FacesMessage.SEVERITY_WARN, "Użytkownik jest już odblokowany!", null));
+			return PAGE_STAY_AT_THE_SAME;
+		}
+
+		User user = selectedUser;
+		user.setArchived(false);
+		userDAO.merge(user);
+		selectedUser = null;
+		ctx.addMessage("userTable",
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "Pomyślnie odblokowano użytkownika!", null));
+		return PAGE_STAY_AT_THE_SAME;
+	}
+
+	public int userCountOffers() {
+		return offerDAO.getOffersByUserID(selectedUser.getIdUser()).size();
 	}
 
 }
