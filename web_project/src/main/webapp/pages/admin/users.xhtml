@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/page-template.xhtml">
+	<ui:define name="pageContent">
+		<p:panel>
+			<h:outputText
+				value="Zalogowany: #{remoteClient.details.login} #{remoteClient.details.name}" />
+			<h:form>
+				<p:commandLink action="/pages/public/register?faces-redirect=true"
+					value="Zarejestruj się" />
+				<p:commandLink action="/pages/public/login?faces-redirect=true"
+					value="Zaloguj się" />
+				<p:commandButton action="#{loginBB.doLogout()}" value="Wyloguj się" />
+				<p:commandLink action="/pages/admin/dashboard?faces-redirect=true"
+					value="Admin dashboard" />
+			</h:form>
+		</p:panel>
+
+		<h:form id="userForm">
+			<p:panel header="Lista użytkowników" toggleable="true"
+				toggleableHeader="true" toggleSpeed="300">
+				<p:dataTable id="userTable" var="u" value="#{dashUsersBB.lazyUsers}"
+					paginator="true" rows="10"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" selectionMode="single"
+					selection="#{dashUsersBB.selectedUser}" rowKey="#{u.idUser}"
+					allowUnsorting="true" sortMode="multiple">
+
+					<p:column field="idUser" filterable="false">
+						<f:facet name="header">
+							<h:outputText value="ID" />
+						</f:facet>
+					</p:column>
+
+					<p:column field="login" headerText="Login" filterable="false" />
+
+					<p:column field="name" headerText="Imię" filterable="false" />
+
+					<p:column field="surname" headerText="Nazwisko" filterable="false" />
+
+					<p:column field="userRole.roleName" headerText="Rola"
+						filterable="false" />
+
+					<p:column field="createTime" headerText="Data utworzenia"
+						filterable="false" />
+
+					<p:column field="archived" headerText="Stan" filterable="false">
+						<h:outputText
+							value="#{u.archived == true ? 'Zablokowany' : 'Normalny'}" />
+					</p:column>
+
+
+					<f:facet name="footer">
+						<span>W sumie jest #{dashUsersBB.lazyUsers.rowCount}
+							użytkowników.</span>
+					</f:facet>
+
+				</p:dataTable>
+
+				<p:contextMenu for="userTable">
+					<p:menuitem value="Edytuj" process="userTable" update="userEdit"
+						icon="pi pi-search" oncomplete="PF('userEditDialog').show()" />
+					<p:menuitem value="Zablokuj" process="@this userTable"
+						action="#{dashUsersBB.blockUser}" update="@form"
+						icon="pi pi-times">
+						<p:confirm header="Potwierdzenie"
+							message="Zablokować podanego użytkownika?"
+							icon="pi pi-exclamation-triangle" />
+					</p:menuitem>
+					<p:menuitem value="Szczegóły" process="userTable"
+						update="userDetails" icon="pi pi-search"
+						oncomplete="PF('userDetailsDialog').show()" />
+				</p:contextMenu>
+			</p:panel>
+
+			<p:growl id="growl" for="userTable" showDetail="true"
+				skipDetailIfEqualsSummary="true" />
+
+			<p:confirmDialog global="true" showEffect="fade" responsive="true"
+				width="350">
+				<p:commandButton value="Nie" type="button"
+					styleClass="ui-confirmdialog-no ui-button-flat" />
+				<p:commandButton value="Tak" type="button"
+					styleClass="ui-confirmdialog-yes" />
+			</p:confirmDialog>
+		</h:form>
+
+		<p:dialog header="Edytuj użytkownika" widgetVar="userEditDialog"
+			modal="true" showEffect="fade" hideEffect="fade" resizable="false"
+			draggable="false" closeOnEscape="true" responsive="true">
+			<p:outputPanel id="userEdit">
+				<p:column rendered="#{not empty dashUsersBB.selectedUser}">
+					<h:form id="userDialogForm">
+						<h:panelGrid columns="3" cellpadding="5">
+							<p:outputLabel for="brand" value="Marka" />
+							<p:inputText id="brand" value="#{dashCarsBB.selectedBrand.name}"
+								required="true" requiredMessage="Marka nie może być pusta" />
+							<p:message for="brand" />
+
+							<h:outputText
+								value="Liczba ofert tego użytkownika: #{dashUsersBB.userCountOffers()}" />
+						</h:panelGrid>
+
+						<p:commandButton value="Aktualizuj"
+							action="#{dashUsersBB.editUser()}" update="@form" />
+						<p:commandButton value="Anuluj" type="button"
+							onclick="PF('userEditDialog').hide()" />
+
+						<p:messages for="userDialogForm" id="msgs" />
+					</h:form>
+				</p:column>
+			</p:outputPanel>
+		</p:dialog>
+
+		<p:dialog header="Szczegóły użytkownika" widgetVar="userDetailsDialog"
+			modal="true" showEffect="fade" hideEffect="fade" resizable="false"
+			draggable="false" closeOnEscape="true" responsive="true">
+			<p:outputPanel id="userDetails">
+				<p:column rendered="#{not empty dashUsersBB.selectedUser}">
+					<h:panelGrid columns="1" cellpadding="5">
+						<h:outputText value="ID: #{dashUsersBB.selectedUser.idUser}" />
+						<h:outputText value="Login: #{dashUsersBB.selectedUser.login}" />
+						<h:outputText value="Imię: #{dashUsersBB.selectedUser.name}" />
+						<h:outputText
+							value="Nazwisko: #{dashUsersBB.selectedUser.surname}" />
+						<h:outputText value="E-Mail: #{dashUsersBB.selectedUser.email}" />
+						<h:outputText
+							value="Nr telefonu: #{dashUsersBB.selectedUser.phoneNumber}" />
+						<h:outputText
+							value="ID Roli: #{dashUsersBB.selectedUser.userRole.idUserRole}" />
+						<h:outputText
+							value="Rola: #{dashUsersBB.selectedUser.userRole.roleName}" />
+						<h:outputText
+							value="Data utworzenia: #{dashUsersBB.selectedUser.createTime}" />
+						<h:outputText value="Stan: #{dashUsersBB.selectedUser.archived}" />
+
+						<h:outputText
+							value="Liczba ofert tego użytkownika: #{dashUsersBB.userCountOffers()}" />
+					</h:panelGrid>
+				</p:column>
+			</p:outputPanel>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+</html>
