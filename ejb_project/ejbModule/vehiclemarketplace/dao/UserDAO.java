@@ -68,12 +68,12 @@ public class UserDAO {
 		List<User> list = null;
 
 		SelectUtilities selectUtilities = new SelectUtilities("u");
-		String order = selectUtilities.getOrderBy(sortBy);
+		String order = selectUtilities.getOrder(sortBy);
 		String where = selectUtilities.getWhere(filter);
 
 		Query query = em.createQuery("SELECT u FROM User u" + where + order).setFirstResult(offset)
 				.setMaxResults(pageSize);
-		query = selectUtilities.setParameters(query, filter);
+		query = selectUtilities.getParameters(query, filter);
 
 		try {
 			list = query.getResultList();

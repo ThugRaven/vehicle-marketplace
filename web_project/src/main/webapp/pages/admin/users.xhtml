@@ -33,6 +33,10 @@
 					allowUnsorting="true" sortMode="multiple">
 
 					<f:facet name="header">
+						<p:outputLabel for="login" value="Login" />
+						<p:inputText id="login" value="#{dashUsersBB.userFilter.login}" />
+						<p:message for="login" />
+
 						<p:outputLabel for="name" value="Imię" />
 						<p:inputText id="name" value="#{dashUsersBB.userFilter.name}" />
 						<p:message for="name" />

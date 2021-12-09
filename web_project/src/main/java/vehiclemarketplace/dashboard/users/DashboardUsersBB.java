@@ -119,6 +119,9 @@ public class DashboardUsersBB implements Serializable {
 				}
 
 				List<SelectFilter> filter = new ArrayList<>();
+				if (userFilter.getLogin() != null && !userFilter.getLogin().isEmpty()) {
+					filter.add(new SelectFilter("login", userFilter.getLogin(), SelectType.LIKE_FULL));
+				}
 				if (userFilter.getName() != null && !userFilter.getName().isEmpty()) {
 					filter.add(new SelectFilter("name", userFilter.getName(), SelectType.LIKE));
 				}

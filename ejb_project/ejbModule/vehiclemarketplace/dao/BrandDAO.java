@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import vehiclemarketplace.classes.SelectUtilities;
 import vehiclemarketplace.entities.Brand;
 import vehiclemarketplace.entities.Model;
 import vehiclemarketplace.entities.User;
@@ -66,8 +67,8 @@ public class BrandDAO {
 	public List<Brand> getLazyFullList(Map<String, String> sortBy, int offset, int pageSize) {
 		List<Brand> list = null;
 
-		String order = getOrderBy(sortBy);
-		System.out.println(order);
+		SelectUtilities selectUtilities = new SelectUtilities("b");
+		String order = selectUtilities.getOrder(sortBy);
 		Query query = em.createQuery("SELECT b FROM Brand b" + order).setFirstResult(offset).setMaxResults(pageSize);
 
 		try {
@@ -77,28 +78,6 @@ public class BrandDAO {
 		}
 
 		return list;
-	}
-
-	public String getOrderBy(Map<String, String> sortBy) {
-		String orderBy = "";
-
-		if (sortBy != null) {
-			for (Map.Entry<String, String> entry : sortBy.entrySet()) {
-				String field = entry.getKey();
-				String order = entry.getValue();
-
-				order = order.equals("ASCENDING") ? "ASC" : "DESC";
-
-				if (orderBy.isEmpty()) {
-					orderBy = " ORDER BY ";
-				} else {
-					orderBy = orderBy.concat(", ");
-				}
-				orderBy = orderBy.concat("b." + field + " " + order);
-			}
-		}
-
-		return orderBy;
 	}
 
 	public Brand getBrandByName(String name) {

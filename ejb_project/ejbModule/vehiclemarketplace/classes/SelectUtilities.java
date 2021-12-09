@@ -21,7 +21,7 @@ public class SelectUtilities {
 		this.table = table;
 	}
 
-	public String getOrderBy(Map<String, String> sortBy) {
+	public String getOrder(Map<String, String> sortBy) {
 		String orderBy = "";
 
 		if (sortBy != null) {
@@ -36,7 +36,7 @@ public class SelectUtilities {
 				} else {
 					orderBy = orderBy.concat(", ");
 				}
-				orderBy = orderBy.concat("u." + field + " " + order);
+				orderBy = orderBy.concat(table + "." + field + " " + order);
 			}
 		}
 
@@ -79,7 +79,7 @@ public class SelectUtilities {
 		return where;
 	}
 
-	public Query setParameters(Query query, List<SelectFilter> filter) {
+	public Query getParameters(Query query, List<SelectFilter> filter) {
 		if (filter.size() == 0) {
 			return query;
 		}
