@@ -199,7 +199,7 @@
 
 				<p:contextMenu for="modelTable">
 					<p:menuitem value="Edytuj" process="modelTable" update="modelEdit"
-						icon="pi pi-search" oncomplete="PF('modelEditDialog').show()" />
+						icon="pi pi-pencil" oncomplete="PF('modelEditDialog').show()" />
 					<p:menuitem value="Usuń" process="@this modelTable"
 						action="#{dashCarsBB.deleteModel}"
 						update="@form generationForm:model" icon="pi pi-times">
@@ -370,7 +370,7 @@
 
 				<p:contextMenu for="genTable">
 					<p:menuitem value="Edytuj" process="genTable" update="genEdit"
-						icon="pi pi-search" oncomplete="PF('genEditDialog').show()" />
+						icon="pi pi-pencil" oncomplete="PF('genEditDialog').show()" />
 					<p:menuitem value="Usuń" process="@this genTable"
 						action="#{dashCarsBB.deleteGeneration}" update="@form"
 						icon="pi pi-times">

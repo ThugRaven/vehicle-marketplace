@@ -32,6 +32,39 @@
 					selection="#{dashUsersBB.selectedUser}" rowKey="#{u.idUser}"
 					allowUnsorting="true" sortMode="multiple">
 
+					<f:facet name="header">
+						<p:outputLabel for="name" value="Imię" />
+						<p:inputText id="name" value="#{dashUsersBB.userFilter.name}" />
+						<p:message for="name" />
+
+						<p:outputLabel for="surname" value="Nazwisko" />
+						<p:inputText id="surname"
+							value="#{dashUsersBB.userFilter.surname}" />
+						<p:message for="surname" />
+
+						<p:outputLabel for="role" value="Rola" />
+						<p:selectOneMenu id="role"
+							value="#{dashUsersBB.userFilter.userRole.idUserRole}">
+							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
+								noSelectionOption="true" />
+							<f:selectItems value="#{dashUsersBB.roles}" var="r"
+								itemLabel="#{r.roleName}" itemValue="#{r.idUserRole}" />
+						</p:selectOneMenu>
+						<p:message for="role" />
+
+						<p:outputLabel for="archived" value="Stan konta" />
+						<p:selectOneMenu id="archived"
+							value="#{dashUsersBB.userFilter.archived}">
+							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
+								noSelectionOption="true" />
+							<f:selectItem itemLabel="Normalny" itemValue="#{false}" />
+							<f:selectItem itemLabel="Zablokowany" itemValue="#{true}" />
+						</p:selectOneMenu>
+						<p:message for="archived" />
+
+						<p:commandButton value="Szukaj" update="@form" />
+					</f:facet>
+
 					<p:column field="idUser" filterable="false">
 						<f:facet name="header">
 							<h:outputText value="ID" />

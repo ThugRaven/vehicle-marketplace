@@ -1,6 +1,7 @@
 package vehiclemarketplace.dashboard.users;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,10 +22,15 @@ import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
 
+import vehiclemarketplace.classes.SearchFilter;
+import vehiclemarketplace.classes.SearchType;
 import vehiclemarketplace.dao.BrandDAO;
 import vehiclemarketplace.dao.OfferDAO;
 import vehiclemarketplace.dao.UserDAO;
+import vehiclemarketplace.dao.UserRoleDAO;
+import vehiclemarketplace.entities.Brand;
 import vehiclemarketplace.entities.User;
+import vehiclemarketplace.entities.UserRole;
 
 @Named("dashUsersBB")
 @ViewScoped
@@ -33,11 +39,12 @@ public class DashboardUsersBB implements Serializable {
 
 	private static final String PAGE_STAY_AT_THE_SAME = null;
 
-//	private List<Brand> brands;
-
 	private LazyDataModel<User> lazyUsers;
 
 	private User selectedUser;
+
+	private User userFilter = new User();
+	private List<UserRole> roles;
 
 	public LazyDataModel<User> getLazyUsers() {
 		return lazyUsers;
@@ -49,6 +56,14 @@ public class DashboardUsersBB implements Serializable {
 
 	public void setSelectedUser(User selectedUser) {
 		this.selectedUser = selectedUser;
+	}
+
+	public User getUserFilter() {
+		return userFilter;
+	}
+
+	public List<UserRole> getRoles() {
+		return roles;
 	}
 
 	@Inject
@@ -63,11 +78,16 @@ public class DashboardUsersBB implements Serializable {
 	@EJB
 	OfferDAO offerDAO;
 
+	@EJB
+	UserRoleDAO userRoleDAO;
+
 	@Inject
 	FacesContext ctx;
 
 	@PostConstruct
 	public void init() {
+		userFilter.setUserRole(new UserRole());
+		roles = getRolesList();
 		lazyUsers = new LazyDataModel<User>() {
 			private static final long serialVersionUID = 1L;
 
@@ -98,7 +118,22 @@ public class DashboardUsersBB implements Serializable {
 					sortMap.put(sortMeta.getField(), sortMeta.getOrder().toString());
 				}
 
-				users = userDAO.getLazyFullList(sortMap, offset, pageSize);
+				List<SearchFilter> filter = new ArrayList<>();
+				if (userFilter.getName() != null && !userFilter.getName().isEmpty()) {
+					filter.add(new SearchFilter("name", userFilter.getName(), SearchType.LIKE));
+				}
+				if (userFilter.getSurname() != null && !userFilter.getSurname().isEmpty()) {
+					filter.add(new SearchFilter("surname", userFilter.getSurname(), SearchType.LIKE));
+				}
+				if (userFilter.getUserRole() != null && userFilter.getUserRole().getIdUserRole() != 0) {
+					filter.add(new SearchFilter("userRole.idUserRole", "idUserRole",
+							userFilter.getUserRole().getIdUserRole(), SearchType.NORMAL));
+				}
+				if (userFilter.getArchived() != null) {
+					filter.add(new SearchFilter("archived", userFilter.getArchived(), SearchType.NORMAL));
+				}
+
+				users = userDAO.getLazyFullList(sortMap, filter, offset, pageSize);
 
 				int rowCount = (int) userDAO.countFullList();
 				setRowCount(rowCount);
@@ -148,4 +183,7 @@ public class DashboardUsersBB implements Serializable {
 		return offerDAO.getOffersByUserID(selectedUser.getIdUser()).size();
 	}
 
+	public List<UserRole> getRolesList() {
+		return userRoleDAO.getFullList();
+	}
 }

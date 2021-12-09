@@ -22,7 +22,7 @@ public class User implements Serializable {
 	private int idUser;
 
 	@Column(nullable=false)
-	private boolean archived;
+	private Boolean archived;
 
 	@Column(name="create_time", nullable=false)
 	private Timestamp createTime;
@@ -65,11 +65,11 @@ public class User implements Serializable {
 		this.idUser = idUser;
 	}
 
-	public boolean getArchived() {
+	public Boolean getArchived() {
 		return this.archived;
 	}
 
-	public void setArchived(boolean archived) {
+	public void setArchived(Boolean archived) {
 		this.archived = archived;
 	}
 

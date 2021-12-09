@@ -16,13 +16,20 @@ import java.util.List;
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@Override
+	public String toString() {
+		return "User [idUser=" + idUser + ", archived=" + archived + ", createTime=" + createTime + ", email=" + email
+				+ ", login=" + login + ", name=" + name + ", password=" + password + ", phoneNumber=" + phoneNumber
+				+ ", surname=" + surname + ", offers=" + offers + ", userRole=" + userRole + "]";
+	}
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_user", unique=true, nullable=false)
 	private int idUser;
 
 	@Column(nullable=false)
-	private boolean archived;
+	private Boolean archived;
 
 	@Column(name="create_time", nullable=false)
 	private Timestamp createTime;
@@ -65,11 +72,11 @@ public class User implements Serializable {
 		this.idUser = idUser;
 	}
 
-	public boolean getArchived() {
+	public Boolean getArchived() {
 		return this.archived;
 	}
 
-	public void setArchived(boolean archived) {
+	public void setArchived(Boolean archived) {
 		this.archived = archived;
 	}
 
