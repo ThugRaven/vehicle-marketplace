@@ -1,6 +1,6 @@
 package vehiclemarketplace.classes;
 
-public class SearchFilter {
+public class SelectFilter {
 	private String property;
 	// e.g. name, surname, userRole.idUserRole
 	private String parameter;
@@ -8,7 +8,7 @@ public class SearchFilter {
 	private Object value;
 	private int searchType;
 
-	public SearchFilter(String property, String parameter, Object value, int searchType) {
+	public SelectFilter(String property, String parameter, Object value, int searchType) {
 		super();
 		this.property = property;
 		this.parameter = parameter;
@@ -16,7 +16,7 @@ public class SearchFilter {
 		this.searchType = searchType;
 	}
 
-	public SearchFilter(String parameter, Object value, int searchType) {
+	public SelectFilter(String parameter, Object value, int searchType) {
 		super();
 		this.property = parameter;
 		this.parameter = parameter;

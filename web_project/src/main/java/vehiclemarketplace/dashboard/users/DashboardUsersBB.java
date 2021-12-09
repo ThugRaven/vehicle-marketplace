@@ -22,8 +22,8 @@ import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
 
-import vehiclemarketplace.classes.SearchFilter;
-import vehiclemarketplace.classes.SearchType;
+import vehiclemarketplace.classes.SelectFilter;
+import vehiclemarketplace.classes.SelectType;
 import vehiclemarketplace.dao.BrandDAO;
 import vehiclemarketplace.dao.OfferDAO;
 import vehiclemarketplace.dao.UserDAO;
@@ -118,19 +118,19 @@ public class DashboardUsersBB implements Serializable {
 					sortMap.put(sortMeta.getField(), sortMeta.getOrder().toString());
 				}
 
-				List<SearchFilter> filter = new ArrayList<>();
+				List<SelectFilter> filter = new ArrayList<>();
 				if (userFilter.getName() != null && !userFilter.getName().isEmpty()) {
-					filter.add(new SearchFilter("name", userFilter.getName(), SearchType.LIKE));
+					filter.add(new SelectFilter("name", userFilter.getName(), SelectType.LIKE));
 				}
 				if (userFilter.getSurname() != null && !userFilter.getSurname().isEmpty()) {
-					filter.add(new SearchFilter("surname", userFilter.getSurname(), SearchType.LIKE));
+					filter.add(new SelectFilter("surname", userFilter.getSurname(), SelectType.LIKE));
 				}
 				if (userFilter.getUserRole() != null && userFilter.getUserRole().getIdUserRole() != 0) {
-					filter.add(new SearchFilter("userRole.idUserRole", "idUserRole",
-							userFilter.getUserRole().getIdUserRole(), SearchType.NORMAL));
+					filter.add(new SelectFilter("userRole.idUserRole", "idUserRole",
+							userFilter.getUserRole().getIdUserRole(), SelectType.NORMAL));
 				}
 				if (userFilter.getArchived() != null) {
-					filter.add(new SearchFilter("archived", userFilter.getArchived(), SearchType.NORMAL));
+					filter.add(new SelectFilter("archived", userFilter.getArchived(), SelectType.NORMAL));
 				}
 
 				users = userDAO.getLazyFullList(sortMap, filter, offset, pageSize);
