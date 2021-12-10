@@ -25,10 +25,10 @@
 		<h:form id="userForm">
 			<p:panel header="Lista użytkowników" toggleable="true"
 				toggleableHeader="true" toggleSpeed="300">
-				<p:dataTable id="userTable" var="u" value="#{dashUsersBB.lazyUsers}"
-					paginator="true" rows="10"
+				<p:dataTable id="userTable" var="u" widgetVar="userTable"
+					value="#{dashUsersBB.lazyUsers}" paginator="true" rows="1"
 					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="5,10,15" selectionMode="single"
+					rowsPerPageTemplate="1,10,15" selectionMode="single"
 					selection="#{dashUsersBB.selectedUser}" rowKey="#{u.idUser}"
 					allowUnsorting="true" sortMode="multiple"
 					rowStyleClass="#{u.archived ? 'archived' : null}">>
@@ -70,12 +70,12 @@
 							value="#{dashUsersBB.userFilter.archived}">
 							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
 								noSelectionOption="true" />
-							<f:selectItem itemLabel="Normalny" itemValue="#{false}" />
-							<f:selectItem itemLabel="Zablokowany" itemValue="#{true}" />
+							<f:selectItem itemLabel="Aktywne" itemValue="#{false}" />
+							<f:selectItem itemLabel="Zablokowane" itemValue="#{true}" />
 						</p:selectOneMenu>
 						<p:message for="archived" />
 
-						<p:commandButton value="Szukaj" update="@form" />
+						<p:commandButton value="Szukaj" onclick="PF('userTable').filter()" />
 
 						<div>
 							<p:commandButton id="toggler" type="button" value="Columns"
@@ -115,7 +115,7 @@
 
 					<p:column field="archived" headerText="Status" filterable="false">
 						<h:outputText
-							value="#{u.archived == true ? 'Zablokowany' : 'Normalny'}" />
+							value="#{u.archived == true ? 'Zablokowany' : 'Aktywny'}" />
 					</p:column>
 
 					<f:facet name="footer">
@@ -216,7 +216,7 @@
 							<f:convertDateTime timeStyle="long" dateStyle="short" type="both" />
 						</h:outputText>
 						Status<h:outputText
-							value="#{dashUsersBB.selectedUser.archived == true ? 'Zablokowany' : 'Normalny'}" />
+							value="#{dashUsersBB.selectedUser.archived == true ? 'Zablokowany' : 'Aktywny'}" />
 
 						Liczba ofert tego użytkownika<h:outputText
 							value="#{dashUsersBB.userCountOffers()}" />

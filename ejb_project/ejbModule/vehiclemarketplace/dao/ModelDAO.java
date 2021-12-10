@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import vehiclemarketplace.classes.SelectUtilities;
 import vehiclemarketplace.entities.Brand;
 import vehiclemarketplace.entities.Model;
 import vehiclemarketplace.entities.User;
@@ -52,8 +53,8 @@ public class ModelDAO {
 	public List<Model> getLazyModelsByBrandID(Map<String, String> sortBy, int id, int offset, int pageSize) {
 		List<Model> list = null;
 
-		String order = getOrderBy(sortBy);
-		System.out.println(order);
+		SelectUtilities selectUtilities = new SelectUtilities("m");
+		String order = selectUtilities.getOrder(sortBy);
 		Query query = em.createQuery("SELECT m FROM Model m WHERE m.brand.idBrand = :id" + order).setFirstResult(offset)
 				.setMaxResults(pageSize);
 		query.setParameter("id", id);
@@ -65,28 +66,6 @@ public class ModelDAO {
 		}
 
 		return list;
-	}
-
-	public String getOrderBy(Map<String, String> sortBy) {
-		String orderBy = "";
-
-		if (sortBy != null) {
-			for (Map.Entry<String, String> entry : sortBy.entrySet()) {
-				String field = entry.getKey();
-				String order = entry.getValue();
-
-				order = order.equals("ASCENDING") ? "ASC" : "DESC";
-
-				if (orderBy.isEmpty()) {
-					orderBy = " ORDER BY ";
-				} else {
-					orderBy = orderBy.concat(", ");
-				}
-				orderBy = orderBy.concat("m." + field + " " + order);
-			}
-		}
-
-		return orderBy;
 	}
 
 	public long countModelsByBrandID(int id) {
