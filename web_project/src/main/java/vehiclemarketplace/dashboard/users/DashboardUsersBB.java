@@ -139,9 +139,9 @@ public class DashboardUsersBB implements Serializable {
 					filter.add(new SelectFilter("archived", userFilter.getArchived(), SelectType.NORMAL));
 				}
 
-				users = userDAO.getLazyFullList(sortMap, filter, offset, pageSize);
+				users = userDAO.getLazyList(sortMap, filter, offset, pageSize);
 
-				int rowCount = (int) userDAO.countFullList();
+				int rowCount = (int) userDAO.countLazyList(filter);
 				setRowCount(rowCount);
 
 				return users;

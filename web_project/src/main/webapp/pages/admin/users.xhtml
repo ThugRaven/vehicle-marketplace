@@ -65,7 +65,7 @@
 						</p:selectOneMenu>
 						<p:message for="role" />
 
-						<p:outputLabel for="archived" value="Stan konta" />
+						<p:outputLabel for="archived" value="Status konta" />
 						<p:selectOneMenu id="archived"
 							value="#{dashUsersBB.userFilter.archived}">
 							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
@@ -103,12 +103,17 @@
 						filterable="false" />
 
 					<p:column field="createTime" headerText="Data utworzenia"
-						filterable="false" />
+						filterable="false">
+						<h:outputText value="#{u.createTime}">
+							<f:convertDateTime timeStyle="short" dateStyle="short"
+								type="both" />
+						</h:outputText>
+					</p:column>
 
 					<p:column field="phoneNumber" headerText="Numer telefonu"
 						sortable="false" filterable="false" visible="false" />
 
-					<p:column field="archived" headerText="Stan" filterable="false">
+					<p:column field="archived" headerText="Status" filterable="false">
 						<h:outputText
 							value="#{u.archived == true ? 'Zablokowany' : 'Normalny'}" />
 					</p:column>
@@ -194,26 +199,27 @@
 			draggable="false" closeOnEscape="true" responsive="true">
 			<p:outputPanel id="userDetails">
 				<p:column rendered="#{not empty dashUsersBB.selectedUser}">
-					<h:panelGrid columns="1" cellpadding="5">
-						<h:outputText value="ID: #{dashUsersBB.selectedUser.idUser}" />
-						<h:outputText value="Login: #{dashUsersBB.selectedUser.login}" />
-						<h:outputText value="Imię: #{dashUsersBB.selectedUser.name}" />
-						<h:outputText
-							value="Nazwisko: #{dashUsersBB.selectedUser.surname}" />
-						<h:outputText value="E-Mail: #{dashUsersBB.selectedUser.email}" />
-						<h:outputText
-							value="Nr telefonu: #{dashUsersBB.selectedUser.phoneNumber}" />
-						<h:outputText
-							value="ID Roli: #{dashUsersBB.selectedUser.userRole.idUserRole}" />
-						<h:outputText
-							value="Rola: #{dashUsersBB.selectedUser.userRole.roleName}" />
-						<h:outputText
-							value="Data utworzenia: #{dashUsersBB.selectedUser.createTime}" />
-						<h:outputText
-							value="Stan: #{dashUsersBB.selectedUser.archived == true ? 'Zablokowany' : 'Normalny'}" />
+					<h:panelGrid columns="2" cellpadding="5">
+						ID<h:outputText value="#{dashUsersBB.selectedUser.idUser}" />
+						Login<h:outputText value="#{dashUsersBB.selectedUser.login}" />
+						Imię<h:outputText value="#{dashUsersBB.selectedUser.name}" />
+						Nazwisko<h:outputText value="#{dashUsersBB.selectedUser.surname}" />
+						E-Mail<h:outputText value="#{dashUsersBB.selectedUser.email}" />
+						Nr telefonu<h:outputText
+							value="#{dashUsersBB.selectedUser.phoneNumber}" />
+						ID Roli<h:outputText
+							value="#{dashUsersBB.selectedUser.userRole.idUserRole}" />
+						Rola<h:outputText
+							value="#{dashUsersBB.selectedUser.userRole.roleName}" />
+						Data utworzenia<h:outputText
+							value="#{dashUsersBB.selectedUser.createTime}">
+							<f:convertDateTime timeStyle="long" dateStyle="short" type="both" />
+						</h:outputText>
+						Status<h:outputText
+							value="#{dashUsersBB.selectedUser.archived == true ? 'Zablokowany' : 'Normalny'}" />
 
-						<h:outputText
-							value="Liczba ofert tego użytkownika: #{dashUsersBB.userCountOffers()}" />
+						Liczba ofert tego użytkownika<h:outputText
+							value="#{dashUsersBB.userCountOffers()}" />
 					</h:panelGrid>
 				</p:column>
 			</p:outputPanel>

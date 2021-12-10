@@ -64,7 +64,7 @@ public class UserDAO {
 		return count;
 	}
 
-	public List<User> getLazyFullList(Map<String, String> sortBy, List<SelectFilter> filter, int offset, int pageSize) {
+	public List<User> getLazyList(Map<String, String> sortBy, List<SelectFilter> filter, int offset, int pageSize) {
 		List<User> list = null;
 
 		SelectUtilities selectUtilities = new SelectUtilities("u");
@@ -82,6 +82,24 @@ public class UserDAO {
 		}
 
 		return list;
+	}
+
+	public long countLazyList(List<SelectFilter> filter) {
+		long count = 0;
+
+		SelectUtilities selectUtilities = new SelectUtilities("u");
+		String where = selectUtilities.getWhere(filter);
+
+		Query query = em.createQuery("SELECT COUNT(u) FROM User u" + where);
+		query = selectUtilities.getParameters(query, filter);
+
+		try {
+			count = (long) query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return count;
 	}
 
 	public User getUserByLogin(String login) {
