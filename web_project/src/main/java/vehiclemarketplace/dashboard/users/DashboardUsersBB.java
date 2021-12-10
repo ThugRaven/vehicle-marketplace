@@ -119,6 +119,9 @@ public class DashboardUsersBB implements Serializable {
 				}
 
 				List<SelectFilter> filter = new ArrayList<>();
+				if (userFilter.getIdUser() != 0) {
+					filter.add(new SelectFilter("idUser", userFilter.getIdUser(), SelectType.NORMAL));
+				}
 				if (userFilter.getLogin() != null && !userFilter.getLogin().isEmpty()) {
 					filter.add(new SelectFilter("login", userFilter.getLogin(), SelectType.LIKE_FULL));
 				}
@@ -144,6 +147,17 @@ public class DashboardUsersBB implements Serializable {
 				return users;
 			}
 		};
+	}
+
+	public String editUser() {
+		if (selectedUser.getUserRole().getIdUserRole() == 0) {
+			ctx.addMessage("editDialogForm",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Użytkownik musi posiadać rolę!", null));
+			return PAGE_STAY_AT_THE_SAME;
+		}
+		userDAO.merge(selectedUser);
+		PrimeFaces.current().executeScript("PF('userEditDialog').hide()");
+		return PAGE_STAY_AT_THE_SAME;
 	}
 
 	public String blockUser() {

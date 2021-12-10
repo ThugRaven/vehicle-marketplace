@@ -30,12 +30,21 @@
 					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					rowsPerPageTemplate="5,10,15" selectionMode="single"
 					selection="#{dashUsersBB.selectedUser}" rowKey="#{u.idUser}"
-					allowUnsorting="true" sortMode="multiple">
+					allowUnsorting="true" sortMode="multiple"
+					rowStyleClass="#{u.archived ? 'archived' : null}">>
 
 					<f:facet name="header">
+						<p:outputLabel for="id" value="ID" />
+						<p:inputNumber id="id" value="#{dashUsersBB.userFilter.idUser}" />
+						<p:message for="id" />
+
 						<p:outputLabel for="login" value="Login" />
 						<p:inputText id="login" value="#{dashUsersBB.userFilter.login}" />
 						<p:message for="login" />
+
+						<p:outputLabel for="email" value="E-Mail" />
+						<p:inputText id="email" value="#{dashUsersBB.userFilter.email}" />
+						<p:message for="email" />
 
 						<p:outputLabel for="name" value="Imię" />
 						<p:inputText id="name" value="#{dashUsersBB.userFilter.name}" />
@@ -67,6 +76,12 @@
 						<p:message for="archived" />
 
 						<p:commandButton value="Szukaj" update="@form" />
+
+						<div>
+							<p:commandButton id="toggler" type="button" value="Columns"
+								icon="pi pi-align-justify" />
+							<p:columnToggler datasource="userTable" trigger="toggler" />
+						</div>
 					</f:facet>
 
 					<p:column field="idUser" filterable="false">
@@ -77,6 +92,9 @@
 
 					<p:column field="login" headerText="Login" filterable="false" />
 
+					<p:column field="email" headerText="E-Mail" filterable="false"
+						visible="false" />
+
 					<p:column field="name" headerText="Imię" filterable="false" />
 
 					<p:column field="surname" headerText="Nazwisko" filterable="false" />
@@ -86,6 +104,9 @@
 
 					<p:column field="createTime" headerText="Data utworzenia"
 						filterable="false" />
+
+					<p:column field="phoneNumber" headerText="Numer telefonu"
+						sortable="false" filterable="false" visible="false" />
 
 					<p:column field="archived" headerText="Stan" filterable="false">
 						<h:outputText
@@ -100,7 +121,7 @@
 				</p:dataTable>
 
 				<p:contextMenu id="contextMenu" for="userTable">
-					<p:menuitem value="Edytuj" process="userTable" update="userEdit"
+					<p:menuitem value="Rola" process="userTable" update="userEdit"
 						icon="pi pi-user-edit" oncomplete="PF('userEditDialog').show()" />
 					<p:menuitem value="Zablokuj" process="@this userTable"
 						action="#{dashUsersBB.blockUser}" update="@form" icon="pi pi-lock">
@@ -133,24 +154,32 @@
 			</p:confirmDialog>
 		</h:form>
 
-		<p:dialog header="Edytuj użytkownika" widgetVar="userEditDialog"
-			modal="true" showEffect="fade" hideEffect="fade" resizable="false"
+		<p:dialog header="Edytuj role" widgetVar="userEditDialog" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false"
 			draggable="false" closeOnEscape="true" responsive="true">
 			<p:outputPanel id="userEdit">
 				<p:column rendered="#{not empty dashUsersBB.selectedUser}">
 					<h:form id="userDialogForm">
 						<h:panelGrid columns="3" cellpadding="5">
-							<p:outputLabel for="brand" value="Marka" />
-							<p:inputText id="brand" value="#{dashCarsBB.selectedBrand.name}"
-								required="true" requiredMessage="Marka nie może być pusta" />
-							<p:message for="brand" />
-
-							<h:outputText
-								value="Liczba ofert tego użytkownika: #{dashUsersBB.userCountOffers()}" />
+							<p:outputLabel for="role" value="Rola" />
+							<p:selectOneMenu id="role"
+								value="#{dashUsersBB.selectedUser.userRole.idUserRole}"
+								required="true" requiredMessage="Rola nie może być pusta">
+								<f:selectItem itemLabel="Wybierz rolę" itemValue="#{null}"
+									noSelectionOption="true" />
+								<f:selectItems value="#{dashUsersBB.roles}" var="r"
+									itemLabel="#{r.roleName}" itemValue="#{r.idUserRole}" />
+							</p:selectOneMenu>
+							<p:message for="role" />
 						</h:panelGrid>
 
 						<p:commandButton value="Aktualizuj"
-							action="#{dashUsersBB.editUser()}" update="@form" />
+							action="#{dashUsersBB.editUser()}"
+							update="@form userForm:userTable">
+							<p:confirm header="Potwierdzenie"
+								message="Zmienić rolę podanego użytkownika?"
+								icon="pi pi-exclamation-triangle" />
+						</p:commandButton>
 						<p:commandButton value="Anuluj" type="button"
 							onclick="PF('userEditDialog').hide()" />
 
