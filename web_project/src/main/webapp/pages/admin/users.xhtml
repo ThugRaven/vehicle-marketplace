@@ -26,12 +26,12 @@
 			<p:panel header="Lista użytkowników" toggleable="true"
 				toggleableHeader="true" toggleSpeed="300">
 				<p:dataTable id="userTable" var="u" widgetVar="userTable"
-					value="#{dashUsersBB.lazyUsers}" paginator="true" rows="1"
+					value="#{dashUsersBB.lazyUsers}" paginator="true" rows="5"
 					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="1,10,15" selectionMode="single"
+					rowsPerPageTemplate="5,10,15" selectionMode="single"
 					selection="#{dashUsersBB.selectedUser}" rowKey="#{u.idUser}"
 					allowUnsorting="true" sortMode="multiple"
-					rowStyleClass="#{u.archived ? 'archived' : null}">>
+					rowStyleClass="#{u.archived ? 'archived' : null}">
 
 					<f:facet name="header">
 						<p:outputLabel for="id" value="ID" />

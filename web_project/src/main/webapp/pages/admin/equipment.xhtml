@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/page-template.xhtml">
+	<ui:define name="pageContent">
+		<p:panel>
+			<h:outputText
+				value="Zalogowany: #{remoteClient.details.login} #{remoteClient.details.name}" />
+			<h:form>
+				<p:commandLink action="/pages/public/register?faces-redirect=true"
+					value="Zarejestruj się" />
+				<p:commandLink action="/pages/public/login?faces-redirect=true"
+					value="Zaloguj się" />
+				<p:commandButton action="#{loginBB.doLogout()}" value="Wyloguj się" />
+				<p:commandLink action="/pages/admin/dashboard?faces-redirect=true"
+					value="Admin dashboard" />
+			</h:form>
+		</p:panel>
+
+		<h:form id="addEquipmentForm">
+			<p:panel header="Dodaj wyposażenie">
+				<h:panelGrid columns="3" cellpadding="5">
+					<p:outputLabel for="name" value="Wyposażenie" />
+					<p:inputText id="name" value="#{dashEquipmentBB.equipment.name}"
+						required="true" requiredMessage="Nazwa nie może być pusta" />
+					<p:message for="name" />
+
+					<p:commandButton value="Dodaj"
+						action="#{dashEquipmentBB.addEquipment()}"
+						update="@form equipmentForm" />
+				</h:panelGrid>
+
+				<p:message for="addEquipmentForm" id="msg" />
+			</p:panel>
+		</h:form>
+
+		<h:form id="equipmentForm">
+			<p:panel header="Lista wyposażenia" toggleable="true"
+				toggleableHeader="true" toggleSpeed="300">
+				<p:dataTable id="equipmentTable" var="e" widgetVar="equipmentTable"
+					value="#{dashEquipmentBB.lazyEquipment}" paginator="true" rows="5"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" selectionMode="single"
+					selection="#{dashEquipmentBB.selectedEquipment}"
+					rowKey="#{e.idEquipment}" allowUnsorting="true" sortMode="multiple">
+
+					<f:facet name="header">
+						<p:outputLabel for="id" value="ID" />
+						<p:inputNumber id="id"
+							value="#{dashEquipmentBB.equipmentFilter.idEquipment}" />
+						<p:message for="id" />
+
+						<p:outputLabel for="name" value="Wyposażenie" />
+						<p:inputText id="name"
+							value="#{dashEquipmentBB.equipmentFilter.name}" />
+						<p:message for="name" />
+
+						<p:commandButton value="Szukaj"
+							onclick="PF('equipmentTable').filter()" />
+					</f:facet>
+
+					<p:column field="idEquipment" headerText="ID" filterable="false" />
+
+					<p:column field="name" headerText="Wyposażenie" filterable="false" />
+
+					<f:facet name="footer">
+						<span>W sumie jest
+							#{dashEquipmentBB.lazyEquipment.rowCount} rekordów.</span>
+					</f:facet>
+
+				</p:dataTable>
+
+				<p:contextMenu id="contextMenu" for="equipmentTable">
+					<p:menuitem value="Edytuj" process="equipmentTable"
+						update="equipmentEdit" icon="pi pi-pencil"
+						oncomplete="PF('equipmentEditDialog').show()" />
+					<p:menuitem value="Usuń" process="@this equipmentTable"
+						action="#{dashEquipmentBB.deleteEquipment}" update="@form"
+						icon="pi pi-times">
+						<p:confirm header="Potwierdzenie"
+							message="Usunąć wybrane wyposażenie?"
+							icon="pi pi-exclamation-triangle" />
+					</p:menuitem>
+					<p:menuitem value="Szczegóły" process="equipmentTable"
+						update="equipmentDetails" icon="pi pi-search"
+						oncomplete="PF('equipmentDetailsDialog').show()" />
+				</p:contextMenu>
+			</p:panel>
+
+			<p:growl id="growl" for="equipmentTable" showDetail="true"
+				skipDetailIfEqualsSummary="true" />
+
+			<p:confirmDialog global="true" showEffect="fade" responsive="true"
+				width="350">
+				<p:commandButton value="Nie" type="button"
+					styleClass="ui-confirmdialog-no ui-button-flat" />
+				<p:commandButton value="Tak" type="button"
+					styleClass="ui-confirmdialog-yes" />
+			</p:confirmDialog>
+		</h:form>
+
+		<p:dialog header="Edytuj wyposażenie" widgetVar="equipmentEditDialog"
+			modal="true" showEffect="fade" hideEffect="fade" resizable="false"
+			draggable="false" closeOnEscape="true" responsive="true">
+			<p:outputPanel id="equipmentEdit">
+				<p:column rendered="#{not empty dashEquipmentBB.selectedEquipment}">
+					<h:form id="equipmentDialogForm">
+						<h:panelGrid columns="3" cellpadding="5">
+							<p:outputLabel for="name" value="Wyposażenie" />
+							<p:inputText id="name"
+								value="#{dashEquipmentBB.selectedEquipment.name}"
+								required="true" requiredMessage="Nazwa nie może być pusta" />
+							<p:message for="name" />
+						</h:panelGrid>
+
+						<p:commandButton value="Aktualizuj"
+							action="#{dashEquipmentBB.editEquipment()}"
+							update="@form equipmentForm:equipmentTable">
+							<p:confirm header="Potwierdzenie"
+								message="Zmienić podane wyposażenie?"
+								icon="pi pi-exclamation-triangle" />
+						</p:commandButton>
+						<p:commandButton value="Anuluj" type="button"
+							onclick="PF('equipmentEditDialog').hide()" />
+
+						<p:messages for="equipmentDialogForm" id="msgs" />
+					</h:form>
+				</p:column>
+			</p:outputPanel>
+		</p:dialog>
+
+		<p:dialog header="Szczegóły wyposażenia"
+			widgetVar="equipmentDetailsDialog" modal="true" showEffect="fade"
+			hideEffect="fade" resizable="false" draggable="false"
+			closeOnEscape="true" responsive="true">
+			<p:outputPanel id="equipmentDetails">
+				<p:column rendered="#{not empty dashEquipmentBB.selectedEquipment}">
+					<h:panelGrid columns="2" cellpadding="5">
+						ID<h:outputText
+							value="#{dashEquipmentBB.selectedEquipment.idEquipment}" />
+						Nazwa<h:outputText
+							value="#{dashEquipmentBB.selectedEquipment.name}" />
+
+						Liczba ofert z podanym wyposażeniem<h:outputText
+							value="#{dashEquipmentBB.equipmentCountOffers()}" />
+					</h:panelGrid>
+				</p:column>
+			</p:outputPanel>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
+</html>

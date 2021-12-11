@@ -11,24 +11,20 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.context.Flash;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.PrimeFaces;
-import org.primefaces.event.SelectEvent;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
 
 import vehiclemarketplace.classes.SelectFilter;
 import vehiclemarketplace.classes.SelectType;
-import vehiclemarketplace.dao.BrandDAO;
 import vehiclemarketplace.dao.OfferDAO;
 import vehiclemarketplace.dao.UserDAO;
 import vehiclemarketplace.dao.UserRoleDAO;
-import vehiclemarketplace.entities.Brand;
 import vehiclemarketplace.entities.User;
 import vehiclemarketplace.entities.UserRole;
 
@@ -68,9 +64,6 @@ public class DashboardUsersBB implements Serializable {
 
 	@Inject
 	ExternalContext extcontext;
-
-	@Inject
-	Flash flash;
 
 	@EJB
 	UserDAO userDAO;

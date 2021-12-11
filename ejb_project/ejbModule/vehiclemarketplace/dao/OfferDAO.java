@@ -106,4 +106,19 @@ public class OfferDAO {
 
 		return list;
 	}
+
+	public List<Offer> getOffersByEquipmentID(int id) {
+		List<Offer> list = null;
+
+		Query query = em.createQuery("SELECT o FROM Offer o JOIN o.equipments e WHERE e.idEquipment = :id");
+		query.setParameter("id", id);
+
+		try {
+			list = query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
 }
