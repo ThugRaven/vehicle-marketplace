@@ -67,8 +67,6 @@ CREATE TABLE IF NOT EXISTS `vehicle_marketplace_db`.`brand` (
   PRIMARY KEY (`id_brand`))
 ENGINE = InnoDB;
 
-CREATE UNIQUE INDEX `name_UNIQUE` ON `vehicle_marketplace_db`.`brand` (`name` ASC);
-
 
 -- -----------------------------------------------------
 -- Table `vehicle_marketplace_db`.`model`
@@ -160,6 +158,8 @@ CREATE TABLE IF NOT EXISTS `vehicle_marketplace_db`.`offer` (
   `is_registered` TINYINT(1) NOT NULL,
   `is_right_hand_drive` TINYINT(1) NOT NULL,
   `archived` TINYINT(1) NOT NULL DEFAULT 0,
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_offer`),
   CONSTRAINT `fk_offer_generation1`
     FOREIGN KEY (`id_generation`)
