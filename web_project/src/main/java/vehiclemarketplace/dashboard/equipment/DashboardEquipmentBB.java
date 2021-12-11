@@ -144,6 +144,22 @@ public class DashboardEquipmentBB implements Serializable {
 	}
 
 	public String editEquipment() {
+		Equipment equipmentOld = equipmentDAO.find(selectedEquipment.getIdEquipment());
+		Equipment equipmentDB = equipmentDAO.getEquipmentByName(equipmentOld.getName());
+		System.out.println("edit: " + selectedEquipment.getName() + " old: " + equipmentOld.getName() + " db: "
+				+ equipmentDB.getName() + " " + selectedEquipment.getIdEquipment());
+		if (equipmentDB != null && selectedEquipment.getName().equals(equipmentDB.getName())) {
+			System.out.println("Same, no changes");
+			return PAGE_STAY_AT_THE_SAME;
+		}
+
+		Equipment equipmentCheck = equipmentDAO.getEquipmentByName(selectedEquipment.getName());
+		if (equipmentCheck != null) {
+			ctx.addMessage("equipmentDialogForm",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Wyposażenie o podanej nazwie już istnieje!", null));
+			selectedEquipment = equipmentOld;
+			return PAGE_STAY_AT_THE_SAME;
+		}
 		equipmentDAO.merge(selectedEquipment);
 		PrimeFaces.current().executeScript("PF('equipmentEditDialog').hide()");
 		return PAGE_STAY_AT_THE_SAME;
