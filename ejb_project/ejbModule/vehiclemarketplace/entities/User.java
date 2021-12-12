@@ -16,13 +16,6 @@ import java.util.List;
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Override
-	public String toString() {
-		return "User [idUser=" + idUser + ", archived=" + archived + ", createTime=" + createTime + ", email=" + email
-				+ ", login=" + login + ", name=" + name + ", password=" + password + ", phoneNumber=" + phoneNumber
-				+ ", surname=" + surname + ", offers=" + offers + ", userRole=" + userRole + "]";
-	}
-	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_user", unique=true, nullable=false)

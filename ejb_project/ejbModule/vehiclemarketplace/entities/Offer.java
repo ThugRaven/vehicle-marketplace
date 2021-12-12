@@ -3,6 +3,7 @@ package vehiclemarketplace.entities;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -22,16 +23,19 @@ public class Offer implements Serializable {
 	private int idOffer;
 
 	@Column(nullable=false)
-	private boolean archived;
+	private Boolean archived;
 
 	@Column(nullable=false, length=255)
 	private String city;
 
-	@Column(length=20)
+	@Column(nullable=false, length=20)
 	private String color;
 
 	@Column(name="color_type", length=20)
 	private String colorType;
+
+	@Column(name="create_time", nullable=false)
+	private Timestamp createTime;
 
 	@Column(columnDefinition = "TEXT")
 	private String description;
@@ -52,23 +56,23 @@ public class Offer implements Serializable {
 	@Column(nullable=false, length=20)
 	private String fuel;
 
-	@Column(name="is_accident_free", nullable=false)
-	private boolean isAccidentFree;
+	@Column(name="is_accident_free")
+	private Boolean isAccidentFree;
 
-	@Column(name="is_damaged", nullable=false)
-	private boolean isDamaged;
+	@Column(name="is_damaged")
+	private Boolean isDamaged;
 
 	@Column(name="is_first_owner")
-	private boolean isFirstOwner;
+	private Boolean isFirstOwner;
 
 	@Column(name="is_new", nullable=false)
-	private boolean isNew;
+	private Boolean isNew;
 
-	@Column(name="is_registered", nullable=false)
-	private boolean isRegistered;
+	@Column(name="is_registered")
+	private Boolean isRegistered;
 
-	@Column(name="is_right_hand_drive", nullable=false)
-	private boolean isRightHandDrive;
+	@Column(name="is_right_hand_drive")
+	private Boolean isRightHandDrive;
 
 	@Column(name="license_plate", length=15)
 	private String licensePlate;
@@ -89,10 +93,16 @@ public class Offer implements Serializable {
 	@Column(nullable=false)
 	private byte seats;
 
+	@Column(length=70)
+	private String title;
+
 	@Column(nullable=false, length=15)
 	private String transmission;
 
-	@Column(length=17)
+	@Column(name="update_time", nullable=false)
+	private Timestamp updateTime;
+
+	@Column(nullable=false, length=17)
 	private String vin;
 
 	//bi-directional many-to-one association to BodyStyle
@@ -144,11 +154,11 @@ public class Offer implements Serializable {
 		this.idOffer = idOffer;
 	}
 
-	public boolean getArchived() {
+	public Boolean getArchived() {
 		return this.archived;
 	}
 
-	public void setArchived(boolean archived) {
+	public void setArchived(Boolean archived) {
 		this.archived = archived;
 	}
 
@@ -174,6 +184,14 @@ public class Offer implements Serializable {
 
 	public void setColorType(String colorType) {
 		this.colorType = colorType;
+	}
+
+	public Timestamp getCreateTime() {
+		return this.createTime;
+	}
+
+	public void setCreateTime(Timestamp createTime) {
+		this.createTime = createTime;
 	}
 
 	public String getDescription() {
@@ -224,51 +242,51 @@ public class Offer implements Serializable {
 		this.fuel = fuel;
 	}
 
-	public boolean getIsAccidentFree() {
+	public Boolean getIsAccidentFree() {
 		return this.isAccidentFree;
 	}
 
-	public void setIsAccidentFree(boolean isAccidentFree) {
+	public void setIsAccidentFree(Boolean isAccidentFree) {
 		this.isAccidentFree = isAccidentFree;
 	}
 
-	public boolean getIsDamaged() {
+	public Boolean getIsDamaged() {
 		return this.isDamaged;
 	}
 
-	public void setIsDamaged(boolean isDamaged) {
+	public void setIsDamaged(Boolean isDamaged) {
 		this.isDamaged = isDamaged;
 	}
 
-	public boolean getIsFirstOwner() {
+	public Boolean getIsFirstOwner() {
 		return this.isFirstOwner;
 	}
 
-	public void setIsFirstOwner(boolean isFirstOwner) {
+	public void setIsFirstOwner(Boolean isFirstOwner) {
 		this.isFirstOwner = isFirstOwner;
 	}
 
-	public boolean getIsNew() {
+	public Boolean getIsNew() {
 		return this.isNew;
 	}
 
-	public void setIsNew(boolean isNew) {
+	public void setIsNew(Boolean isNew) {
 		this.isNew = isNew;
 	}
 
-	public boolean getIsRegistered() {
+	public Boolean getIsRegistered() {
 		return this.isRegistered;
 	}
 
-	public void setIsRegistered(boolean isRegistered) {
+	public void setIsRegistered(Boolean isRegistered) {
 		this.isRegistered = isRegistered;
 	}
 
-	public boolean getIsRightHandDrive() {
+	public Boolean getIsRightHandDrive() {
 		return this.isRightHandDrive;
 	}
 
-	public void setIsRightHandDrive(boolean isRightHandDrive) {
+	public void setIsRightHandDrive(Boolean isRightHandDrive) {
 		this.isRightHandDrive = isRightHandDrive;
 	}
 
@@ -320,12 +338,28 @@ public class Offer implements Serializable {
 		this.seats = seats;
 	}
 
+	public String getTitle() {
+		return this.title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	public String getTransmission() {
 		return this.transmission;
 	}
 
 	public void setTransmission(String transmission) {
 		this.transmission = transmission;
+	}
+
+	public Timestamp getUpdateTime() {
+		return this.updateTime;
+	}
+
+	public void setUpdateTime(Timestamp updateTime) {
+		this.updateTime = updateTime;
 	}
 
 	public String getVin() {

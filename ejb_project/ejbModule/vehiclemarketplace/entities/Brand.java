@@ -15,16 +15,11 @@ import java.util.List;
 public class Brand implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Override
-	public String toString() {
-		return "Brand [idBrand=" + idBrand + ", name=" + name + ", models=" + models + ", offers=" + offers + "]";
-	}
-
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_brand", unique=true, nullable=false)
 	private int idBrand;
-	
+
 	@Column(nullable=false, length=45)
 	private String name;
 
