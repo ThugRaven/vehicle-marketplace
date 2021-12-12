@@ -25,6 +25,7 @@
 				/pages : admin;
 				/pages/public : PUBLIC;
 				/pages/admin : admin;
+				/pages/offer : admin, user;
 			</param-value>
 		</init-param>
 		<init-param>

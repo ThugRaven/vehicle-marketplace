@@ -24,12 +24,7 @@ import vehiclemarketplace.classes.SelectFilter;
 import vehiclemarketplace.classes.SelectType;
 import vehiclemarketplace.dao.EquipmentDAO;
 import vehiclemarketplace.dao.OfferDAO;
-import vehiclemarketplace.dao.UserDAO;
-import vehiclemarketplace.dao.UserRoleDAO;
-import vehiclemarketplace.entities.Brand;
 import vehiclemarketplace.entities.Equipment;
-import vehiclemarketplace.entities.User;
-import vehiclemarketplace.entities.UserRole;
 
 @Named("dashEquipmentBB")
 @ViewScoped

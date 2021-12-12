@@ -86,9 +86,8 @@ public class Offer implements Serializable {
 	@Column(nullable=false)
 	private int price;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="production_year", nullable=false)
-	private Date productionYear;
+	private Integer productionYear;
 
 	@Column(nullable=false)
 	private byte seats;
@@ -322,11 +321,11 @@ public class Offer implements Serializable {
 		this.price = price;
 	}
 
-	public Date getProductionYear() {
+	public Integer getProductionYear() {
 		return this.productionYear;
 	}
 
-	public void setProductionYear(Date productionYear) {
+	public void setProductionYear(Integer productionYear) {
 		this.productionYear = productionYear;
 	}
 

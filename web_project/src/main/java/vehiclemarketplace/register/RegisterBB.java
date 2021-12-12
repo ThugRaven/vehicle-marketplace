@@ -72,6 +72,7 @@ public class RegisterBB {
 			return PAGE_STAY_AT_THE_SAME;
 		}
 
+		user.setArchived(false);
 		userDAO.create(user);
 		return PAGE_MAIN;
 	}
