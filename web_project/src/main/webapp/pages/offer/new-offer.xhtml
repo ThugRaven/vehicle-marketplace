@@ -33,31 +33,35 @@
 							noSelectionOption="true" />
 						<f:selectItems value="#{offerNewBB.brands}" var="b"
 							itemLabel="#{b.name}" itemValue="#{b.idBrand}" />
-						<p:ajax listener="#{offerNewBB.changeBrand}" update="model" />
+						<p:ajax listener="#{offerNewBB.changeBrand}"
+							update="@this @next model" />
 					</p:selectOneMenu>
 					<p:message for="brand" />
 
 					<p:outputLabel for="model" value="Model:" />
 					<p:selectOneMenu id="model"
 						value="#{offerNewBB.offer.model.idModel}" required="true"
-						requiredMessage="Model nie może być pusty">
+						requiredMessage="Model nie może być pusty"
+						disabled="#{offerNewBB.offer.brand.idBrand == 0}">
 						<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
 							noSelectionOption="true" />
 						<f:selectItems value="#{offerNewBB.models}" var="m"
 							itemLabel="#{m.name}" itemValue="#{m.idModel}" />
-						<p:ajax listener="#{offerNewBB.changeModel}" update="generation" />
+						<p:ajax listener="#{offerNewBB.changeModel}"
+							update="@this @next generation" />
 					</p:selectOneMenu>
 					<p:message for="model" />
 
 					<p:outputLabel for="generation" value="Generacja:" />
 					<p:selectOneMenu id="generation"
 						value="#{offerNewBB.offer.generation.idGeneration}"
-						required="true" requiredMessage="Generacja nie może być pusta">
+						required="true" requiredMessage="Generacja nie może być pusta"
+						disabled="#{offerNewBB.offer.model.idModel == 0}">
 						<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
 							noSelectionOption="true" />
 						<f:selectItems value="#{offerNewBB.generations}" var="g"
 							itemLabel="#{g.name}" itemValue="#{g.idGeneration}" />
-						<p:ajax update="fuel" />
+						<p:ajax update="@this @next" />
 					</p:selectOneMenu>
 					<p:message for="generation" />
 
@@ -68,36 +72,37 @@
 							noSelectionOption="true" />
 						<f:selectItems value="#{offerNewBB.fuels}" var="f"
 							itemLabel="#{f}" itemValue="#{f}" />
-						<p:ajax update="power" />
+						<p:ajax update="@this @next" />
 					</p:selectOneMenu>
 					<p:message for="fuel" />
 
 					<p:outputLabel for="power" value="Moc:" />
 					<p:inputNumber id="power" value="#{offerNewBB.offer.power}"
 						required="true" requiredMessage="Moc nie może być pusta">
-						<p:ajax update="displacement" />
+						<p:ajax update="@this @next" />
 					</p:inputNumber>
 					<p:message for="power" />
 
 					<p:outputLabel for="displacement" value="Pojemność skokowa:" />
 					<p:inputNumber id="displacement"
 						value="#{offerNewBB.offer.displacement}" required="true"
-						requiredMessage="Pojemność skokowa nie może być pusta">
-						<p:ajax update="" />
+						requiredMessage="Pojemność skokowa nie może być pusta"
+						decimalPlaces="0" minValue="0">
+						<p:ajax update="@this @next" />
 					</p:inputNumber>
 					<p:message for="displacement" />
 
 					<p:outputLabel for="doors" value="Liczba drzwi:" />
 					<p:inputNumber id="doors" value="#{offerNewBB.offer.doors}"
 						required="true" requiredMessage="Liczba drzwi nie może być pusta">
-						<p:ajax update="seats" />
+						<p:ajax update="@this @next" />
 					</p:inputNumber>
 					<p:message for="doors" />
 
 					<p:outputLabel for="seats" value="Liczba miejsc:" />
 					<p:inputNumber id="seats" value="#{offerNewBB.offer.seats}"
 						required="true" requiredMessage="Liczba miejsc nie może być pusta">
-						<p:ajax update="transmission" />
+						<p:ajax update="@this @next" />
 					</p:inputNumber>
 					<p:message for="seats" />
 
@@ -109,7 +114,7 @@
 							noSelectionOption="true" />
 						<f:selectItems value="#{offerNewBB.transmissions}" var="t"
 							itemLabel="#{t}" itemValue="#{t}" />
-						<p:ajax update="productionYear" />
+						<p:ajax update="@this @next" />
 					</p:selectOneMenu>
 					<p:message for="transmission" />
 
@@ -121,7 +126,7 @@
 						converterMessage="Błąd konwersji roku">
 						<f:validateLength minimum="4" maximum="4" />
 						<p:keyFilter mask="num" />
-						<p:ajax update="bodyStyle" />
+						<p:ajax update="@this @next" />
 					</p:inputText>
 					<p:message for="productionYear" />
 
@@ -133,7 +138,7 @@
 							noSelectionOption="true" />
 						<f:selectItems value="#{offerNewBB.bodyStyles}" var="b"
 							itemLabel="#{b.name}" itemValue="#{b.idBodyStyle}" />
-						<p:ajax update="drive" />
+						<p:ajax update="@this @next" />
 					</p:selectOneMenu>
 					<p:message for="bodyStyle" />
 
@@ -143,32 +148,32 @@
 						<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
 							noSelectionOption="true" />
 						<f:selectItems value="#{offerNewBB.drives}" var="d" />
-						<p:ajax update="color" />
+						<p:ajax update="@this @next" />
 					</p:selectOneMenu>
 					<p:message for="drive" />
 
 					<p:outputLabel for="color" value="Kolor:" />
 					<p:inputText id="color" value="#{offerNewBB.offer.color}"
 						required="true" requiredMessage="Kolor nie może być pusty">
-						<p:ajax update="colorType" />
+						<p:ajax update="@this @next colorType" />
 					</p:inputText>
 					<p:message for="color" />
 
 					<p:outputLabel for="colorType" value="Typ koloru:" />
 					<p:selectOneMenu id="colorType"
-						value="#{offerNewBB.offer.colorType}">
+						value="#{offerNewBB.offer.colorType}"
+						disabled="#{offerNewBB.offer.color == null}">
 						<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
 							noSelectionOption="true" />
 						<f:selectItems value="#{offerNewBB.colorTypes}" var="c"
 							itemLabel="#{c}" itemValue="#{c}" />
-						<p:ajax update="mileage" />
 					</p:selectOneMenu>
 					<p:message for="colorType" />
 
 					<p:outputLabel for="mileage" value="Przebieg:" />
 					<p:inputNumber id="mileage" value="#{offerNewBB.offer.mileage}"
 						required="true" requiredMessage="Przebieg nie może być pusty">
-						<p:ajax update="vin" />
+						<p:ajax update="@this @next" />
 					</p:inputNumber>
 					<p:message for="mileage" />
 
@@ -176,7 +181,7 @@
 					<p:inputText id="vin" value="#{offerNewBB.offer.vin}"
 						required="true" requiredMessage="VIN nie może być pusty"
 						validatorMessage="Numer VIN składa się z 17 znaków (cyfr oraz dużych liter)">
-						<p:ajax update="licensePlate" />
+						<p:ajax update="@this @next" />
 						<f:validateRegex pattern="^[A-HJ-NPR-Z0-9]{17}$" />
 					</p:inputText>
 					<p:message for="vin" />
@@ -184,23 +189,21 @@
 					<p:outputLabel for="licensePlate"
 						value="Numer rejestracyjny pojazdu:" />
 					<p:inputText id="licensePlate"
-						value="#{offerNewBB.offer.licensePlate}">
-						<p:ajax update="firstRegistration" />
-					</p:inputText>
+						value="#{offerNewBB.offer.licensePlate}" />
 					<p:message for="licensePlate" />
 
 					<p:outputLabel for="firstRegistration"
 						value="Data pierwszej rejestracji" />
 					<p:datePicker id="firstRegistration"
-						value="#{offerNewBB.offer.firstRegistration}">
-						<p:ajax update="title" />
-					</p:datePicker>
+						value="#{offerNewBB.offer.firstRegistration}"
+						monthNavigator="true" yearNavigator="true" yearRange="1950 : 2022" />
 					<p:message for="firstRegistration" />
 
 					<p:outputLabel for="title" value="Tytuł ogłoszenia:" />
 					<p:inputText id="title" value="#{offerNewBB.offer.title}"
 						validatorMessage="Tytuł nie może być dłuższy niż 70 znaków">
 						<f:validateLength maximum="70" />
+						<p:ajax update="@this @next" />
 					</p:inputText>
 					<p:message for="title" />
 				</h:panelGrid>
@@ -252,7 +255,10 @@
 				<h:panelGrid columns="3" cellpadding="5">
 					<p:outputLabel for="price" value="Podaj cenę" />
 					<p:inputNumber id="price" value="#{offerNewBB.offer.price}"
-						required="true" requiredMessage="Cena nie może być pusta" />
+						required="true" requiredMessage="Cena nie może być pusta"
+						symbol=" PLN" symbolPosition="s">
+						<p:ajax update="@this @next" />
+					</p:inputNumber>
 					<p:message for="price" />
 				</h:panelGrid>
 			</p:panel>
@@ -271,7 +277,9 @@
 
 					<p:outputLabel for="city" value="Wpisz miasto:" />
 					<p:inputText id="city" value="#{offerNewBB.offer.city}"
-						required="true" requiredMessage="Miasto nie może być puste" />
+						required="true" requiredMessage="Miasto nie może być puste">
+						<p:ajax update="@this @next" />
+					</p:inputText>
 					<p:message for="city" />
 				</h:panelGrid>
 			</p:panel>

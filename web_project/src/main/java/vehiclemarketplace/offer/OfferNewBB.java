@@ -11,6 +11,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.faces.simplesecurity.RemoteClient;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -47,7 +48,7 @@ public class OfferNewBB implements Serializable {
 	private List<String> fuels = new ArrayList<>();
 	private List<String> transmissions = new ArrayList<>();
 	private List<BodyStyle> bodyStyles;
-	private Map<String, String> drives = new HashMap<>();
+	private List<SelectItem> drives = new ArrayList<>();
 	private List<String> colorTypes = new ArrayList<>();
 	private List<Equipment> equipments;
 
@@ -83,7 +84,7 @@ public class OfferNewBB implements Serializable {
 		return bodyStyles;
 	}
 
-	public Map<String, String> getDrives() {
+	public List<SelectItem> getDrives() {
 		return drives;
 	}
 
@@ -142,9 +143,9 @@ public class OfferNewBB implements Serializable {
 
 		bodyStyles = getBodyStyleList();
 
-		drives.put("Na przednie koła", "FWD");
-		drives.put("Na tylne koła", "RWD");
-		drives.put("Na wszystkie koła 4x4", "AWD");
+		drives.add(new SelectItem("FWD", "Na przednie koła"));
+		drives.add(new SelectItem("RWD", "Na tylne koła"));
+		drives.add(new SelectItem("AWD", "Na wszystkie koła 4x4"));
 
 		colorTypes.add("Matowy");
 		colorTypes.add("Metalik");
