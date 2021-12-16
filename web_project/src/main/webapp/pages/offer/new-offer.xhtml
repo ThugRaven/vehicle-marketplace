@@ -211,14 +211,18 @@
 
 			<p:panel header="Dodaj zdjęcie">
 				<h:panelGrid columns="3" cellpadding="5">
-					<!-- ZDJECIE TUTAJ -->
+					<p:fileUpload value="#{offerNewBB.image}" mode="simple"
+						skinSimple="true" auto="true" process="@this"
+						listener="#{offerNewBB.handleFileUpload}" />
 				</h:panelGrid>
 			</p:panel>
 
 			<p:panel header="Wyposażenie">
-				<h:panelGrid columns="3" cellpadding="5">
-
-				</h:panelGrid>
+				<p:selectManyCheckbox value="#{offerNewBB.offer.equipments}"
+					layout="grid" columns="3" styleClass="grid-checkbox">
+					<f:selectItems value="#{offerNewBB.equipments}" var="e"
+						itemLabel="#{e.name}" itemValue="#{e}" />
+				</p:selectManyCheckbox>
 			</p:panel>
 
 			<p:panel header="Opis:">

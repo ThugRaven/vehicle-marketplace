@@ -1,5 +1,6 @@
 package vehiclemarketplace.offer;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +18,9 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
+
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.file.UploadedFile;
 
 import vehiclemarketplace.dao.BodyStyleDAO;
 import vehiclemarketplace.dao.BrandDAO;
@@ -51,6 +55,8 @@ public class OfferNewBB implements Serializable {
 	private List<SelectItem> drives = new ArrayList<>();
 	private List<String> colorTypes = new ArrayList<>();
 	private List<Equipment> equipments;
+
+	private UploadedFile image;
 
 	public Offer getOffer() {
 		return offer;
@@ -94,6 +100,14 @@ public class OfferNewBB implements Serializable {
 
 	public List<Equipment> getEquipments() {
 		return equipments;
+	}
+
+	public UploadedFile getImage() {
+		return image;
+	}
+
+	public void setImage(UploadedFile image) {
+		this.image = image;
 	}
 
 	@Inject
@@ -152,6 +166,7 @@ public class OfferNewBB implements Serializable {
 		colorTypes.add("Perłowy");
 
 		equipments = getEquipmentList();
+		System.out.println(equipments.toString());
 
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 		RemoteClient<User> client = (RemoteClient<User>) RemoteClient.load(session);
@@ -188,7 +203,25 @@ public class OfferNewBB implements Serializable {
 		return equipmentDAO.getFullList();
 	}
 
+	public void handleFileUpload(FileUploadEvent event) {
+		System.out.println(event.getFile().getFileName());
+		image = event.getFile();
+
+		if (image != null) {
+			System.out.println("String: " + image.toString());
+			System.out.println("Get content: " + image.getContent());
+			offer.setImage(image.getContent());
+			try {
+				System.out.println("Get input stream: " + image.getInputStream());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public String addOffer() {
+		System.out.println(offer.getImage());
+		System.out.println(offer);
 		offer.setArchived(false);
 		offerDAO.create(offer);
 		return PAGE_STAY_AT_THE_SAME;

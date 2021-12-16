@@ -56,6 +56,9 @@ public class Offer implements Serializable {
 	@Column(nullable=false, length=20)
 	private String fuel;
 
+	@Lob
+	private byte[] image;
+
 	@Column(name="is_accident_free")
 	private Boolean isAccidentFree;
 
@@ -239,6 +242,14 @@ public class Offer implements Serializable {
 
 	public void setFuel(String fuel) {
 		this.fuel = fuel;
+	}
+
+	public byte[] getImage() {
+		return this.image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
 	}
 
 	public Boolean getIsAccidentFree() {

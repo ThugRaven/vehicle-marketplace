@@ -83,21 +83,21 @@
 					<f:facet name="header">
 						<h:outputText value="Brand" />
 					</f:facet>
-					<h:outputText value="#{o.brand}" />
+					<h:outputText value="#{o.brand.name}" />
 				</p:column>
 
 				<p:column>
 					<f:facet name="header">
 						<h:outputText value="Model" />
 					</f:facet>
-					<h:outputText value="#{o.model}" />
+					<h:outputText value="#{o.model.name}" />
 				</p:column>
 
 				<p:column>
 					<f:facet name="header">
 						<h:outputText value="Generation" />
 					</f:facet>
-					<h:outputText value="#{o.generation}" />
+					<h:outputText value="#{o.generation.name}" />
 				</p:column>
 
 			</p:dataTable>
