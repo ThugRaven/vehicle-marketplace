@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/page-template.xhtml">
+	<ui:define name="pageContent">
+		<p:panel>
+			<h:outputText
+				value="Zalogowany: #{remoteClient.details.login} #{remoteClient.details.name}" />
+			<h:form>
+				<p:commandLink action="/pages/public/register?faces-redirect=true"
+					value="Zarejestruj się" />
+				<p:commandLink action="/pages/public/login?faces-redirect=true"
+					value="Zaloguj się" />
+				<p:commandButton action="#{loginBB.doLogout()}" value="Wyloguj się" />
+				<p:commandLink action="/pages/admin/dashboard?faces-redirect=true"
+					value="Admin dashboard" />
+			</h:form>
+		</p:panel>
+
+		<h:form id="offerForm">
+			<p:panel header="Lista ofert" toggleable="true"
+				toggleableHeader="true" toggleSpeed="300">
+				<p:dataTable id="offerTable" var="o" widgetVar="offerTable"
+					value="#{dashOffersBB.lazyOffers}" paginator="true" rows="5"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" selectionMode="single"
+					selection="#{dashOffersBB.selectedOffer}" rowKey="#{o.idOffer}"
+					allowUnsorting="true" sortMode="multiple"
+					rowStyleClass="#{o.archived ? 'archived' : null}">
+
+					<p:column field="idOffer" filterable="false">
+						<f:facet name="header">
+							<h:outputText value="ID" />
+						</f:facet>
+					</p:column>
+
+					<p:column field="brand.name" headerText="Marka" filterable="false" />
+
+					<p:column field="title" headerText="Tytuł" filterable="false"
+						visible="false" />
+
+					<p:column field="price" headerText="Cena" filterable="false" />
+
+					<p:column field="image" headerText="Zdjęcie" filterable="false">
+						<p:graphicImage rendered="#{not empty o.image}" value="#{o.image}"
+							stream="false" />
+					</p:column>
+
+					<p:column field="archived" headerText="Status" filterable="false">
+						<h:outputText
+							value="#{u.archived == true ? 'Zablokowany' : 'Aktywny'}" />
+					</p:column>
+
+					<f:facet name="footer">
+						<span>W sumie jest #{dashOffersBB.lazyOffers.rowCount}
+							ofert.</span>
+					</f:facet>
+
+				</p:dataTable>
+			</p:panel>
+
+			<p:growl id="growl" for="offerTable" showDetail="true"
+				skipDetailIfEqualsSummary="true" />
+
+			<p:confirmDialog global="true" showEffect="fade" responsive="true"
+				width="350">
+				<p:commandButton value="Nie" type="button"
+					styleClass="ui-confirmdialog-no ui-button-flat" />
+				<p:commandButton value="Tak" type="button"
+					styleClass="ui-confirmdialog-yes" />
+			</p:confirmDialog>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

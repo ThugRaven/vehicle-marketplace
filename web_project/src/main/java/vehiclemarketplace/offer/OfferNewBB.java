@@ -217,6 +217,10 @@ public class OfferNewBB implements Serializable {
 				e.printStackTrace();
 			}
 		}
+
+		// https://stackoverflow.com/questions/36496336/uploadfile-getinputstream-throws-java-nio-file-nosuchfileexception
+		// Maybe save images on the server
+		// Use Cropper for images
 	}
 
 	public String addOffer() {

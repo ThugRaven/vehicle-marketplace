@@ -1,14 +1,17 @@
 package vehiclemarketplace.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import vehiclemarketplace.entities.Model;
+import vehiclemarketplace.classes.SelectFilter;
+import vehiclemarketplace.classes.SelectUtilities;
 import vehiclemarketplace.entities.Offer;
+import vehiclemarketplace.entities.User;
 
 @Stateless
 public class OfferDAO {
@@ -45,6 +48,44 @@ public class OfferDAO {
 		}
 
 		return list;
+	}
+
+	public List<Offer> getLazyList(Map<String, String> sortBy, List<SelectFilter> filter, int offset, int pageSize) {
+		List<Offer> list = null;
+
+		SelectUtilities selectUtilities = new SelectUtilities("o");
+		String order = selectUtilities.getOrder(sortBy);
+		String where = selectUtilities.getWhere(filter);
+
+		Query query = em.createQuery("SELECT o FROM Offer o" + where + order).setFirstResult(offset)
+				.setMaxResults(pageSize);
+		query = selectUtilities.getParameters(query, filter);
+
+		try {
+			list = query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
+
+	public long countLazyList(List<SelectFilter> filter) {
+		long count = 0;
+
+		SelectUtilities selectUtilities = new SelectUtilities("o");
+		String where = selectUtilities.getWhere(filter);
+
+		Query query = em.createQuery("SELECT COUNT(o) FROM Offer o" + where);
+		query = selectUtilities.getParameters(query, filter);
+
+		try {
+			count = (long) query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return count;
 	}
 
 	public List<Offer> getOffersByBrandID(int id) {
