@@ -134,6 +134,7 @@ CREATE TABLE IF NOT EXISTS `vehicle_marketplace_db`.`offer` (
   `id_generation` INT NOT NULL,
   `id_user` INT NOT NULL,
   `title` VARCHAR(70) NULL,
+  `image` BLOB NULL,
   `price` INT NOT NULL,
   `city` VARCHAR(255) NOT NULL,
   `production_year` YEAR NOT NULL,
