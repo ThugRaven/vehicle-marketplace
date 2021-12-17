@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `vehicle_marketplace_db`.`offer` (
   `id_generation` INT NOT NULL,
   `id_user` INT NOT NULL,
   `title` VARCHAR(70) NULL,
-  `image` BLOB NULL,
+  `image` VARCHAR(100) NULL,
   `price` INT NOT NULL,
   `city` VARCHAR(255) NOT NULL,
   `production_year` YEAR NOT NULL,
@@ -299,6 +299,24 @@ INSERT INTO `vehicle_marketplace_db`.`generation` (`id_generation`, `name`, `pro
 INSERT INTO `vehicle_marketplace_db`.`generation` (`id_generation`, `name`, `production_start`, `production_end`, `id_model`) VALUES (8, 'II', 2005, 2012, 2);
 INSERT INTO `vehicle_marketplace_db`.`generation` (`id_generation`, `name`, `production_start`, `production_end`, `id_model`) VALUES (9, 'III', 2012, 2020, 2);
 INSERT INTO `vehicle_marketplace_db`.`generation` (`id_generation`, `name`, `production_start`, `production_end`, `id_model`) VALUES (10, 'IV', 2020, NULL, 2);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `vehicle_marketplace_db`.`body_style`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `vehicle_marketplace_db`;
+INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (DEFAULT, 'Auta małe');
+INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (DEFAULT, 'Auta miejskie');
+INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (DEFAULT, 'Coupe');
+INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (DEFAULT, 'Kabriolet');
+INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (DEFAULT, 'Kombi');
+INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (DEFAULT, 'Kompakt');
+INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (DEFAULT, 'Minivan');
+INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (DEFAULT, 'Sedan');
+INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (DEFAULT, 'SUV');
 
 COMMIT;
 

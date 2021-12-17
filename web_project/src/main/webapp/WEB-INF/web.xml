@@ -30,6 +30,7 @@
 				/pages/public : PUBLIC;
 				/pages/admin : admin;
 				/pages/offer : admin, user;
+				/offer_images : PUBLIC;
 			</param-value>
 		</init-param>
 		<init-param>

@@ -1,15 +1,19 @@
 package vehiclemarketplace.offer;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -21,6 +25,7 @@ import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.file.UploadedFile;
+import org.primefaces.shaded.commons.io.FilenameUtils;
 
 import vehiclemarketplace.dao.BodyStyleDAO;
 import vehiclemarketplace.dao.BrandDAO;
@@ -57,6 +62,7 @@ public class OfferNewBB implements Serializable {
 	private List<Equipment> equipments;
 
 	private UploadedFile image;
+	private Path filePath;
 
 	public Offer getOffer() {
 		return offer;
@@ -110,6 +116,14 @@ public class OfferNewBB implements Serializable {
 		this.image = image;
 	}
 
+	public Path getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(Path filePath) {
+		this.filePath = filePath;
+	}
+
 	@Inject
 	ExternalContext extcontext;
 
@@ -136,6 +150,9 @@ public class OfferNewBB implements Serializable {
 
 	@Inject
 	FacesContext ctx;
+
+	@Inject
+	UserFileManager userFileManager;
 
 	@PostConstruct
 	public void init() {
@@ -207,24 +224,29 @@ public class OfferNewBB implements Serializable {
 		System.out.println(event.getFile().getFileName());
 		image = event.getFile();
 
-		if (image != null) {
-			System.out.println("String: " + image.toString());
-			System.out.println("Get content: " + image.getContent());
-			offer.setImage(image.getContent());
-			try {
-				System.out.println("Get input stream: " + image.getInputStream());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		Path folder = Paths.get(System.getProperty("jboss.server.data.dir"), "offer_images");
+
+		try (InputStream input = image.getInputStream()) {
+			String fileName = FilenameUtils.getBaseName(image.getFileName());
+			String extension = FilenameUtils.getExtension(image.getFileName());
+
+			filePath = Files.createTempFile(folder, fileName + "-", "." + extension);
+
+			Files.copy(input, filePath, StandardCopyOption.REPLACE_EXISTING);
+
+			userFileManager.destroy();
+			userFileManager.addUnconfirmedUploadedFile(filePath.toFile());
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
-		// https://stackoverflow.com/questions/36496336/uploadfile-getinputstream-throws-java-nio-file-nosuchfileexception
-		// Maybe save images on the server
 		// Use Cropper for images
 	}
 
 	public String addOffer() {
-		System.out.println(offer.getImage());
+		userFileManager.confirmUploadedFile(filePath.toFile());
+		userFileManager.destroy();
+		offer.setImage(filePath.getFileName().toString());
 		System.out.println(offer);
 		offer.setArchived(false);
 		offerDAO.create(offer);

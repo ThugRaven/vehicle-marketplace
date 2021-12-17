@@ -47,13 +47,13 @@
 					<p:column field="price" headerText="Cena" filterable="false" />
 
 					<p:column field="image" headerText="Zdjęcie" filterable="false">
-						<p:graphicImage rendered="#{not empty o.image}" value="#{o.image}"
-							stream="false" />
+						<p:graphicImage rendered="#{not empty o.image}"
+							value="/offer_images/#{o.image}" styleClass="image"/>
 					</p:column>
 
 					<p:column field="archived" headerText="Status" filterable="false">
 						<h:outputText
-							value="#{u.archived == true ? 'Zablokowany' : 'Aktywny'}" />
+							value="#{o.archived == true ? 'Zablokowany' : 'Aktywny'}" />
 					</p:column>
 
 					<f:facet name="footer">
@@ -62,6 +62,13 @@
 					</f:facet>
 
 				</p:dataTable>
+
+				<p:contextMenu id="contextMenu" for="offerTable">
+					<p:menuitem value="Test" process="@this offerTable"
+						action="#{dashOffersBB.info}" icon="pi pi-search" />
+					<p:menuitem value="Szczegóły" process="offerTable" update=""
+						icon="pi pi-search" oncomplete="PF('userDetailsDialog').show()" />
+				</p:contextMenu>
 			</p:panel>
 
 			<p:growl id="growl" for="offerTable" showDetail="true"

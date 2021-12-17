@@ -111,4 +111,8 @@ public class DashboardOffersBB implements Serializable {
 			}
 		};
 	}
+
+	public void info() {
+		System.out.println(selectedOffer.getImage());
+	}
 }

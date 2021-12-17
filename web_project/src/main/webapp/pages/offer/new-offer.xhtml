@@ -211,9 +211,13 @@
 
 			<p:panel header="Dodaj zdjęcie">
 				<h:panelGrid columns="3" cellpadding="5">
-					<p:fileUpload value="#{offerNewBB.image}" mode="simple"
-						skinSimple="true" auto="true" process="@this"
-						listener="#{offerNewBB.handleFileUpload}" />
+					<p:fileUpload mode="advanced" skinSimple="true"
+						listener="#{offerNewBB.handleFileUpload}" fileLimit="1"
+						sizeLimit="5000000" allowTypes="/(\.|\/)(jpe?g|png)$/"
+						accept="image/*" update="@this @next" />
+					<p:graphicImage
+						value="/offer_images/#{offerNewBB.filePath.getFileName()}"
+						styleClass="image" />
 				</h:panelGrid>
 			</p:panel>
 
