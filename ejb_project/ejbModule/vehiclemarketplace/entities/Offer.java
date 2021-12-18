@@ -101,7 +101,7 @@ public class Offer implements Serializable {
 	@Column(nullable=false, length=15)
 	private String transmission;
 
-	@Column(name="update_time", nullable=false)
+	@Column(name="update_time", updatable = false, nullable=false)
 	private Timestamp updateTime;
 
 	@Column(nullable=false, length=17)

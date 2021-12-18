@@ -8,12 +8,14 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.component.organigram.Organigram;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
@@ -112,7 +114,21 @@ public class DashboardOffersBB implements Serializable {
 		};
 	}
 
-	public void info() {
-		System.out.println(selectedOffer.getImage());
+	public String archiveOffer() {
+		System.out.println("archive: " + selectedOffer.getIdOffer());
+
+		if (selectedOffer.getArchived()) {
+			ctx.addMessage("offerTable",
+					new FacesMessage(FacesMessage.SEVERITY_WARN, "Ogłoszenie jest już zakończone!", null));
+			return PAGE_STAY_AT_THE_SAME;
+		}
+
+		Offer offer = selectedOffer;
+		offer.setArchived(true);
+		offerDAO.merge(offer);
+		selectedOffer = null;
+		ctx.addMessage("offerTable",
+				new FacesMessage(FacesMessage.SEVERITY_INFO, "Pomyślnie zakończono ogłoszenie!", null));
+		return PAGE_STAY_AT_THE_SAME;
 	}
 }
