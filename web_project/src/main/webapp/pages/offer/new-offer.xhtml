@@ -130,10 +130,10 @@
 					</p:inputText>
 					<p:message for="productionYear" />
 
-					<p:outputLabel for="bodyStyle" value="Segment:" />
+					<p:outputLabel for="bodyStyle" value="Typ nadwozia:" />
 					<p:selectOneMenu id="bodyStyle"
 						value="#{offerNewBB.offer.bodyStyle.idBodyStyle}" required="true"
-						requiredMessage="Segment nie może być pusty">
+						requiredMessage="Typ nadwozia nie może być pusty">
 						<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
 							noSelectionOption="true" />
 						<f:selectItems value="#{offerNewBB.bodyStyles}" var="b"

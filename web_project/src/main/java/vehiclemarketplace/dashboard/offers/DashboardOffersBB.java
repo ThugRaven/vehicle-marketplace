@@ -21,6 +21,7 @@ import org.primefaces.model.SortMeta;
 
 import vehiclemarketplace.classes.SelectFilter;
 import vehiclemarketplace.classes.SelectType;
+import vehiclemarketplace.dao.BodyStyleDAO;
 import vehiclemarketplace.dao.BrandDAO;
 import vehiclemarketplace.dao.GenerationDAO;
 import vehiclemarketplace.dao.ModelDAO;
@@ -32,6 +33,7 @@ import vehiclemarketplace.entities.Brand;
 import vehiclemarketplace.entities.Generation;
 import vehiclemarketplace.entities.Model;
 import vehiclemarketplace.entities.Offer;
+import vehiclemarketplace.entities.User;
 
 @Named("dashOffersBB")
 @ViewScoped
@@ -49,6 +51,7 @@ public class DashboardOffersBB implements Serializable {
 	private List<Brand> brands;
 	private List<Model> models;
 	private List<Generation> generations;
+	private List<BodyStyle> bodyStyles;
 
 	public Offer getSelectedOffer() {
 		return selectedOffer;
@@ -78,6 +81,10 @@ public class DashboardOffersBB implements Serializable {
 		return generations;
 	}
 
+	public List<BodyStyle> getBodyStyles() {
+		return bodyStyles;
+	}
+
 	@Inject
 	ExternalContext extcontext;
 
@@ -99,17 +106,22 @@ public class DashboardOffersBB implements Serializable {
 	@EJB
 	GenerationDAO generationDAO;
 
+	@EJB
+	BodyStyleDAO bodyStyleDAO;
+
 	@Inject
 	FacesContext ctx;
 
 	@PostConstruct
 	public void init() {
+		offerFilter.setUser(new User());
 		offerFilter.setBrand(new Brand());
 		offerFilter.setModel(new Model());
 		offerFilter.setGeneration(new Generation());
 		offerFilter.setBodyStyle(new BodyStyle());
 
 		brands = getBrandList();
+		bodyStyles = getBodyStyleList();
 
 		lazyOffers = new LazyDataModel<Offer>() {
 			private static final long serialVersionUID = 1L;
@@ -145,17 +157,31 @@ public class DashboardOffersBB implements Serializable {
 				if (offerFilter.getIdOffer() != 0) {
 					filter.add(new SelectFilter("idOffer", offerFilter.getIdOffer(), SelectType.NORMAL));
 				}
+				if (offerFilter.getUser() != null && offerFilter.getUser().getIdUser() != 0) {
+					filter.add(new SelectFilter("user.idUser", "idUser", offerFilter.getUser().getIdUser(),
+							SelectType.NORMAL));
+				}
 				if (offerFilter.getCity() != null && !offerFilter.getCity().isEmpty()) {
 					filter.add(new SelectFilter("city", offerFilter.getCity(), SelectType.LIKE_FULL));
 				}
+				if (offerFilter.getVin() != null && !offerFilter.getVin().isEmpty()) {
+					filter.add(new SelectFilter("vin", offerFilter.getVin(), SelectType.LIKE_FULL));
+				}
 				if (offerFilter.getBrand() != null && offerFilter.getBrand().getIdBrand() != 0) {
-					filter.add(new SelectFilter("brand.idBrand", "idBrand", offerFilter.getBrand().getIdBrand(), SelectType.NORMAL));
+					filter.add(new SelectFilter("brand.idBrand", "idBrand", offerFilter.getBrand().getIdBrand(),
+							SelectType.NORMAL));
 				}
 				if (offerFilter.getModel() != null && offerFilter.getModel().getIdModel() != 0) {
-					filter.add(new SelectFilter("model.idModel", "idModel", offerFilter.getModel().getIdModel(), SelectType.NORMAL));
+					filter.add(new SelectFilter("model.idModel", "idModel", offerFilter.getModel().getIdModel(),
+							SelectType.NORMAL));
 				}
 				if (offerFilter.getGeneration() != null && offerFilter.getGeneration().getIdGeneration() != 0) {
-					filter.add(new SelectFilter("generation.idGeneration", "idGeneration", offerFilter.getGeneration().getIdGeneration(), SelectType.NORMAL));
+					filter.add(new SelectFilter("generation.idGeneration", "idGeneration",
+							offerFilter.getGeneration().getIdGeneration(), SelectType.NORMAL));
+				}
+				if (offerFilter.getBodyStyle() != null && offerFilter.getBodyStyle().getIdBodyStyle() != 0) {
+					filter.add(new SelectFilter("bodyStyle.idBodyStyle", "idBodyStyle",
+							offerFilter.getBodyStyle().getIdBodyStyle(), SelectType.NORMAL));
 				}
 				if (offerFilter.getArchived() != null) {
 					filter.add(new SelectFilter("archived", offerFilter.getArchived(), SelectType.NORMAL));
@@ -208,5 +234,18 @@ public class DashboardOffersBB implements Serializable {
 		} else {
 			generations = null;
 		}
+	}
+
+	public List<BodyStyle> getBodyStyleList() {
+		return bodyStyleDAO.getFullList();
+	}
+
+	public void clearFilters() {
+		offerFilter = new Offer();
+		offerFilter.setUser(new User());
+		offerFilter.setBrand(new Brand());
+		offerFilter.setModel(new Model());
+		offerFilter.setGeneration(new Generation());
+		offerFilter.setBodyStyle(new BodyStyle());
 	}
 }

@@ -38,9 +38,18 @@
 						<p:inputNumber id="id" value="#{dashOffersBB.offerFilter.idOffer}" />
 						<p:message for="id" />
 
+						<p:outputLabel for="idUser" value="ID Użytkownika" />
+						<p:inputNumber id="idUser"
+							value="#{dashOffersBB.offerFilter.user.idUser}" />
+						<p:message for="idUser" />
+
 						<p:outputLabel for="city" value="Miasto" />
 						<p:inputText id="city" value="#{dashOffersBB.offerFilter.city}" />
 						<p:message for="city" />
+
+						<p:outputLabel for="vin" value="VIN" />
+						<p:inputText id="vin" value="#{dashOffersBB.offerFilter.vin}" />
+						<p:message for="vin" />
 
 						<p:outputLabel for="brand" value="Marka" />
 						<p:selectOneMenu id="brand"
@@ -49,7 +58,8 @@
 								noSelectionOption="true" />
 							<f:selectItems value="#{dashOffersBB.brands}" var="b"
 								itemLabel="#{b.name}" itemValue="#{b.idBrand}" />
-							<p:ajax listener="#{dashOffersBB.changeBrand}" update="model generation" />
+							<p:ajax listener="#{dashOffersBB.changeBrand}"
+								update="model generation" />
 						</p:selectOneMenu>
 						<p:message for="brand" />
 
@@ -60,7 +70,8 @@
 								noSelectionOption="true" />
 							<f:selectItems value="#{dashOffersBB.models}" var="m"
 								itemLabel="#{m.name}" itemValue="#{m.idModel}" />
-							<p:ajax listener="#{dashOffersBB.changeModel}" update="generation" />
+							<p:ajax listener="#{dashOffersBB.changeModel}"
+								update="generation" />
 						</p:selectOneMenu>
 						<p:message for="model" />
 
@@ -73,6 +84,16 @@
 								itemLabel="#{g.name}" itemValue="#{g.idGeneration}" />
 						</p:selectOneMenu>
 						<p:message for="generation" />
+
+						<p:outputLabel for="bodyStyle" value="Typ nadwozia" />
+						<p:selectOneMenu id="bodyStyle"
+							value="#{dashOffersBB.offerFilter.bodyStyle.idBodyStyle}">
+							<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
+								noSelectionOption="true" />
+							<f:selectItems value="#{dashOffersBB.bodyStyles}" var="b"
+								itemLabel="#{b.name}" itemValue="#{b.idBodyStyle}" />
+						</p:selectOneMenu>
+						<p:message for="bodyStyle" />
 
 						<p:outputLabel for="archived" value="Status oferty" />
 						<p:selectOneMenu id="archived"
@@ -87,34 +108,85 @@
 						<p:commandButton value="Szukaj"
 							onclick="PF('offerTable').filter()" />
 
+						<p:commandButton value="Wyczyść"
+							action="#{dashOffersBB.clearFilters()}" update="offerTable" />
+
 						<div>
-							<p:commandButton id="toggler" type="button" value="Columns"
+							<p:commandButton id="toggler" type="button" value="Kolumny"
 								icon="pi pi-align-justify" />
 							<p:columnToggler datasource="offerTable" trigger="toggler" />
 						</div>
 					</f:facet>
 
-					<p:column field="idOffer" filterable="false">
-						<f:facet name="header">
-							<h:outputText value="ID" />
-						</f:facet>
-					</p:column>
-
-					<p:column field="brand.name" headerText="Marka" filterable="false" />
-
-					<p:column field="title" headerText="Tytuł" filterable="false"
-						visible="false" />
-
-					<p:column field="price" headerText="Cena" filterable="false" />
+					<p:column field="idOffer" headerText="ID" filterable="false" />
 
 					<p:column field="image" headerText="Zdjęcie" filterable="false">
 						<p:graphicImage rendered="#{not empty o.image}"
 							value="/offer_images/#{o.image}" styleClass="image" />
 					</p:column>
 
+					<p:column field="brand.name" headerText="Marka" filterable="false" />
+
+					<p:column field="model.name" headerText="Model" filterable="false"
+						visible="false" />
+
+					<p:column field="generation.name" headerText="Generacja"
+						filterable="false" visible="false" />
+
+					<p:column field="user.idUser" headerText="ID Użytkownik"
+						filterable="false" />
+
+					<p:column field="title" headerText="Tytuł" filterable="false"
+						visible="false" />
+
+					<p:column field="price" headerText="Cena" filterable="false" />
+
+					<p:column field="city" headerText="Miasto" filterable="false"
+						visible="false" />
+
+					<p:column field="mileage" headerText="Przebieg" filterable="false"
+						visible="false" />
+
+					<p:column field="fuel" headerText="Paliwo" filterable="false"
+						visible="false" />
+
+					<p:column field="transmission" headerText="Skrzynia"
+						filterable="false" visible="false" />
+
+					<p:column field="drive" headerText="Napęd" filterable="false"
+						visible="false" />
+
+					<p:column field="bodyStyle.name" headerText="Nadwozie"
+						filterable="false" visible="false" />
+
+					<p:column field="color" headerText="Kolor" filterable="false"
+						visible="false" />
+
+					<p:column field="licensePlate" headerText="Tablica rejestracyjna"
+						filterable="false" visible="false" />
+
+					<p:column field="vin" headerText="VIN" filterable="false"
+						visible="false" />
+
 					<p:column field="archived" headerText="Status" filterable="false">
 						<h:outputText
 							value="#{o.archived == true ? 'Zakończona' : 'Aktywna'}" />
+					</p:column>
+
+					<p:column field="createTime" headerText="Data utworzenia"
+						filterable="false">
+						<h:outputText value="#{o.createTime}">
+							<f:convertDateTime timeStyle="short" dateStyle="short"
+								type="both" />
+						</h:outputText>
+					</p:column>
+
+					<p:column field="updateTime" headerText="Data aktualizacji"
+						filterable="false">
+						<h:outputText value="#{o.updateTime}">
+							<f:convertDateTime timeStyle="short" dateStyle="short"
+								type="both" />
+						</h:outputText>
 					</p:column>
 
 					<f:facet name="footer">
@@ -132,7 +204,7 @@
 							message="Zakończyć podane ogłoszenie?"
 							icon="pi pi-exclamation-triangle" />
 					</p:menuitem>
-					<p:menuitem value="Szczegóły" process="offerTable" update=""
+					<p:menuitem value="Wyświetl" process="offerTable" update=""
 						icon="pi pi-search" oncomplete="PF('offerDetailsDialog').show()" />
 				</p:contextMenu>
 			</p:panel>
