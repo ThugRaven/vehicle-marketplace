@@ -199,6 +199,7 @@ public class OfferNewBB implements Serializable {
 			models = modelDAO.getModelsByBrandID(offer.getBrand().getIdBrand());
 		} else {
 			models = null;
+			generations = null;
 		}
 	}
 

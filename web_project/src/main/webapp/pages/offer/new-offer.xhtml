@@ -34,7 +34,7 @@
 						<f:selectItems value="#{offerNewBB.brands}" var="b"
 							itemLabel="#{b.name}" itemValue="#{b.idBrand}" />
 						<p:ajax listener="#{offerNewBB.changeBrand}"
-							update="@this @next model" />
+							update="@this @next model generation" />
 					</p:selectOneMenu>
 					<p:message for="brand" />
 

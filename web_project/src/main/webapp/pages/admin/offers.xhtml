@@ -33,6 +33,67 @@
 					allowUnsorting="true" sortMode="multiple"
 					rowStyleClass="#{o.archived ? 'archived' : null}">
 
+					<f:facet name="header">
+						<p:outputLabel for="id" value="ID" />
+						<p:inputNumber id="id" value="#{dashOffersBB.offerFilter.idOffer}" />
+						<p:message for="id" />
+
+						<p:outputLabel for="city" value="Miasto" />
+						<p:inputText id="city" value="#{dashOffersBB.offerFilter.city}" />
+						<p:message for="city" />
+
+						<p:outputLabel for="brand" value="Marka" />
+						<p:selectOneMenu id="brand"
+							value="#{dashOffersBB.offerFilter.brand.idBrand}">
+							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
+								noSelectionOption="true" />
+							<f:selectItems value="#{dashOffersBB.brands}" var="b"
+								itemLabel="#{b.name}" itemValue="#{b.idBrand}" />
+							<p:ajax listener="#{dashOffersBB.changeBrand}" update="model generation" />
+						</p:selectOneMenu>
+						<p:message for="brand" />
+
+						<p:outputLabel for="model" value="Model" />
+						<p:selectOneMenu id="model"
+							value="#{dashOffersBB.offerFilter.model.idModel}">
+							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
+								noSelectionOption="true" />
+							<f:selectItems value="#{dashOffersBB.models}" var="m"
+								itemLabel="#{m.name}" itemValue="#{m.idModel}" />
+							<p:ajax listener="#{dashOffersBB.changeModel}" update="generation" />
+						</p:selectOneMenu>
+						<p:message for="model" />
+
+						<p:outputLabel for="generation" value="Generacja" />
+						<p:selectOneMenu id="generation"
+							value="#{dashOffersBB.offerFilter.generation.idGeneration}">
+							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
+								noSelectionOption="true" />
+							<f:selectItems value="#{dashOffersBB.generations}" var="g"
+								itemLabel="#{g.name}" itemValue="#{g.idGeneration}" />
+						</p:selectOneMenu>
+						<p:message for="generation" />
+
+						<p:outputLabel for="archived" value="Status oferty" />
+						<p:selectOneMenu id="archived"
+							value="#{dashOffersBB.offerFilter.archived}">
+							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
+								noSelectionOption="true" />
+							<f:selectItem itemLabel="Aktywna" itemValue="#{false}" />
+							<f:selectItem itemLabel="Zakończona" itemValue="#{true}" />
+						</p:selectOneMenu>
+						<p:message for="archived" />
+
+						<p:commandButton value="Szukaj"
+							onclick="PF('offerTable').filter()" />
+
+						<div>
+							<p:commandButton id="toggler" type="button" value="Columns"
+								icon="pi pi-align-justify" />
+							<p:columnToggler datasource="offerTable" trigger="toggler" />
+						</div>
+					</f:facet>
+
 					<p:column field="idOffer" filterable="false">
 						<f:facet name="header">
 							<h:outputText value="ID" />

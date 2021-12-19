@@ -15,15 +15,22 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.primefaces.component.organigram.Organigram;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
 
 import vehiclemarketplace.classes.SelectFilter;
+import vehiclemarketplace.classes.SelectType;
+import vehiclemarketplace.dao.BrandDAO;
+import vehiclemarketplace.dao.GenerationDAO;
+import vehiclemarketplace.dao.ModelDAO;
 import vehiclemarketplace.dao.OfferDAO;
 import vehiclemarketplace.dao.UserDAO;
 import vehiclemarketplace.dao.UserRoleDAO;
+import vehiclemarketplace.entities.BodyStyle;
+import vehiclemarketplace.entities.Brand;
+import vehiclemarketplace.entities.Generation;
+import vehiclemarketplace.entities.Model;
 import vehiclemarketplace.entities.Offer;
 
 @Named("dashOffersBB")
@@ -38,6 +45,10 @@ public class DashboardOffersBB implements Serializable {
 	private Offer selectedOffer;
 
 	private Offer offerFilter = new Offer();
+
+	private List<Brand> brands;
+	private List<Model> models;
+	private List<Generation> generations;
 
 	public Offer getSelectedOffer() {
 		return selectedOffer;
@@ -55,6 +66,18 @@ public class DashboardOffersBB implements Serializable {
 		return offerFilter;
 	}
 
+	public List<Brand> getBrands() {
+		return brands;
+	}
+
+	public List<Model> getModels() {
+		return models;
+	}
+
+	public List<Generation> getGenerations() {
+		return generations;
+	}
+
 	@Inject
 	ExternalContext extcontext;
 
@@ -62,16 +85,32 @@ public class DashboardOffersBB implements Serializable {
 	UserDAO userDAO;
 
 	@EJB
+	UserRoleDAO userRoleDAO;
+
+	@EJB
 	OfferDAO offerDAO;
 
 	@EJB
-	UserRoleDAO userRoleDAO;
+	BrandDAO brandDAO;
+
+	@EJB
+	ModelDAO modelDAO;
+
+	@EJB
+	GenerationDAO generationDAO;
 
 	@Inject
 	FacesContext ctx;
 
 	@PostConstruct
 	public void init() {
+		offerFilter.setBrand(new Brand());
+		offerFilter.setModel(new Model());
+		offerFilter.setGeneration(new Generation());
+		offerFilter.setBodyStyle(new BodyStyle());
+
+		brands = getBrandList();
+
 		lazyOffers = new LazyDataModel<Offer>() {
 			private static final long serialVersionUID = 1L;
 
@@ -103,6 +142,24 @@ public class DashboardOffersBB implements Serializable {
 				}
 
 				List<SelectFilter> filter = new ArrayList<>();
+				if (offerFilter.getIdOffer() != 0) {
+					filter.add(new SelectFilter("idOffer", offerFilter.getIdOffer(), SelectType.NORMAL));
+				}
+				if (offerFilter.getCity() != null && !offerFilter.getCity().isEmpty()) {
+					filter.add(new SelectFilter("city", offerFilter.getCity(), SelectType.LIKE_FULL));
+				}
+				if (offerFilter.getBrand() != null && offerFilter.getBrand().getIdBrand() != 0) {
+					filter.add(new SelectFilter("brand.idBrand", "idBrand", offerFilter.getBrand().getIdBrand(), SelectType.NORMAL));
+				}
+				if (offerFilter.getModel() != null && offerFilter.getModel().getIdModel() != 0) {
+					filter.add(new SelectFilter("model.idModel", "idModel", offerFilter.getModel().getIdModel(), SelectType.NORMAL));
+				}
+				if (offerFilter.getGeneration() != null && offerFilter.getGeneration().getIdGeneration() != 0) {
+					filter.add(new SelectFilter("generation.idGeneration", "idGeneration", offerFilter.getGeneration().getIdGeneration(), SelectType.NORMAL));
+				}
+				if (offerFilter.getArchived() != null) {
+					filter.add(new SelectFilter("archived", offerFilter.getArchived(), SelectType.NORMAL));
+				}
 
 				offers = offerDAO.getLazyList(sortMap, filter, offset, pageSize);
 
@@ -130,5 +187,26 @@ public class DashboardOffersBB implements Serializable {
 		ctx.addMessage("offerTable",
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Pomyślnie zakończono ogłoszenie!", null));
 		return PAGE_STAY_AT_THE_SAME;
+	}
+
+	public List<Brand> getBrandList() {
+		return brandDAO.getFullList();
+	}
+
+	public void changeBrand() {
+		if (offerFilter.getBrand() != null && offerFilter.getBrand().getIdBrand() != 0) {
+			models = modelDAO.getModelsByBrandID(offerFilter.getBrand().getIdBrand());
+		} else {
+			models = null;
+			generations = null;
+		}
+	}
+
+	public void changeModel() {
+		if (offerFilter.getModel() != null && offerFilter.getModel().getIdModel() != 0) {
+			generations = generationDAO.getGenerationsByModelID(offerFilter.getModel().getIdModel());
+		} else {
+			generations = null;
+		}
 	}
 }
