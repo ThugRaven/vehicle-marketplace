@@ -6,10 +6,19 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
+<f:metadata>
+	<f:viewParam name="o" value="#{offerBB.offer.idOffer}"
+		converterMessage="Nieoczekiwany błąd" />
+	<f:event type="preRenderView" listener="#{offerBB.onLoad()}" />
+</f:metadata>
+
 <ui:composition template="/templates/page-template.xhtml">
+	<ui:define name="title">
+		#{offerBB.offer.isNew ? "Nowe" : "Używane"} #{offerBB.offer.brand.name} #{offerBB.offer.model.name} - #{offerBB.offer.price} PLN, #{offerBB.offer.mileage} km, #{offerBB.offer.productionYear} - Vehicle Marketplace
+	</ui:define>
+
 	<ui:define name="pageContent">
 		<p:panel>
-		Strona startowa - publiczna
 			<h:outputText
 				value="Zalogowany: #{remoteClient.details.login} #{remoteClient.details.name}" />
 			<h:form>
@@ -20,12 +29,16 @@
 				<p:commandButton action="#{loginBB.doLogout()}" value="Wyloguj się" />
 				<p:commandLink action="/pages/admin/dashboard?faces-redirect=true"
 					value="Admin dashboard" />
-				<p:commandLink action="/pages/offer/new-offer?faces-redirect=true"
-					value="Nowe ogłoszenie" />
-					<p:commandLink action="/pages/public/offers?faces-redirect=true"
-					value="Ogłoszenia" />
 			</h:form>
 		</p:panel>
+
+		<p:panel
+			header="#{offerBB.offer.brand.name} #{offerBB.offer.model.name} #{offerBB.offer.displacement / 1000}"
+			toggleable="true" toggleableHeader="true" toggleSpeed="300">
+			<p:graphicImage rendered="#{not empty offerBB.offer.image}"
+				value="/offer_images/#{offerBB.offer.image}" styleClass="image" />
+		</p:panel>
+
 	</ui:define>
 </ui:composition>
 </html>

@@ -42,3 +42,10 @@ body .ui-panel .ui-panel-content {
 	width: 100%;
 	height: 100%;
 }
+
+.list__image {
+	height: 10em;
+	width: 15em;
+	object-fit: contain;
+	background-color: #AAAAAA;
+}

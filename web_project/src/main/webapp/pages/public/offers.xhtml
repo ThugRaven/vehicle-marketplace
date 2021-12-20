@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/page-template.xhtml">
+	<ui:define name="pageContent">
+		<p:panel>
+			<h:outputText
+				value="Zalogowany: #{remoteClient.details.login} #{remoteClient.details.name}" />
+			<h:form>
+				<p:commandLink action="/pages/public/register?faces-redirect=true"
+					value="Zarejestruj się" />
+				<p:commandLink action="/pages/public/login?faces-redirect=true"
+					value="Zaloguj się" />
+				<p:commandButton action="#{loginBB.doLogout()}" value="Wyloguj się" />
+				<p:commandLink action="/pages/admin/dashboard?faces-redirect=true"
+					value="Admin dashboard" />
+			</h:form>
+		</p:panel>
+
+		<h:form id="offerForm">
+			<p:panel header="Lista ogłoszeń" toggleable="true"
+				toggleableHeader="true" toggleSpeed="300">
+				<p:dataView id="offerTable" var="o" widgetVar="offerTable"
+					value="#{dashOffersBB.lazyOffers}" paginator="true"
+					paginatorPosition="bottom" rows="5"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" allowUnsorting="true"
+					sortMode="multiple" gridIcon="pi pi-th-large" listIcon="pi pi-bars">
+
+					<f:facet name="header">
+						<p:outputLabel for="id" value="ID" />
+						<p:inputNumber id="id" value="#{dashOffersBB.offerFilter.idOffer}" />
+						<p:message for="id" />
+
+						<p:outputLabel for="idUser" value="ID Użytkownika" />
+						<p:inputNumber id="idUser"
+							value="#{dashOffersBB.offerFilter.user.idUser}" />
+						<p:message for="idUser" />
+
+						<p:outputLabel for="city" value="Miasto" />
+						<p:inputText id="city" value="#{dashOffersBB.offerFilter.city}" />
+						<p:message for="city" />
+
+						<p:outputLabel for="vin" value="VIN" />
+						<p:inputText id="vin" value="#{dashOffersBB.offerFilter.vin}" />
+						<p:message for="vin" />
+
+						<p:outputLabel for="brand" value="Marka" />
+						<p:selectOneMenu id="brand"
+							value="#{dashOffersBB.offerFilter.brand.idBrand}">
+							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
+								noSelectionOption="true" />
+							<f:selectItems value="#{dashOffersBB.brands}" var="b"
+								itemLabel="#{b.name}" itemValue="#{b.idBrand}" />
+							<p:ajax listener="#{dashOffersBB.changeBrand}"
+								update="model generation" />
+						</p:selectOneMenu>
+						<p:message for="brand" />
+
+						<p:outputLabel for="model" value="Model" />
+						<p:selectOneMenu id="model"
+							value="#{dashOffersBB.offerFilter.model.idModel}">
+							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
+								noSelectionOption="true" />
+							<f:selectItems value="#{dashOffersBB.models}" var="m"
+								itemLabel="#{m.name}" itemValue="#{m.idModel}" />
+							<p:ajax listener="#{dashOffersBB.changeModel}"
+								update="generation" />
+						</p:selectOneMenu>
+						<p:message for="model" />
+
+						<p:outputLabel for="generation" value="Generacja" />
+						<p:selectOneMenu id="generation"
+							value="#{dashOffersBB.offerFilter.generation.idGeneration}">
+							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
+								noSelectionOption="true" />
+							<f:selectItems value="#{dashOffersBB.generations}" var="g"
+								itemLabel="#{g.name}" itemValue="#{g.idGeneration}" />
+						</p:selectOneMenu>
+						<p:message for="generation" />
+
+						<p:outputLabel for="bodyStyle" value="Typ nadwozia" />
+						<p:selectOneMenu id="bodyStyle"
+							value="#{dashOffersBB.offerFilter.bodyStyle.idBodyStyle}">
+							<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
+								noSelectionOption="true" />
+							<f:selectItems value="#{dashOffersBB.bodyStyles}" var="b"
+								itemLabel="#{b.name}" itemValue="#{b.idBodyStyle}" />
+						</p:selectOneMenu>
+						<p:message for="bodyStyle" />
+
+						<p:outputLabel for="archived" value="Status oferty" />
+						<p:selectOneMenu id="archived"
+							value="#{dashOffersBB.offerFilter.archived}">
+							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
+								noSelectionOption="true" />
+							<f:selectItem itemLabel="Aktywna" itemValue="#{false}" />
+							<f:selectItem itemLabel="Zakończona" itemValue="#{true}" />
+						</p:selectOneMenu>
+						<p:message for="archived" />
+
+						<p:commandButton value="Szukaj"
+							onclick="PF('offerTable').filter()" />
+
+						<p:commandButton value="Wyczyść"
+							action="#{dashOffersBB.clearFilters()}" update="offerTable" />
+					</f:facet>
+
+					<p:dataViewListItem>
+						<p:link outcome="/pages/public/offer?faces-redirect=true">
+							<f:param name="c"
+								value="#{o.brand.name} #{o.model.name} #{o.title}" />
+							<f:param name="o" value="#{o.idOffer}" />
+							<div>
+								<p:graphicImage rendered="#{not empty o.image}"
+									value="/offer_images/#{o.image}" styleClass="list__image" />
+								<div>
+									<span>#{o.brand.name} #{o.model.name} #{o.displacement /
+										1000}</span> <span>#{o.title}</span>
+									<ul>
+										<li>#{o.productionYear}</li>
+										<li>#{o.mileage} km</li>
+										<li>#{o.displacement} cm<sup>3</sup></li>
+										<li>#{o.fuel}</li>
+									</ul>
+									<i class="pi pi-map-marker">#{o.city}</i> <span>#{o.price}
+										PLN</span>
+								</div>
+							</div>
+						</p:link>
+					</p:dataViewListItem>
+
+					<f:facet name="footer">
+						<span>W sumie jest #{dashOffersBB.lazyOffers.rowCount}
+							ogłoszeń.</span>
+					</f:facet>
+
+				</p:dataView>
+
+				<p:contextMenu id="contextMenu" for="offerTable">
+					<p:menuitem value="Zakończ" process="@this offerTable"
+						action="#{dashOffersBB.archiveOffer}" update="@form"
+						icon="pi pi-lock">
+						<p:confirm header="Potwierdzenie"
+							message="Zakończyć podane ogłoszenie?"
+							icon="pi pi-exclamation-triangle" />
+					</p:menuitem>
+					<p:menuitem value="Wyświetl" process="offerTable" update=""
+						icon="pi pi-search" oncomplete="PF('offerDetailsDialog').show()" />
+				</p:contextMenu>
+			</p:panel>
+
+			<p:growl id="growl" for="offerTable" showDetail="true"
+				skipDetailIfEqualsSummary="true" />
+
+			<p:confirmDialog global="true" showEffect="fade" responsive="true"
+				width="350">
+				<p:commandButton value="Nie" type="button"
+					styleClass="ui-confirmdialog-no ui-button-flat" />
+				<p:commandButton value="Tak" type="button"
+					styleClass="ui-confirmdialog-yes" />
+			</p:confirmDialog>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>
