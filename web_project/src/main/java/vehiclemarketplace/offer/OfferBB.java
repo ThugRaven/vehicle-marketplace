@@ -28,7 +28,6 @@ public class OfferBB implements Serializable {
 	private static final String PAGE_STAY_AT_THE_SAME = null;
 
 	private Offer offer = new Offer();
-	private Offer loaded = null;
 
 	public Offer getOffer() {
 		return offer;
@@ -60,9 +59,10 @@ public class OfferBB implements Serializable {
 
 	@Inject
 	FacesContext ctx;
-	
+
 	public void onLoad() throws IOException {
 		if (!ctx.isPostback()) {
+			Offer loaded = null;
 			if (!ctx.isValidationFailed() && offer.getIdOffer() != 0) {
 				loaded = offerDAO.find(offer.getIdOffer());
 			}

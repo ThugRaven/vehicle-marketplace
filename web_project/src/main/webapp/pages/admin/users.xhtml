@@ -144,6 +144,8 @@
 					<p:menuitem value="Szczegóły" process="userTable"
 						update="userDetails" icon="pi pi-search"
 						oncomplete="PF('userDetailsDialog').show()" />
+					<p:menuitem value="Profil" process="@this userTable"
+						action="#{dashUsersBB.profile}" icon="pi pi-user" />
 				</p:contextMenu>
 			</p:panel>
 

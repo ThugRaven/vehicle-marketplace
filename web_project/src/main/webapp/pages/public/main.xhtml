@@ -12,17 +12,23 @@
 		Strona startowa - publiczna
 			<h:outputText
 				value="Zalogowany: #{remoteClient.details.login} #{remoteClient.details.name}" />
+			<p:link outcome="/pages/public/user?faces-redirect=true"
+				value="#{remoteClient.details.name}">
+				<f:param name="u" value="#{remoteClient.details.idUser}" />
+			</p:link>
 			<h:form>
-				<p:commandLink action="/pages/public/register?faces-redirect=true"
+				<p:link outcome="/pages/public/main?faces-redirect=true"
+					value="Strona główna" />
+				<p:link outcome="/pages/public/register?faces-redirect=true"
 					value="Zarejestruj się" />
-				<p:commandLink action="/pages/public/login?faces-redirect=true"
+				<p:link outcome="/pages/public/login?faces-redirect=true"
 					value="Zaloguj się" />
 				<p:commandButton action="#{loginBB.doLogout()}" value="Wyloguj się" />
-				<p:commandLink action="/pages/admin/dashboard?faces-redirect=true"
+				<p:link outcome="/pages/admin/dashboard?faces-redirect=true"
 					value="Admin dashboard" />
-				<p:commandLink action="/pages/offer/new-offer?faces-redirect=true"
+				<p:link outcome="/pages/offer/new-offer?faces-redirect=true"
 					value="Nowe ogłoszenie" />
-					<p:commandLink action="/pages/public/offers?faces-redirect=true"
+				<p:link outcome="/pages/public/offers?faces-redirect=true"
 					value="Ogłoszenia" />
 			</h:form>
 		</p:panel>

@@ -34,6 +34,7 @@ public class DashboardUsersBB implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private static final String PAGE_STAY_AT_THE_SAME = null;
+	private static final String PAGE_USER_PROFILE = "/pages/public/user?faces-redirect=true";
 
 	private LazyDataModel<User> lazyUsers;
 
@@ -187,6 +188,12 @@ public class DashboardUsersBB implements Serializable {
 		ctx.addMessage("userTable",
 				new FacesMessage(FacesMessage.SEVERITY_INFO, "Pomyślnie odblokowano użytkownika!", null));
 		return PAGE_STAY_AT_THE_SAME;
+	}
+
+	public String profile() {
+		String userProfile = PAGE_USER_PROFILE + "u=" + selectedUser.getIdUser();
+		System.out.println(userProfile);
+		return userProfile;
 	}
 
 	public int userCountOffers() {

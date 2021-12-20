@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:metadata>
+	<f:viewParam name="u" value="#{userProfileBB.user.idUser}"
+		converterMessage="Nieoczekiwany błąd" />
+	<f:event type="preRenderView" listener="#{userProfileBB.onLoad()}" />
+</f:metadata>
+
+<ui:composition template="/templates/page-template.xhtml">
+	<ui:define name="title">
+		#{userProfileBB.user.name} #{userProfileBB.user.surname} - Vehicle Marketplace
+	</ui:define>
+
+	<ui:define name="pageContent">
+		<p:panel>
+			<h:outputText
+				value="Zalogowany: #{remoteClient.details.login} #{remoteClient.details.name}" />
+			<h:form>
+				<p:commandLink action="/pages/public/register?faces-redirect=true"
+					value="Zarejestruj się" />
+				<p:commandLink action="/pages/public/login?faces-redirect=true"
+					value="Zaloguj się" />
+				<p:commandButton action="#{loginBB.doLogout()}" value="Wyloguj się" />
+				<p:commandLink action="/pages/admin/dashboard?faces-redirect=true"
+					value="Admin dashboard" />
+			</h:form>
+		</p:panel>
+
+		<p:panel header="Moje konto"
+			rendered="#{userProfileBB.user.idUser eq remoteClient.details.idUser}"
+			toggleable="true" toggleableHeader="true" toggleSpeed="300">
+			<h:panelGrid columns="2" cellpadding="5">
+
+				Login<h:outputText value="#{userProfileBB.user.login}" />
+				Imię<h:outputText value="#{userProfileBB.user.name}" />
+				Nazwisko<h:outputText value="#{userProfileBB.user.surname}" />
+				E-Mail<h:outputText value="#{userProfileBB.user.email}" />
+				Nr telefonu<h:outputText value="#{userProfileBB.user.phoneNumber}" />
+				Rola<h:outputText value="#{userProfileBB.user.userRole.roleName}" />
+				Data utworzenia konta<h:outputText
+					value="#{userProfileBB.user.createTime}">
+					<f:convertDateTime timeStyle="long" dateStyle="short" type="both" />
+				</h:outputText>
+
+						Liczba moich ofert<h:outputText
+					value="#{userProfileBB.userCountOffers()}" />
+			</h:panelGrid>
+		</p:panel>
+
+		<p:panel
+			header="Konto #{userProfileBB.user.name} #{userProfileBB.user.surname}"
+			rendered="#{userProfileBB.user.idUser ne remoteClient.details.idUser}"
+			toggleable="true" toggleableHeader="true" toggleSpeed="300">
+			<h:panelGrid columns="2" cellpadding="5">
+
+						Imię<h:outputText value="#{userProfileBB.user.name}" />
+						Nazwisko<h:outputText value="#{userProfileBB.user.surname}" />
+						E-Mail<h:outputText value="#{userProfileBB.user.email}" />
+						Nr telefonu<h:outputText value="#{userProfileBB.user.phoneNumber}" />
+						Rola<h:outputText value="#{userProfileBB.user.userRole.roleName}" />
+						Data utworzenia konta<h:outputText
+					value="#{userProfileBB.user.createTime}">
+					<f:convertDateTime timeStyle="long" dateStyle="short" type="both" />
+				</h:outputText>
+
+						Liczba ofert tego użytkownika<h:outputText
+					value="#{userProfileBB.userCountOffers()}" />
+			</h:panelGrid>
+		</p:panel>
+
+		<h:form id="offerForm">
+			<p:panel
+				header="#{userProfileBB.user.idUser eq remoteClient.details.idUser ? 'Lista Twoich ogłoszeń' : 'Lista ogłoszeń użytkownika'}"
+				toggleable="true" toggleableHeader="true" toggleSpeed="300">
+				<p:dataView id="offerTable" var="o" widgetVar="offerTable"
+					value="#{userProfileBB.lazyOffers}" paginator="true"
+					paginatorPosition="bottom" rows="5"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15" gridIcon="pi pi-th-large"
+					listIcon="pi pi-bars">
+
+					<p:dataViewListItem>
+						<p:link outcome="/pages/public/offer?faces-redirect=true">
+							<f:param name="c"
+								value="#{o.brand.name} #{o.model.name} #{o.title}" />
+							<f:param name="o" value="#{o.idOffer}" />
+							<div>
+								<p:graphicImage rendered="#{not empty o.image}"
+									value="/offer_images/#{o.image}" styleClass="list__image" />
+								<div>
+									<span>#{o.brand.name} #{o.model.name} #{o.displacement /
+										1000}</span> <span>#{o.title}</span>
+									<ul>
+										<li>#{o.productionYear}</li>
+										<li>#{o.mileage} km</li>
+										<li>#{o.displacement} cm<sup>3</sup></li>
+										<li>#{o.fuel}</li>
+									</ul>
+									<i class="pi pi-map-marker">#{o.city}</i> <span>#{o.price}
+										PLN</span>
+								</div>
+							</div>
+						</p:link>
+					</p:dataViewListItem>
+				</p:dataView>
+			</p:panel>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

@@ -12,18 +12,20 @@
 			<h:outputText
 				value="Zalogowany: #{remoteClient.details.login} #{remoteClient.details.name}" />
 			<h:form>
-				<p:commandLink action="/pages/public/register?faces-redirect=true"
+				<p:link outcome="/pages/public/main?faces-redirect=true"
+					value="Strona główna" />
+				<p:link outcome="/pages/public/register?faces-redirect=true"
 					value="Zarejestruj się" />
-				<p:commandLink action="/pages/public/login?faces-redirect=true"
+				<p:link outcome="/pages/public/login?faces-redirect=true"
 					value="Zaloguj się" />
 				<p:commandButton action="#{loginBB.doLogout()}" value="Wyloguj się" />
-				<p:commandLink action="/pages/admin/cars?faces-redirect=true"
+				<p:link outcome="/pages/admin/cars?faces-redirect=true"
 					value="Pojazdy" />
-				<p:commandLink action="/pages/admin/users?faces-redirect=true"
+				<p:link outcome="/pages/admin/users?faces-redirect=true"
 					value="Użytkownicy" />
-				<p:commandLink action="/pages/admin/equipment?faces-redirect=true"
+				<p:link outcome="/pages/admin/equipment?faces-redirect=true"
 					value="Wyposażenie" />
-				<p:commandLink action="/pages/admin/offers?faces-redirect=true"
+				<p:link outcome="/pages/admin/offers?faces-redirect=true"
 					value="Oferty" />
 			</h:form>
 		</p:panel>
