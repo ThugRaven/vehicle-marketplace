@@ -41,6 +41,7 @@ public class DashboardOffersBB implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private static final String PAGE_STAY_AT_THE_SAME = null;
+	private static final String PAGE_OFFER = "/pages/public/offer?faces-redirect=true";
 
 	private LazyDataModel<Offer> lazyOffers;
 
@@ -247,5 +248,13 @@ public class DashboardOffersBB implements Serializable {
 		offerFilter.setModel(new Model());
 		offerFilter.setGeneration(new Generation());
 		offerFilter.setBodyStyle(new BodyStyle());
+	}
+
+	public String offer() {
+		String offerUrl = PAGE_OFFER + "c=" + selectedOffer.getBrand().getName() + " "
+				+ selectedOffer.getModel().getName() + " " + selectedOffer.getTitle() + "&o="
+				+ selectedOffer.getIdOffer();
+		System.out.println(offerUrl);
+		return offerUrl;
 	}
 }

@@ -204,8 +204,8 @@
 							message="Zakończyć podane ogłoszenie?"
 							icon="pi pi-exclamation-triangle" />
 					</p:menuitem>
-					<p:menuitem value="Wyświetl" process="offerTable" update=""
-						icon="pi pi-search" oncomplete="PF('offerDetailsDialog').show()" />
+					<p:menuitem value="Wyświetl" action="#{dashOffersBB.offer()}"
+						icon="pi pi-search" />
 				</p:contextMenu>
 			</p:panel>
 
