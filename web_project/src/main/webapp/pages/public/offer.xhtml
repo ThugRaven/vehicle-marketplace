@@ -37,8 +37,16 @@
 			toggleable="true" toggleableHeader="true" toggleSpeed="300">
 			<p:graphicImage rendered="#{not empty offerBB.offer.image}"
 				value="/offer_images/#{offerBB.offer.image}" styleClass="image" />
+
+			<p:link
+				rendered="#{offerBB.offer.user.idUser eq remoteClient.details.idUser}"
+				outcome="/pages/offer/edit-offer?faces-redirect=true" value="Edytuj">
+				<f:param name="o" value="#{offerBB.offer.idOffer}" />
+			</p:link>
 		</p:panel>
 
+		<p:growl id="growl" globalOnly="true" showDetail="true"
+			skipDetailIfEqualsSummary="true" />
 	</ui:define>
 </ui:composition>
 </html>

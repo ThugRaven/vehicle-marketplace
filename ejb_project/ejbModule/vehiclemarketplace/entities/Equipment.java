@@ -3,6 +3,7 @@ package vehiclemarketplace.entities;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -52,6 +53,23 @@ public class Equipment implements Serializable {
 
 	public void setOffers(List<Offer> offers) {
 		this.offers = offers;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(idEquipment, name);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Equipment other = (Equipment) obj;
+		return idEquipment == other.idEquipment && Objects.equals(name, other.name);
 	}
 
 }

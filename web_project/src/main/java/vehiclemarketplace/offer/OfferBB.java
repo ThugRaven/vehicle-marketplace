@@ -72,6 +72,5 @@ public class OfferBB implements Serializable {
 				ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błędne użycie systemu", null));
 			}
 		}
-
 	}
 }

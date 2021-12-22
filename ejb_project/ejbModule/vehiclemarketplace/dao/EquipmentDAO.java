@@ -10,7 +10,6 @@ import javax.persistence.Query;
 
 import vehiclemarketplace.classes.SelectFilter;
 import vehiclemarketplace.classes.SelectUtilities;
-import vehiclemarketplace.entities.Brand;
 import vehiclemarketplace.entities.Equipment;
 
 @Stateless
@@ -102,5 +101,20 @@ public class EquipmentDAO {
 		}
 
 		return equipment;
+	}
+
+	public List<Equipment> getEquipmentsByOfferID(int id) {
+		List<Equipment> list = null;
+
+		Query query = em.createQuery("SELECT e FROM Equipment e JOIN e.offers o WHERE o.idOffer = :id");
+		query.setParameter("id", id);
+
+		try {
+			list = query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
 	}
 }

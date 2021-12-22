@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:metadata>
+	<f:viewParam name="o" value="#{offerEditBB.offer.idOffer}"
+		converterMessage="Nieoczekiwany błąd" />
+	<f:event type="preRenderView" listener="#{offerEditBB.onLoad()}" />
+</f:metadata>
+
+<ui:composition template="/templates/page-template.xhtml">
+	<ui:define name="pageContent">
+		<p:panel>
+			<h:outputText
+				value="Zalogowany: #{remoteClient.details.login} #{remoteClient.details.name}" />
+			<h:form>
+				<p:commandLink action="/pages/public/register?faces-redirect=true"
+					value="Zarejestruj się" />
+				<p:commandLink action="/pages/public/login?faces-redirect=true"
+					value="Zaloguj się" />
+				<p:commandButton action="#{loginBB.doLogout()}" value="Wyloguj się" />
+				<p:commandLink action="/pages/admin/dashboard?faces-redirect=true"
+					value="Admin dashboard" />
+			</h:form>
+		</p:panel>
+
+		<h:form id="offerForm">
+			<p:panel header="Twój pojazd">
+				<h:panelGrid columns="3" cellpadding="5">
+					<p:outputLabel for="brand" value="Marka:" />
+					<p:selectOneMenu id="brand"
+						value="#{offerEditBB.offer.brand.idBrand}" required="true"
+						requiredMessage="Marka nie może być pusta">
+						<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{offerEditBB.brands}" var="b"
+							itemLabel="#{b.name}" itemValue="#{b.idBrand}" />
+						<p:ajax listener="#{offerEditBB.changeBrand}"
+							update="@this @next model generation" />
+					</p:selectOneMenu>
+					<p:message for="brand" />
+
+					<p:outputLabel for="model" value="Model:" />
+					<p:selectOneMenu id="model"
+						value="#{offerEditBB.offer.model.idModel}" required="true"
+						requiredMessage="Model nie może być pusty"
+						disabled="#{offerEditBB.offer.brand.idBrand == 0}">
+						<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{offerEditBB.models}" var="m"
+							itemLabel="#{m.name}" itemValue="#{m.idModel}" />
+						<p:ajax listener="#{offerEditBB.changeModel}"
+							update="@this @next generation" />
+					</p:selectOneMenu>
+					<p:message for="model" />
+
+					<p:outputLabel for="generation" value="Generacja:" />
+					<p:selectOneMenu id="generation"
+						value="#{offerEditBB.offer.generation.idGeneration}"
+						required="true" requiredMessage="Generacja nie może być pusta"
+						disabled="#{offerEditBB.offer.model.idModel == 0}">
+						<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{offerEditBB.generations}" var="g"
+							itemLabel="#{g.name}" itemValue="#{g.idGeneration}" />
+						<p:ajax update="@this @next" />
+					</p:selectOneMenu>
+					<p:message for="generation" />
+
+					<p:outputLabel for="fuel" value="Rodzaj paliwa:" />
+					<p:selectOneMenu id="fuel" value="#{offerEditBB.offer.fuel}"
+						required="true" requiredMessage="Rodzaj paliwa nie może być pusty">
+						<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{offerEditBB.fuels}" var="f"
+							itemLabel="#{f}" itemValue="#{f}" />
+						<p:ajax update="@this @next" />
+					</p:selectOneMenu>
+					<p:message for="fuel" />
+
+					<p:outputLabel for="power" value="Moc:" />
+					<p:inputNumber id="power" value="#{offerEditBB.offer.power}"
+						required="true" requiredMessage="Moc nie może być pusta">
+						<p:ajax update="@this @next" />
+					</p:inputNumber>
+					<p:message for="power" />
+
+					<p:outputLabel for="displacement" value="Pojemność skokowa:" />
+					<p:inputNumber id="displacement"
+						value="#{offerEditBB.offer.displacement}" required="true"
+						requiredMessage="Pojemność skokowa nie może być pusta"
+						decimalPlaces="0" minValue="0">
+						<p:ajax update="@this @next" />
+					</p:inputNumber>
+					<p:message for="displacement" />
+
+					<p:outputLabel for="doors" value="Liczba drzwi:" />
+					<p:inputNumber id="doors" value="#{offerEditBB.offer.doors}"
+						required="true" requiredMessage="Liczba drzwi nie może być pusta">
+						<p:ajax update="@this @next" />
+					</p:inputNumber>
+					<p:message for="doors" />
+
+					<p:outputLabel for="seats" value="Liczba miejsc:" />
+					<p:inputNumber id="seats" value="#{offerEditBB.offer.seats}"
+						required="true" requiredMessage="Liczba miejsc nie może być pusta">
+						<p:ajax update="@this @next" />
+					</p:inputNumber>
+					<p:message for="seats" />
+
+					<p:outputLabel for="transmission" value="Skrzynia biegów:" />
+					<p:selectOneMenu id="transmission"
+						value="#{offerEditBB.offer.transmission}" required="true"
+						requiredMessage="Skrzynia biegów nie może być pusta">
+						<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{offerEditBB.transmissions}" var="t"
+							itemLabel="#{t}" itemValue="#{t}" />
+						<p:ajax update="@this @next" />
+					</p:selectOneMenu>
+					<p:message for="transmission" />
+
+					<p:outputLabel for="productionYear" value="Rok produkcji:" />
+					<p:inputText id="productionYear"
+						value="#{offerEditBB.offer.productionYear}" required="true"
+						requiredMessage="Rok produkcji nie może być pusty"
+						validatorMessage="Błąd formatu roku"
+						converterMessage="Błąd konwersji roku">
+						<f:validateLength minimum="4" maximum="4" />
+						<p:keyFilter mask="num" />
+						<p:ajax update="@this @next" />
+					</p:inputText>
+					<p:message for="productionYear" />
+
+					<p:outputLabel for="bodyStyle" value="Typ nadwozia:" />
+					<p:selectOneMenu id="bodyStyle"
+						value="#{offerEditBB.offer.bodyStyle.idBodyStyle}" required="true"
+						requiredMessage="Typ nadwozia nie może być pusty">
+						<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{offerEditBB.bodyStyles}" var="b"
+							itemLabel="#{b.name}" itemValue="#{b.idBodyStyle}" />
+						<p:ajax update="@this @next" />
+					</p:selectOneMenu>
+					<p:message for="bodyStyle" />
+
+					<p:outputLabel for="drive" value="Napęd:" />
+					<p:selectOneMenu id="drive" value="#{offerEditBB.offer.drive}"
+						required="true" requiredMessage="Napęd nie może być pusty">
+						<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{offerEditBB.drives}" var="d" />
+						<p:ajax update="@this @next" />
+					</p:selectOneMenu>
+					<p:message for="drive" />
+
+					<p:outputLabel for="color" value="Kolor:" />
+					<p:inputText id="color" value="#{offerEditBB.offer.color}"
+						required="true" requiredMessage="Kolor nie może być pusty">
+						<p:ajax update="@this @next colorType" />
+					</p:inputText>
+					<p:message for="color" />
+
+					<p:outputLabel for="colorType" value="Typ koloru:" />
+					<p:selectOneMenu id="colorType"
+						value="#{offerEditBB.offer.colorType}"
+						disabled="#{offerEditBB.offer.color == null}">
+						<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{offerEditBB.colorTypes}" var="c"
+							itemLabel="#{c}" itemValue="#{c}" />
+					</p:selectOneMenu>
+					<p:message for="colorType" />
+
+					<p:outputLabel for="mileage" value="Przebieg:" />
+					<p:inputNumber id="mileage" value="#{offerEditBB.offer.mileage}"
+						required="true" requiredMessage="Przebieg nie może być pusty">
+						<p:ajax update="@this @next" />
+					</p:inputNumber>
+					<p:message for="mileage" />
+
+					<p:outputLabel for="vin" value="VIN:" />
+					<p:inputText id="vin" value="#{offerEditBB.offer.vin}"
+						required="true" requiredMessage="VIN nie może być pusty"
+						validatorMessage="Numer VIN składa się z 17 znaków (cyfr oraz dużych liter)">
+						<p:ajax update="@this @next" />
+						<f:validateRegex pattern="^[A-HJ-NPR-Z0-9]{17}$" />
+					</p:inputText>
+					<p:message for="vin" />
+
+					<p:outputLabel for="licensePlate"
+						value="Numer rejestracyjny pojazdu:" />
+					<p:inputText id="licensePlate"
+						value="#{offerEditBB.offer.licensePlate}" />
+					<p:message for="licensePlate" />
+
+					<p:outputLabel for="firstRegistration"
+						value="Data pierwszej rejestracji" />
+					<p:datePicker id="firstRegistration"
+						value="#{offerEditBB.offer.firstRegistration}"
+						monthNavigator="true" yearNavigator="true" yearRange="1950 : 2022" />
+					<p:message for="firstRegistration" />
+
+					<p:outputLabel for="title" value="Tytuł ogłoszenia:" />
+					<p:inputText id="title" value="#{offerEditBB.offer.title}"
+						validatorMessage="Tytuł nie może być dłuższy niż 70 znaków">
+						<f:validateLength maximum="70" />
+						<p:ajax update="@this @next" />
+					</p:inputText>
+					<p:message for="title" />
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panel header="Wyposażenie">
+				<p:selectManyCheckbox value="#{offerEditBB.offer.equipments}"
+					layout="grid" columns="3" styleClass="grid-checkbox">
+					<f:selectItems value="#{offerEditBB.equipments}" var="e"
+						itemLabel="#{e.name}" itemValue="#{e}" />
+				</p:selectManyCheckbox>
+			</p:panel>
+
+			<p:panel header="Opis:">
+				<p:inputTextarea rows="3" cols="50" counter="display"
+					maxlength="4096" counterTemplate="{0} znaków pozostało"
+					value="#{offerEditBB.offer.description}" />
+				<h:outputText id="display" />
+			</p:panel>
+
+			<p:panel header="Historia pojazdu">
+				<h:panelGrid columns="3" cellpadding="5">
+					<p:selectBooleanCheckbox value="#{offerEditBB.offer.isNew}"
+						itemLabel="Nowy" />
+
+					<p:selectBooleanCheckbox value="#{offerEditBB.offer.isDamaged}"
+						itemLabel="Uszkodzony" />
+
+					<p:selectBooleanCheckbox
+						value="#{offerEditBB.offer.isAccidentFree}"
+						itemLabel="Bezwypadkowy" />
+
+					<p:selectBooleanCheckbox value="#{offerEditBB.offer.isFirstOwner}"
+						itemLabel="Pierwszy właściciel" />
+
+					<p:selectBooleanCheckbox value="#{offerEditBB.offer.isRegistered}"
+						itemLabel="Zarejestrowany w Polsce" />
+
+					<p:selectBooleanCheckbox
+						value="#{offerEditBB.offer.isRightHandDrive}"
+						itemLabel="Kierownica po prawej (Anglik)" />
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panel header="Cena">
+				<h:panelGrid columns="3" cellpadding="5">
+					<p:outputLabel for="price" value="Podaj cenę" />
+					<p:inputNumber id="price" value="#{offerEditBB.offer.price}"
+						required="true" requiredMessage="Cena nie może być pusta"
+						symbol=" PLN" symbolPosition="s">
+						<p:ajax update="@this @next" />
+					</p:inputNumber>
+					<p:message for="price" />
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panel header="Dane kontaktowe">
+				<h:panelGrid columns="3" cellpadding="5">
+					<p:outputLabel for="name" value="Imię:" />
+					<h:outputText id="name" value="#{offerEditBB.offer.user.name}" />
+
+					<p:outputLabel for="phoneNumber" value="Numer telefonu:" />
+					<h:outputText id="phoneNumber"
+						value="#{offerEditBB.offer.user.phoneNumber}" />
+
+					<p:outputLabel for="email" value="E-Mail:" />
+					<h:outputText id="email" value="#{offerEditBB.offer.user.email}" />
+
+					<p:outputLabel for="city" value="Wpisz miasto:" />
+					<p:inputText id="city" value="#{offerEditBB.offer.city}"
+						required="true" requiredMessage="Miasto nie może być puste">
+						<p:ajax update="@this @next" />
+					</p:inputText>
+					<p:message for="city" />
+				</h:panelGrid>
+			</p:panel>
+
+			<p:commandButton value="Aktualizuj"
+				action="#{offerEditBB.editOffer()}" update="@form">
+				<p:confirm header="Potwierdzenie"
+					message="Czy na pewno chcesz zaktualizować swoją ofertę?"
+					icon="pi pi-exclamation-triangle" />
+			</p:commandButton>
+
+			<p:confirmDialog global="true" showEffect="fade" responsive="true"
+				width="350">
+				<p:commandButton value="Nie" type="button"
+					styleClass="ui-confirmdialog-no ui-button-flat" />
+				<p:commandButton value="Tak" type="button"
+					styleClass="ui-confirmdialog-yes" />
+			</p:confirmDialog>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
