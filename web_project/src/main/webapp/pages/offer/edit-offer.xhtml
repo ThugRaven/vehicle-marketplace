@@ -9,7 +9,7 @@
 <f:metadata>
 	<f:viewParam name="o" value="#{offerEditBB.offer.idOffer}"
 		converterMessage="Nieoczekiwany błąd" />
-	<f:event type="preRenderView" listener="#{offerEditBB.onLoad()}" />
+	<f:viewAction action="#{offerEditBB.onLoad()}" />
 </f:metadata>
 
 <ui:composition template="/templates/page-template.xhtml">

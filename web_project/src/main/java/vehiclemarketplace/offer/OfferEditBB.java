@@ -126,31 +126,35 @@ public class OfferEditBB implements Serializable {
 	@Inject
 	UserFileManager userFileManager;
 
-	public void onLoad() throws IOException {
-		if (!ctx.isPostback()) {
-			Offer loaded = null;
-			if (!ctx.isValidationFailed() && offer.getIdOffer() != 0) {
-				loaded = offerDAO.find(offer.getIdOffer());
+	public String onLoad() {
+		Offer loaded = null;
+		if (offer.getIdOffer() != 0) {
+			loaded = offerDAO.find(offer.getIdOffer());
 
-				HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext()
-						.getSession(true);
-				RemoteClient<User> client = (RemoteClient<User>) RemoteClient.load(session);
-				System.out.println("Client: " + client.getDetails().getLogin() + " " + client.getDetails().getIdUser());
+			HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+			RemoteClient<User> client = (RemoteClient<User>) RemoteClient.load(session);
+			System.out.println("Client: " + client.getDetails().getLogin() + " " + client.getDetails().getIdUser());
 
-				if (loaded.getUser().getIdUser() != client.getDetails().getIdUser()) {
-					System.out.println("No permission!");
-				}
-			}
-			if (loaded != null) {
-				offer = loaded;
+			if (loaded.getUser().getIdUser() != client.getDetails().getIdUser()) {
+				System.out.println("No permission!");
 
-				changeBrand();
-				changeModel();
-				offer.setEquipments(equipmentDAO.getEquipmentsByOfferID(offer.getIdOffer()));
-			} else {
-				ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błędne użycie systemu", null));
+				String offerUrl = PAGE_OFFER + "c=" + loaded.getBrand().getName() + " " + loaded.getModel().getName()
+						+ " " + loaded.getTitle() + "&o=" + loaded.getIdOffer();
+				ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Brak uprawnień!", null));
+				extcontext.getFlash().setKeepMessages(true);
+				return offerUrl;
 			}
 		}
+		if (loaded != null) {
+			offer = loaded;
+			changeBrand();
+			changeModel();
+			offer.setEquipments(equipmentDAO.getEquipmentsByOfferID(offer.getIdOffer()));
+		} else {
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błędne użycie systemu", null));
+		}
+
+		return PAGE_STAY_AT_THE_SAME;
 	}
 
 	@PostConstruct
