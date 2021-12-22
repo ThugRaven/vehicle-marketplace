@@ -59,17 +59,15 @@ public class UserProfileBB {
 	@Inject
 	FacesContext ctx;
 
-	public void onLoad() throws IOException {
-		if (!ctx.isPostback()) {
-			User loaded = null;
-			if (!ctx.isValidationFailed() && user.getIdUser() != 0) {
-				loaded = userDAO.find(user.getIdUser());
-			}
-			if (loaded != null) {
-				user = loaded;
-			} else {
-				ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błędne użycie systemu", null));
-			}
+	public void onLoad() {
+		User loaded = null;
+		if (user.getIdUser() != 0) {
+			loaded = userDAO.find(user.getIdUser());
+		}
+		if (loaded != null) {
+			user = loaded;
+		} else {
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błędne użycie systemu", null));
 		}
 	}
 

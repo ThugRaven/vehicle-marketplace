@@ -61,16 +61,14 @@ public class OfferBB implements Serializable {
 	FacesContext ctx;
 
 	public void onLoad() throws IOException {
-		if (!ctx.isPostback()) {
-			Offer loaded = null;
-			if (!ctx.isValidationFailed() && offer.getIdOffer() != 0) {
-				loaded = offerDAO.find(offer.getIdOffer());
-			}
-			if (loaded != null) {
-				offer = loaded;
-			} else {
-				ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błędne użycie systemu", null));
-			}
+		Offer loaded = null;
+		if (offer.getIdOffer() != 0) {
+			loaded = offerDAO.find(offer.getIdOffer());
+		}
+		if (loaded != null) {
+			offer = loaded;
+		} else {
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błędne użycie systemu", null));
 		}
 	}
 }
