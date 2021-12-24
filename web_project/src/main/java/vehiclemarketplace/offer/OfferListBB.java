@@ -11,6 +11,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -23,6 +24,7 @@ import vehiclemarketplace.classes.SelectFilter;
 import vehiclemarketplace.classes.SelectType;
 import vehiclemarketplace.dao.BodyStyleDAO;
 import vehiclemarketplace.dao.BrandDAO;
+import vehiclemarketplace.dao.EquipmentDAO;
 import vehiclemarketplace.dao.GenerationDAO;
 import vehiclemarketplace.dao.ModelDAO;
 import vehiclemarketplace.dao.OfferDAO;
@@ -30,6 +32,7 @@ import vehiclemarketplace.dao.UserDAO;
 import vehiclemarketplace.dao.UserRoleDAO;
 import vehiclemarketplace.entities.BodyStyle;
 import vehiclemarketplace.entities.Brand;
+import vehiclemarketplace.entities.Equipment;
 import vehiclemarketplace.entities.Generation;
 import vehiclemarketplace.entities.Model;
 import vehiclemarketplace.entities.Offer;
@@ -47,11 +50,18 @@ public class OfferListBB implements Serializable {
 	private Offer selectedOffer;
 
 	private Offer offerFilter = new Offer();
+	private Offer offerFilterFrom = new Offer();
+	private Offer offerFilterTo = new Offer();
 
 	private List<Brand> brands;
 	private List<Model> models;
 	private List<Generation> generations;
+	private List<String> fuels = new ArrayList<>();
+	private List<String> transmissions = new ArrayList<>();
 	private List<BodyStyle> bodyStyles;
+	private List<SelectItem> drives = new ArrayList<>();
+	private List<String> colorTypes = new ArrayList<>();
+	private List<Equipment> equipments;
 
 	public Offer getSelectedOffer() {
 		return selectedOffer;
@@ -69,6 +79,14 @@ public class OfferListBB implements Serializable {
 		return offerFilter;
 	}
 
+	public Offer getOfferFilterFrom() {
+		return offerFilterFrom;
+	}
+
+	public Offer getOfferFilterTo() {
+		return offerFilterTo;
+	}
+
 	public List<Brand> getBrands() {
 		return brands;
 	}
@@ -81,8 +99,28 @@ public class OfferListBB implements Serializable {
 		return generations;
 	}
 
+	public List<String> getFuels() {
+		return fuels;
+	}
+
+	public List<String> getTransmissions() {
+		return transmissions;
+	}
+
 	public List<BodyStyle> getBodyStyles() {
 		return bodyStyles;
+	}
+
+	public List<SelectItem> getDrives() {
+		return drives;
+	}
+
+	public List<String> getColorTypes() {
+		return colorTypes;
+	}
+
+	public List<Equipment> getEquipments() {
+		return equipments;
 	}
 
 	@Inject
@@ -109,6 +147,9 @@ public class OfferListBB implements Serializable {
 	@EJB
 	BodyStyleDAO bodyStyleDAO;
 
+	@EJB
+	EquipmentDAO equipmentDAO;
+
 	@Inject
 	FacesContext ctx;
 
@@ -121,7 +162,27 @@ public class OfferListBB implements Serializable {
 		offerFilter.setBodyStyle(new BodyStyle());
 
 		brands = getBrandList();
+
+		fuels.add("Benzyna");
+		fuels.add("Benzyna + LPG");
+		fuels.add("Diesel");
+		fuels.add("Elektryczny");
+		fuels.add("Hybryda");
+
+		transmissions.add("Manualna");
+		transmissions.add("Automatyczna");
+
 		bodyStyles = getBodyStyleList();
+
+		drives.add(new SelectItem("FWD", "Na przednie koła"));
+		drives.add(new SelectItem("RWD", "Na tylne koła"));
+		drives.add(new SelectItem("AWD", "Na wszystkie koła 4x4"));
+
+		colorTypes.add("Matowy");
+		colorTypes.add("Metalik");
+		colorTypes.add("Perłowy");
+
+		equipments = getEquipmentList();
 
 		lazyOffers = new LazyDataModel<Offer>() {
 			private static final long serialVersionUID = 1L;
@@ -154,18 +215,9 @@ public class OfferListBB implements Serializable {
 				}
 
 				List<SelectFilter> filter = new ArrayList<>();
-				if (offerFilter.getIdOffer() != 0) {
-					filter.add(new SelectFilter("idOffer", offerFilter.getIdOffer(), SelectType.NORMAL));
-				}
-				if (offerFilter.getUser() != null && offerFilter.getUser().getIdUser() != 0) {
-					filter.add(new SelectFilter("user.idUser", "idUser", offerFilter.getUser().getIdUser(),
-							SelectType.NORMAL));
-				}
-				if (offerFilter.getCity() != null && !offerFilter.getCity().isEmpty()) {
-					filter.add(new SelectFilter("city", offerFilter.getCity(), SelectType.LIKE_FULL));
-				}
-				if (offerFilter.getVin() != null && !offerFilter.getVin().isEmpty()) {
-					filter.add(new SelectFilter("vin", offerFilter.getVin(), SelectType.LIKE_FULL));
+				if (offerFilter.getBodyStyle() != null && offerFilter.getBodyStyle().getIdBodyStyle() != 0) {
+					filter.add(new SelectFilter("bodyStyle.idBodyStyle", "idBodyStyle",
+							offerFilter.getBodyStyle().getIdBodyStyle(), SelectType.NORMAL));
 				}
 				if (offerFilter.getBrand() != null && offerFilter.getBrand().getIdBrand() != 0) {
 					filter.add(new SelectFilter("brand.idBrand", "idBrand", offerFilter.getBrand().getIdBrand(),
@@ -179,13 +231,34 @@ public class OfferListBB implements Serializable {
 					filter.add(new SelectFilter("generation.idGeneration", "idGeneration",
 							offerFilter.getGeneration().getIdGeneration(), SelectType.NORMAL));
 				}
-				if (offerFilter.getBodyStyle() != null && offerFilter.getBodyStyle().getIdBodyStyle() != 0) {
-					filter.add(new SelectFilter("bodyStyle.idBodyStyle", "idBodyStyle",
-							offerFilter.getBodyStyle().getIdBodyStyle(), SelectType.NORMAL));
+				if (offerFilterFrom.getPrice() != null) {
+					filter.add(new SelectFilter("price", "priceFrom", offerFilterFrom.getPrice(),
+							SelectType.GREATER_EQUAL_THAN));
 				}
-				if (offerFilter.getArchived() != null) {
-					filter.add(new SelectFilter("archived", offerFilter.getArchived(), SelectType.NORMAL));
+				if (offerFilterTo.getPrice() != null) {
+					filter.add(
+							new SelectFilter("price", "priceTo", offerFilterTo.getPrice(), SelectType.LESS_EQUAL_THAN));
 				}
+				if (offerFilterFrom.getProductionYear() != null) {
+					filter.add(new SelectFilter("productionYear", "productionYearFrom",
+							offerFilterFrom.getProductionYear(), SelectType.GREATER_EQUAL_THAN));
+				}
+				if (offerFilterTo.getProductionYear() != null) {
+					filter.add(new SelectFilter("productionYear", "productionYearTo", offerFilterTo.getProductionYear(),
+							SelectType.LESS_EQUAL_THAN));
+				}
+				if (offerFilter.getFuel() != null && !offerFilter.getFuel().isEmpty()) {
+					filter.add(new SelectFilter("fuel", offerFilter.getFuel(), SelectType.NORMAL));
+				}
+				if (offerFilterFrom.getMileage() != null) {
+					filter.add(new SelectFilter("mileage", "mileageFrom", offerFilterFrom.getMileage(),
+							SelectType.GREATER_EQUAL_THAN));
+				}
+				if (offerFilterTo.getMileage() != null) {
+					filter.add(new SelectFilter("mileage", "mileageTo", offerFilterTo.getMileage(),
+							SelectType.LESS_EQUAL_THAN));
+				}
+				filter.add(new SelectFilter("archived", false, SelectType.NORMAL));
 
 				offers = offerDAO.getLazyList(sortMap, filter, offset, pageSize);
 
@@ -244,6 +317,10 @@ public class OfferListBB implements Serializable {
 		return bodyStyleDAO.getFullList();
 	}
 
+	public List<Equipment> getEquipmentList() {
+		return equipmentDAO.getFullList();
+	}
+
 	public void clearFilters() {
 		offerFilter = new Offer();
 		offerFilter.setUser(new User());
@@ -251,5 +328,7 @@ public class OfferListBB implements Serializable {
 		offerFilter.setModel(new Model());
 		offerFilter.setGeneration(new Generation());
 		offerFilter.setBodyStyle(new BodyStyle());
+		offerFilterFrom = new Offer();
+		offerFilterTo = new Offer();
 	}
 }

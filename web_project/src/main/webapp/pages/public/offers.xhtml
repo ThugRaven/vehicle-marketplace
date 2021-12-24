@@ -26,89 +26,113 @@
 			<p:panel header="Lista ogłoszeń" toggleable="true"
 				toggleableHeader="true" toggleSpeed="300">
 				<p:dataView id="offerTable" var="o" widgetVar="offerTable"
-					value="#{dashOffersBB.lazyOffers}" paginator="true"
+					value="#{offerListBB.lazyOffers}" paginator="true"
 					paginatorPosition="bottom" rows="5"
 					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="5,10,15" allowUnsorting="true"
+					rowsPerPageTemplate="1,5,10,15" allowUnsorting="true"
 					sortMode="multiple" gridIcon="pi pi-th-large" listIcon="pi pi-bars">
 
 					<f:facet name="header">
-						<p:outputLabel for="id" value="ID" />
-						<p:inputNumber id="id" value="#{dashOffersBB.offerFilter.idOffer}" />
-						<p:message for="id" />
-
-						<p:outputLabel for="idUser" value="ID Użytkownika" />
-						<p:inputNumber id="idUser"
-							value="#{dashOffersBB.offerFilter.user.idUser}" />
-						<p:message for="idUser" />
-
-						<p:outputLabel for="city" value="Miasto" />
-						<p:inputText id="city" value="#{dashOffersBB.offerFilter.city}" />
-						<p:message for="city" />
-
-						<p:outputLabel for="vin" value="VIN" />
-						<p:inputText id="vin" value="#{dashOffersBB.offerFilter.vin}" />
-						<p:message for="vin" />
+						<p:outputLabel for="bodyStyle" value="Typ nadwozia" />
+						<p:selectOneMenu id="bodyStyle"
+							value="#{offerListBB.offerFilter.bodyStyle.idBodyStyle}">
+							<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
+								noSelectionOption="true" />
+							<f:selectItems value="#{offerListBB.bodyStyles}" var="b"
+								itemLabel="#{b.name}" itemValue="#{b.idBodyStyle}" />
+						</p:selectOneMenu>
+						<p:message for="bodyStyle" />
 
 						<p:outputLabel for="brand" value="Marka" />
 						<p:selectOneMenu id="brand"
-							value="#{dashOffersBB.offerFilter.brand.idBrand}">
+							value="#{offerListBB.offerFilter.brand.idBrand}">
 							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
 								noSelectionOption="true" />
-							<f:selectItems value="#{dashOffersBB.brands}" var="b"
+							<f:selectItems value="#{offerListBB.brands}" var="b"
 								itemLabel="#{b.name}" itemValue="#{b.idBrand}" />
-							<p:ajax listener="#{dashOffersBB.changeBrand}"
+							<p:ajax listener="#{offerListBB.changeBrand}"
 								update="model generation" />
 						</p:selectOneMenu>
 						<p:message for="brand" />
 
 						<p:outputLabel for="model" value="Model" />
 						<p:selectOneMenu id="model"
-							value="#{dashOffersBB.offerFilter.model.idModel}">
+							value="#{offerListBB.offerFilter.model.idModel}">
 							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
 								noSelectionOption="true" />
-							<f:selectItems value="#{dashOffersBB.models}" var="m"
+							<f:selectItems value="#{offerListBB.models}" var="m"
 								itemLabel="#{m.name}" itemValue="#{m.idModel}" />
-							<p:ajax listener="#{dashOffersBB.changeModel}"
-								update="generation" />
+							<p:ajax listener="#{offerListBB.changeModel}" update="generation" />
 						</p:selectOneMenu>
 						<p:message for="model" />
 
 						<p:outputLabel for="generation" value="Generacja" />
 						<p:selectOneMenu id="generation"
-							value="#{dashOffersBB.offerFilter.generation.idGeneration}">
+							value="#{offerListBB.offerFilter.generation.idGeneration}">
 							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
 								noSelectionOption="true" />
-							<f:selectItems value="#{dashOffersBB.generations}" var="g"
+							<f:selectItems value="#{offerListBB.generations}" var="g"
 								itemLabel="#{g.name}" itemValue="#{g.idGeneration}" />
 						</p:selectOneMenu>
 						<p:message for="generation" />
 
-						<p:outputLabel for="bodyStyle" value="Typ nadwozia" />
-						<p:selectOneMenu id="bodyStyle"
-							value="#{dashOffersBB.offerFilter.bodyStyle.idBodyStyle}">
+						<p:outputLabel for="priceFrom" value="Cena od" />
+						<p:inputNumber id="priceFrom"
+							value="#{offerListBB.offerFilterFrom.price}" decimalPlaces="0"
+							minValue="0" />
+						<p:message for="priceFrom" />
+
+						<p:outputLabel for="priceTo" value="Cena do" />
+						<p:inputNumber id="priceTo"
+							value="#{offerListBB.offerFilterTo.price}" decimalPlaces="0"
+							minValue="0" />
+						<p:message for="priceTo" />
+
+						<p:outputLabel for="productionYearFrom" value="Rok produkcji od" />
+						<p:inputText id="productionYearFrom"
+							value="#{offerListBB.offerFilterFrom.productionYear}"
+							validatorMessage="Błąd formatu roku"
+							converterMessage="Błąd konwersji roku">
+							<f:validateLength minimum="4" maximum="4" />
+							<p:keyFilter mask="num" />
+						</p:inputText>
+						<p:message for="productionYearFrom" />
+
+						<p:outputLabel for="productionYearTo" value="Rok produkcji do" />
+						<p:inputText id="productionYearTo"
+							value="#{offerListBB.offerFilterTo.productionYear}"
+							validatorMessage="Błąd formatu roku"
+							converterMessage="Błąd konwersji roku">
+							<f:validateLength minimum="4" maximum="4" />
+							<p:keyFilter mask="num" />
+						</p:inputText>
+						<p:message for="productionYearTo" />
+
+						<p:outputLabel for="fuel" value="Rodzaj paliwa" />
+						<p:selectOneMenu id="fuel" value="#{offerListBB.offerFilter.fuel}">
 							<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
 								noSelectionOption="true" />
-							<f:selectItems value="#{dashOffersBB.bodyStyles}" var="b"
-								itemLabel="#{b.name}" itemValue="#{b.idBodyStyle}" />
+							<f:selectItems value="#{offerListBB.fuels}" var="f"
+								itemLabel="#{f}" itemValue="#{f}" />
 						</p:selectOneMenu>
-						<p:message for="bodyStyle" />
+						<p:message for="fuel" />
 
-						<p:outputLabel for="archived" value="Status oferty" />
-						<p:selectOneMenu id="archived"
-							value="#{dashOffersBB.offerFilter.archived}">
-							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
-								noSelectionOption="true" />
-							<f:selectItem itemLabel="Aktywna" itemValue="#{false}" />
-							<f:selectItem itemLabel="Zakończona" itemValue="#{true}" />
-						</p:selectOneMenu>
-						<p:message for="archived" />
+						<p:outputLabel for="mileageFrom" value="Przebieg od" />
+						<p:inputNumber id="mileageFrom"
+							value="#{offerListBB.offerFilterFrom.mileage}" decimalPlaces="0"
+							minValue="0" />
+						<p:message for="mileageFrom" />
 
-						<p:commandButton value="Szukaj"
-							onclick="PF('offerTable').filter()" />
+						<p:outputLabel for="mileageTo" value="Przebieg do" />
+						<p:inputNumber id="mileageTo"
+							value="#{offerListBB.offerFilterTo.mileage}" decimalPlaces="0"
+							minValue="0" />
+						<p:message for="mileageTo" />
+
+						<p:commandButton value="Szukaj" update="offerTable" />
 
 						<p:commandButton value="Wyczyść"
-							action="#{dashOffersBB.clearFilters()}" update="offerTable" />
+							action="#{offerListBB.clearFilters()}" update="offerTable" />
 					</f:facet>
 
 					<p:dataViewListItem>
@@ -136,35 +160,15 @@
 					</p:dataViewListItem>
 
 					<f:facet name="footer">
-						<span>W sumie jest #{dashOffersBB.lazyOffers.rowCount}
+						<span>W sumie jest #{offerListBB.lazyOffers.rowCount}
 							ogłoszeń.</span>
 					</f:facet>
 
 				</p:dataView>
-
-				<p:contextMenu id="contextMenu" for="offerTable">
-					<p:menuitem value="Zakończ" process="@this offerTable"
-						action="#{dashOffersBB.archiveOffer}" update="@form"
-						icon="pi pi-lock">
-						<p:confirm header="Potwierdzenie"
-							message="Zakończyć podane ogłoszenie?"
-							icon="pi pi-exclamation-triangle" />
-					</p:menuitem>
-					<p:menuitem value="Wyświetl" process="offerTable" update=""
-						icon="pi pi-search" oncomplete="PF('offerDetailsDialog').show()" />
-				</p:contextMenu>
 			</p:panel>
 
 			<p:growl id="growl" for="offerTable" showDetail="true"
 				skipDetailIfEqualsSummary="true" />
-
-			<p:confirmDialog global="true" showEffect="fade" responsive="true"
-				width="350">
-				<p:commandButton value="Nie" type="button"
-					styleClass="ui-confirmdialog-no ui-button-flat" />
-				<p:commandButton value="Tak" type="button"
-					styleClass="ui-confirmdialog-yes" />
-			</p:confirmDialog>
 		</h:form>
 
 	</ui:define>

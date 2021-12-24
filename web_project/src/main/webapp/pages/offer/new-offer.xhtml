@@ -78,7 +78,8 @@
 
 					<p:outputLabel for="power" value="Moc:" />
 					<p:inputNumber id="power" value="#{offerNewBB.offer.power}"
-						required="true" requiredMessage="Moc nie może być pusta">
+						required="true" requiredMessage="Moc nie może być pusta"
+						decimalPlaces="0" minValue="0">
 						<p:ajax update="@this @next" />
 					</p:inputNumber>
 					<p:message for="power" />
@@ -94,14 +95,16 @@
 
 					<p:outputLabel for="doors" value="Liczba drzwi:" />
 					<p:inputNumber id="doors" value="#{offerNewBB.offer.doors}"
-						required="true" requiredMessage="Liczba drzwi nie może być pusta">
+						required="true" requiredMessage="Liczba drzwi nie może być pusta"
+						decimalPlaces="0" minValue="0">
 						<p:ajax update="@this @next" />
 					</p:inputNumber>
 					<p:message for="doors" />
 
 					<p:outputLabel for="seats" value="Liczba miejsc:" />
 					<p:inputNumber id="seats" value="#{offerNewBB.offer.seats}"
-						required="true" requiredMessage="Liczba miejsc nie może być pusta">
+						required="true" requiredMessage="Liczba miejsc nie może być pusta"
+						decimalPlaces="0" minValue="0">
 						<p:ajax update="@this @next" />
 					</p:inputNumber>
 					<p:message for="seats" />
@@ -172,7 +175,8 @@
 
 					<p:outputLabel for="mileage" value="Przebieg:" />
 					<p:inputNumber id="mileage" value="#{offerNewBB.offer.mileage}"
-						required="true" requiredMessage="Przebieg nie może być pusty">
+						required="true" requiredMessage="Przebieg nie może być pusty"
+						decimalPlaces="0" minValue="0">
 						<p:ajax update="@this @next" />
 					</p:inputNumber>
 					<p:message for="mileage" />
@@ -264,7 +268,7 @@
 					<p:outputLabel for="price" value="Podaj cenę" />
 					<p:inputNumber id="price" value="#{offerNewBB.offer.price}"
 						required="true" requiredMessage="Cena nie może być pusta"
-						symbol=" PLN" symbolPosition="s">
+						symbol=" PLN" symbolPosition="s" decimalPlaces="0" minValue="0">
 						<p:ajax update="@this @next" />
 					</p:inputNumber>
 					<p:message for="price" />

@@ -37,14 +37,14 @@ public class Offer implements Serializable {
 	@Column(name="create_time", nullable=false)
 	private Timestamp createTime;
 
-	@Column(columnDefinition = "TEXT")
+	@Lob
 	private String description;
 
 	@Column(nullable=false)
-	private float displacement;
+	private Float displacement;
 
 	@Column(nullable=false)
-	private byte doors;
+	private Byte doors;
 
 	@Column(nullable=false, length=3)
 	private String drive;
@@ -81,19 +81,19 @@ public class Offer implements Serializable {
 	private String licensePlate;
 
 	@Column(nullable=false)
-	private int mileage;
+	private Integer mileage;
 
 	@Column(nullable=false)
-	private short power;
+	private Short power;
 
 	@Column(nullable=false)
-	private int price;
+	private Integer price;
 
 	@Column(name="production_year", nullable=false)
 	private Integer productionYear;
 
 	@Column(nullable=false)
-	private byte seats;
+	private Byte seats;
 
 	@Column(length=70)
 	private String title;
@@ -101,7 +101,7 @@ public class Offer implements Serializable {
 	@Column(nullable=false, length=15)
 	private String transmission;
 
-	@Column(name="update_time", updatable = false, nullable=false)
+	@Column(name="update_time", updatable=false, nullable=false)
 	private Timestamp updateTime;
 
 	@Column(nullable=false, length=17)
@@ -204,19 +204,19 @@ public class Offer implements Serializable {
 		this.description = description;
 	}
 
-	public float getDisplacement() {
+	public Float getDisplacement() {
 		return this.displacement;
 	}
 
-	public void setDisplacement(float displacement) {
+	public void setDisplacement(Float displacement) {
 		this.displacement = displacement;
 	}
 
-	public byte getDoors() {
+	public Byte getDoors() {
 		return this.doors;
 	}
 
-	public void setDoors(byte doors) {
+	public void setDoors(Byte doors) {
 		this.doors = doors;
 	}
 
@@ -308,27 +308,27 @@ public class Offer implements Serializable {
 		this.licensePlate = licensePlate;
 	}
 
-	public int getMileage() {
+	public Integer getMileage() {
 		return this.mileage;
 	}
 
-	public void setMileage(int mileage) {
+	public void setMileage(Integer mileage) {
 		this.mileage = mileage;
 	}
 
-	public short getPower() {
+	public Short getPower() {
 		return this.power;
 	}
 
-	public void setPower(short power) {
+	public void setPower(Short power) {
 		this.power = power;
 	}
 
-	public int getPrice() {
+	public Integer getPrice() {
 		return this.price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(Integer price) {
 		this.price = price;
 	}
 
@@ -340,11 +340,11 @@ public class Offer implements Serializable {
 		this.productionYear = productionYear;
 	}
 
-	public byte getSeats() {
+	public Byte getSeats() {
 		return this.seats;
 	}
 
-	public void setSeats(byte seats) {
+	public void setSeats(Byte seats) {
 		this.seats = seats;
 	}
 
