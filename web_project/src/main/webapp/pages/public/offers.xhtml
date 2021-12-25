@@ -129,13 +129,13 @@
 							minValue="0" />
 						<p:message for="mileageTo" />
 
-						<p:commandButton value="Status pojazdu"
+						<p:commandButton value="Status pojazdu" type="button"
 							onclick="PF('vehicleStatusDialog').show()" />
 
-						<p:commandButton value="Silnik i napęd"
+						<p:commandButton value="Silnik i napęd" type="button"
 							onclick="PF('engineDriveDialog').show()" />
 
-						<p:commandButton value="Nadwozie"
+						<p:commandButton value="Nadwozie" type="button"
 							onclick="PF('bodyDialog').show()" />
 
 						<p:dialog header="Status pojazdu" widgetVar="vehicleStatusDialog"
@@ -175,8 +175,9 @@
 								</h:panelGrid>
 
 								<p:commandButton value="Pokaż wyniki" update="offerTable" />
-								<p:commandButton value="Wyczyść" type="button"
-									action="#{offerListBB.clearVehicleStatus()}" />
+								<p:commandButton value="Wyczyść"
+									action="#{offerListBB.clearVehicleStatus()}"
+									update="offerTable" />
 							</p:outputPanel>
 						</p:dialog>
 
@@ -227,8 +228,8 @@
 								</h:panelGrid>
 
 								<p:commandButton value="Pokaż wyniki" update="offerTable" />
-								<p:commandButton value="Wyczyść" type="button"
-									action="#{offerListBB.clearVehicleStatus()}" />
+								<p:commandButton value="Wyczyść"
+									action="#{offerListBB.clearEngineDrive()}" update="offerTable" />
 							</p:outputPanel>
 						</p:dialog>
 
@@ -268,8 +269,8 @@
 								</h:panelGrid>
 
 								<p:commandButton value="Pokaż wyniki" update="offerTable" />
-								<p:commandButton value="Wyczyść" type="button"
-									action="#{offerListBB.clearVehicleStatus()}" />
+								<p:commandButton value="Wyczyść"
+									action="#{offerListBB.clearBody()}" update="offerTable" />
 							</p:outputPanel>
 						</p:dialog>
 

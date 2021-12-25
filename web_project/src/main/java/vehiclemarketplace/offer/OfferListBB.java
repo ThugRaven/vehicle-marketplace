@@ -327,6 +327,22 @@ public class OfferListBB implements Serializable {
 					filter.add(
 							new SelectFilter("isRightHandDrive", offerFilter.getIsRightHandDrive(), SelectType.NORMAL));
 				}
+				if (offerFilterFrom.getDisplacement() != null) {
+					filter.add(new SelectFilter("displacement", "displacementFrom", offerFilterFrom.getDisplacement(),
+							SelectType.GREATER_EQUAL_THAN));
+				}
+				if (offerFilterTo.getDisplacement() != null) {
+					filter.add(new SelectFilter("displacement", "displacementTo", offerFilterTo.getDisplacement(),
+							SelectType.LESS_EQUAL_THAN));
+				}
+				if (offerFilterFrom.getPower() != null) {
+					filter.add(new SelectFilter("power", "powerFrom", offerFilterFrom.getPower(),
+							SelectType.GREATER_EQUAL_THAN));
+				}
+				if (offerFilterTo.getPower() != null) {
+					filter.add(
+							new SelectFilter("power", "powerTo", offerFilterTo.getPower(), SelectType.LESS_EQUAL_THAN));
+				}
 				if (offerFilterList != null && offerFilterList.size() > 0) {
 					for (SelectList selectList : offerFilterList) {
 						System.out.println("selectList: " + selectList.toString());
@@ -411,5 +427,37 @@ public class OfferListBB implements Serializable {
 		offerFilter.setBodyStyle(new BodyStyle());
 		offerFilterFrom = new Offer();
 		offerFilterTo = new Offer();
+		offerFilterList.clear();
+		offerFilterList.add(new SelectList("transmission", new ArrayList<>()));
+		offerFilterList.add(new SelectList("drive", new ArrayList<>()));
+		offerFilterList.add(new SelectList("doors", new ArrayList<>()));
+		offerFilterList.add(new SelectList("seats", new ArrayList<>()));
+		offerFilterList.add(new SelectList("color", new ArrayList<>()));
+		offerFilterList.add(new SelectList("colorType", new ArrayList<>()));
+	}
+
+	public void clearVehicleStatus() {
+		offerFilter.setLicensePlate(null);
+		offerFilter.setIsDamaged(null);
+		offerFilter.setIsAccidentFree(null);
+		offerFilter.setIsFirstOwner(null);
+		offerFilter.setIsRegistered(null);
+		offerFilter.setIsRightHandDrive(null);
+	}
+
+	public void clearEngineDrive() {
+		offerFilterFrom.setDisplacement(null);
+		offerFilterTo.setDisplacement(null);
+		offerFilterFrom.setPower(null);
+		offerFilterTo.setPower(null);
+		offerFilterList.set(0, new SelectList("transmission", new ArrayList<>()));
+		offerFilterList.set(1, new SelectList("drive", new ArrayList<>()));
+	}
+
+	public void clearBody() {
+		offerFilterList.set(2, new SelectList("doors", new ArrayList<>()));
+		offerFilterList.set(3, new SelectList("seats", new ArrayList<>()));
+		offerFilterList.set(4, new SelectList("color", new ArrayList<>()));
+		offerFilterList.set(5, new SelectList("colorType", new ArrayList<>()));
 	}
 }
