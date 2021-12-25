@@ -66,8 +66,16 @@ public class SelectUtilities {
 				where = where.concat(" AND ");
 			}
 
-			where = where.concat(
-					createWhere(searchFilter.getProperty(), searchFilter.getParameter(), searchFilter.getSearchType()));
+			if (searchFilter.getSearchType() == SelectType.IS_NULL
+					|| searchFilter.getSearchType() == SelectType.IS_NOT_NULL) {
+				where = where.concat(createWhereNull(searchFilter.getProperty(), searchFilter.getSearchType()));
+			} else if (searchFilter.getSearchType() == SelectType.LIST) {
+				where = where.concat(createWhereIn(searchFilter.getProperty(), searchFilter.getParameter(),
+						searchFilter.getValue(), searchFilter.getSearchType()));
+			} else {
+				where = where.concat(createWhere(searchFilter.getProperty(), searchFilter.getParameter(),
+						searchFilter.getSearchType()));
+			}
 		}
 
 		for (int i = 0; i < filterRange.size(); i++) {
@@ -118,6 +126,34 @@ public class SelectUtilities {
 		return where;
 	}
 
+	public String createWhereNull(String property, int type) {
+		String where = "";
+
+		if (type == SelectType.IS_NULL) {
+			where = table + "." + property + " IS NULL";
+		} else if (type == SelectType.IS_NOT_NULL) {
+			where = table + "." + property + " IS NOT NULL";
+		}
+
+		return where;
+	}
+
+	public String createWhereIn(String property, String field, Object values, int type) {
+		String where = "";
+		int size = ((List<Object>) values).size();
+
+		where = table + "." + property + " IN (";
+		for (int i = 0; i < size; i++) {
+			where += ":" + field + "_" + i;
+			if (i < size - 1) {
+				where += ", ";
+			}
+		}
+		where += ")";
+
+		return where;
+	}
+
 	public Query getParameters(Query query, List<SelectFilter> filter) {
 		if (filter.size() == 0) {
 			return query;
@@ -133,6 +169,13 @@ public class SelectUtilities {
 				break;
 			case SelectType.LIKE_FULL:
 				query.setParameter(searchFilter.getParameter(), "%" + searchFilter.getValue() + "%");
+				break;
+			case SelectType.LIST:
+				int size = ((List<Object>) searchFilter.getValue()).size();
+				for (int i = 0; i < size; i++) {
+					Object value = ((List<Object>) searchFilter.getValue()).get(i);
+					query.setParameter(searchFilter.getParameter() + "_" + i, value);
+				}
 				break;
 			default:
 				break;

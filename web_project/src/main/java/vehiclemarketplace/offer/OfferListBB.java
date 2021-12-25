@@ -21,6 +21,7 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
 
 import vehiclemarketplace.classes.SelectFilter;
+import vehiclemarketplace.classes.SelectList;
 import vehiclemarketplace.classes.SelectType;
 import vehiclemarketplace.dao.BodyStyleDAO;
 import vehiclemarketplace.dao.BrandDAO;
@@ -52,6 +53,7 @@ public class OfferListBB implements Serializable {
 	private Offer offerFilter = new Offer();
 	private Offer offerFilterFrom = new Offer();
 	private Offer offerFilterTo = new Offer();
+	private List<SelectList> offerFilterList = new ArrayList<>();
 
 	private List<Brand> brands;
 	private List<Model> models;
@@ -60,6 +62,9 @@ public class OfferListBB implements Serializable {
 	private List<String> transmissions = new ArrayList<>();
 	private List<BodyStyle> bodyStyles;
 	private List<SelectItem> drives = new ArrayList<>();
+	private List<Byte> doors = new ArrayList<>();
+	private List<Byte> seats = new ArrayList<>();
+	private List<String> colors = new ArrayList<>();
 	private List<String> colorTypes = new ArrayList<>();
 	private List<Equipment> equipments;
 
@@ -85,6 +90,10 @@ public class OfferListBB implements Serializable {
 
 	public Offer getOfferFilterTo() {
 		return offerFilterTo;
+	}
+
+	public List<SelectList> getOfferFilterList() {
+		return offerFilterList;
 	}
 
 	public List<Brand> getBrands() {
@@ -113,6 +122,18 @@ public class OfferListBB implements Serializable {
 
 	public List<SelectItem> getDrives() {
 		return drives;
+	}
+
+	public List<Byte> getDoors() {
+		return doors;
+	}
+
+	public List<Byte> getSeats() {
+		return seats;
+	}
+
+	public List<String> getColors() {
+		return colors;
 	}
 
 	public List<String> getColorTypes() {
@@ -160,6 +181,12 @@ public class OfferListBB implements Serializable {
 		offerFilter.setModel(new Model());
 		offerFilter.setGeneration(new Generation());
 		offerFilter.setBodyStyle(new BodyStyle());
+		offerFilterList.add(new SelectList("transmission", new ArrayList<>()));
+		offerFilterList.add(new SelectList("drive", new ArrayList<>()));
+		offerFilterList.add(new SelectList("doors", new ArrayList<>()));
+		offerFilterList.add(new SelectList("seats", new ArrayList<>()));
+		offerFilterList.add(new SelectList("color", new ArrayList<>()));
+		offerFilterList.add(new SelectList("colorType", new ArrayList<>()));
 
 		brands = getBrandList();
 
@@ -177,6 +204,28 @@ public class OfferListBB implements Serializable {
 		drives.add(new SelectItem("FWD", "Na przednie koła"));
 		drives.add(new SelectItem("RWD", "Na tylne koła"));
 		drives.add(new SelectItem("AWD", "Na wszystkie koła 4x4"));
+
+		for (int i = 2; i <= 6; i++) {
+			doors.add((byte) i);
+		}
+
+		for (int i = 1; i <= 9; i++) {
+			seats.add((byte) i);
+		}
+
+		colors.add("Beżowy");
+		colors.add("Biały");
+		colors.add("Bordowy");
+		colors.add("Brązowy");
+		colors.add("Czarny");
+		colors.add("Czerwony");
+		colors.add("Fioletowy");
+		colors.add("Niebieski");
+		colors.add("Srebrny");
+		colors.add("Szary");
+		colors.add("Zielony");
+		colors.add("Złoty");
+		colors.add("Żółty");
 
 		colorTypes.add("Matowy");
 		colorTypes.add("Metalik");
@@ -258,6 +307,38 @@ public class OfferListBB implements Serializable {
 					filter.add(new SelectFilter("mileage", "mileageTo", offerFilterTo.getMileage(),
 							SelectType.LESS_EQUAL_THAN));
 				}
+				if (offerFilter.getLicensePlate() != null
+						&& Boolean.parseBoolean(String.valueOf(offerFilter.getLicensePlate()))) {
+					filter.add(new SelectFilter("licensePlate", offerFilter.getLicensePlate(), SelectType.IS_NOT_NULL));
+				}
+				if (offerFilter.getIsDamaged() != null) {
+					filter.add(new SelectFilter("isDamaged", offerFilter.getIsDamaged(), SelectType.NORMAL));
+				}
+				if (offerFilter.getIsAccidentFree() != null && offerFilter.getIsAccidentFree()) {
+					filter.add(new SelectFilter("isAccidentFree", offerFilter.getIsAccidentFree(), SelectType.NORMAL));
+				}
+				if (offerFilter.getIsFirstOwner() != null && offerFilter.getIsFirstOwner()) {
+					filter.add(new SelectFilter("isFirstOwner", offerFilter.getIsFirstOwner(), SelectType.NORMAL));
+				}
+				if (offerFilter.getIsRegistered() != null && offerFilter.getIsRegistered()) {
+					filter.add(new SelectFilter("isRegistered", offerFilter.getIsRegistered(), SelectType.NORMAL));
+				}
+				if (offerFilter.getIsRightHandDrive() != null && offerFilter.getIsRightHandDrive()) {
+					filter.add(
+							new SelectFilter("isRightHandDrive", offerFilter.getIsRightHandDrive(), SelectType.NORMAL));
+				}
+				if (offerFilterList != null && offerFilterList.size() > 0) {
+					for (SelectList selectList : offerFilterList) {
+						System.out.println("selectList: " + selectList.toString());
+
+						if (selectList.getValues() != null && selectList.getValues().size() > 0) {
+							System.out.println("add to where");
+							filter.add(new SelectFilter(selectList.getParameter(), selectList.getParameter(),
+									selectList.getValues(), SelectType.LIST));
+						}
+					}
+				}
+
 				filter.add(new SelectFilter("archived", false, SelectType.NORMAL));
 
 				offers = offerDAO.getLazyList(sortMap, filter, offset, pageSize);

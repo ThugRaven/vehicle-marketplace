@@ -129,6 +129,150 @@
 							minValue="0" />
 						<p:message for="mileageTo" />
 
+						<p:commandButton value="Status pojazdu"
+							onclick="PF('vehicleStatusDialog').show()" />
+
+						<p:commandButton value="Silnik i napęd"
+							onclick="PF('engineDriveDialog').show()" />
+
+						<p:commandButton value="Nadwozie"
+							onclick="PF('bodyDialog').show()" />
+
+						<p:dialog header="Status pojazdu" widgetVar="vehicleStatusDialog"
+							modal="true" showEffect="fade" hideEffect="fade"
+							resizable="false" draggable="false" closeOnEscape="true"
+							responsive="true">
+							<p:outputPanel id="vehicleStatus">
+								<h:panelGrid columns="3" cellpadding="5">
+									<p:selectBooleanCheckbox
+										value="#{offerListBB.offerFilter.licensePlate}"
+										itemLabel="Ma numer rejestracyjny" />
+
+									<p:outputLabel for="@next" value="Uszkodzony" />
+									<p:selectOneMenu value="#{offerListBB.offerFilter.isDamaged}">
+										<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
+											noSelectionOption="true" />
+										<f:selectItem itemLabel="Nie" itemValue="#{false}" />
+										<f:selectItem itemLabel="Tak" itemValue="#{true}" />
+									</p:selectOneMenu>
+									<p:message for="@previous" />
+
+									<p:selectBooleanCheckbox
+										value="#{offerListBB.offerFilter.isAccidentFree}"
+										itemLabel="Bezwypadkowy" />
+
+									<p:selectBooleanCheckbox
+										value="#{offerListBB.offerFilter.isFirstOwner}"
+										itemLabel="Pierwszy właściciel" />
+
+									<p:selectBooleanCheckbox
+										value="#{offerListBB.offerFilter.isRegistered}"
+										itemLabel="Zarejestrowany w Polsce" />
+
+									<p:selectBooleanCheckbox
+										value="#{offerListBB.offerFilter.isRightHandDrive}"
+										itemLabel="Kierownica po prawej (Anglik)" />
+								</h:panelGrid>
+
+								<p:commandButton value="Pokaż wyniki" update="offerTable" />
+								<p:commandButton value="Wyczyść" type="button"
+									action="#{offerListBB.clearVehicleStatus()}" />
+							</p:outputPanel>
+						</p:dialog>
+
+						<p:dialog header="Silnik i napęd" widgetVar="engineDriveDialog"
+							modal="true" showEffect="fade" hideEffect="fade"
+							resizable="false" draggable="false" closeOnEscape="true"
+							responsive="true">
+							<p:outputPanel id="engineDrive">
+								<h:panelGrid columns="3" cellpadding="5">
+									<p:outputLabel for="@next" value="Pojemność skokowa od" />
+									<p:inputNumber id="displacementFrom"
+										value="#{offerListBB.offerFilterFrom.displacement}"
+										decimalPlaces="0" minValue="0" />
+									<p:message for="@previous" />
+
+									<p:outputLabel for="@next" value="Pojemność skokowa do" />
+									<p:inputNumber id="displacementTo"
+										value="#{offerListBB.offerFilterTo.displacement}"
+										decimalPlaces="0" minValue="0" />
+									<p:message for="@previous" />
+
+									<p:outputLabel for="@next" value="Moc od" />
+									<p:inputNumber id="powerFrom"
+										value="#{offerListBB.offerFilterFrom.power}" decimalPlaces="0"
+										minValue="0" />
+									<p:message for="@previous" />
+
+									<p:outputLabel for="@next" value="Moc do" />
+									<p:inputNumber id="powerTo"
+										value="#{offerListBB.offerFilterTo.power}" decimalPlaces="0"
+										minValue="0" />
+									<p:message for="@previous" />
+
+									<p:outputLabel for="@next" value="Skrzynia biegów" />
+									<p:selectManyCheckbox
+										value="#{offerListBB.offerFilterList.get(0).values}"
+										layout="grid" columns="3" styleClass="grid-checkbox">
+										<f:selectItems value="#{offerListBB.transmissions}" var="t"
+											itemLabel="#{t}" itemValue="#{t}" />
+									</p:selectManyCheckbox>
+
+									<p:outputLabel for="@next" value="Napęd" />
+									<p:selectManyCheckbox
+										value="#{offerListBB.offerFilterList.get(1).values}"
+										layout="grid" columns="3" styleClass="grid-checkbox">
+										<f:selectItems value="#{offerListBB.drives}" var="d" />
+									</p:selectManyCheckbox>
+								</h:panelGrid>
+
+								<p:commandButton value="Pokaż wyniki" update="offerTable" />
+								<p:commandButton value="Wyczyść" type="button"
+									action="#{offerListBB.clearVehicleStatus()}" />
+							</p:outputPanel>
+						</p:dialog>
+
+						<p:dialog header="Nadwozie" widgetVar="bodyDialog" modal="true"
+							showEffect="fade" hideEffect="fade" resizable="false"
+							draggable="false" closeOnEscape="true" responsive="true">
+							<p:outputPanel id="body">
+								<h:panelGrid columns="3" cellpadding="5">
+									<p:outputLabel for="@next" value="Liczba drzwi" />
+									<p:selectManyCheckbox
+										value="#{offerListBB.offerFilterList.get(2).values}"
+										layout="grid" columns="3" styleClass="grid-checkbox">
+										<f:selectItems value="#{offerListBB.doors}" var="d" />
+									</p:selectManyCheckbox>
+
+									<p:outputLabel for="@next" value="Liczba miejsc" />
+									<p:selectManyCheckbox
+										value="#{offerListBB.offerFilterList.get(3).values}"
+										layout="grid" columns="3" styleClass="grid-checkbox">
+										<f:selectItems value="#{offerListBB.seats}" var="s" />
+									</p:selectManyCheckbox>
+
+									<p:outputLabel for="@next" value="Kolor" />
+									<p:selectManyMenu
+										value="#{offerListBB.offerFilterList.get(4).values}"
+										showCheckbox="true">
+										<f:selectItems value="#{offerListBB.colors}" var="d" />
+									</p:selectManyMenu>
+
+									<p:outputLabel for="@next" value="Rodzaj koloru" />
+									<p:selectManyCheckbox
+										value="#{offerListBB.offerFilterList.get(5).values}"
+										layout="grid" columns="3" styleClass="grid-checkbox">
+										<f:selectItems value="#{offerListBB.colorTypes}" var="c"
+											itemLabel="#{c}" itemValue="#{c}" />
+									</p:selectManyCheckbox>
+								</h:panelGrid>
+
+								<p:commandButton value="Pokaż wyniki" update="offerTable" />
+								<p:commandButton value="Wyczyść" type="button"
+									action="#{offerListBB.clearVehicleStatus()}" />
+							</p:outputPanel>
+						</p:dialog>
+
 						<p:commandButton value="Szukaj" update="offerTable" />
 
 						<p:commandButton value="Wyczyść"
@@ -170,7 +314,6 @@
 			<p:growl id="growl" for="offerTable" showDetail="true"
 				skipDetailIfEqualsSummary="true" />
 		</h:form>
-
 	</ui:define>
 </ui:composition>
 </html>
