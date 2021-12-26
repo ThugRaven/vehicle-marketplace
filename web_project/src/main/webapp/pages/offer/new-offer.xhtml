@@ -25,7 +25,7 @@
 		<h:form id="offerForm">
 			<p:panel header="Twój pojazd">
 				<h:panelGrid columns="3" cellpadding="5">
-					<p:outputLabel for="brand" value="Marka:" />
+					<p:outputLabel for="@next" value="Marka:" />
 					<p:selectOneMenu id="brand"
 						value="#{offerNewBB.offer.brand.idBrand}" required="true"
 						requiredMessage="Marka nie może być pusta">
@@ -36,9 +36,9 @@
 						<p:ajax listener="#{offerNewBB.changeBrand}"
 							update="@this @next model generation" />
 					</p:selectOneMenu>
-					<p:message for="brand" />
+					<p:message for="@previous" />
 
-					<p:outputLabel for="model" value="Model:" />
+					<p:outputLabel for="@next" value="Model:" />
 					<p:selectOneMenu id="model"
 						value="#{offerNewBB.offer.model.idModel}" required="true"
 						requiredMessage="Model nie może być pusty"
@@ -50,9 +50,9 @@
 						<p:ajax listener="#{offerNewBB.changeModel}"
 							update="@this @next generation" />
 					</p:selectOneMenu>
-					<p:message for="model" />
+					<p:message for="@previous" />
 
-					<p:outputLabel for="generation" value="Generacja:" />
+					<p:outputLabel for="@next" value="Generacja:" />
 					<p:selectOneMenu id="generation"
 						value="#{offerNewBB.offer.generation.idGeneration}"
 						required="true" requiredMessage="Generacja nie może być pusta"
@@ -63,65 +63,65 @@
 							itemLabel="#{g.name}" itemValue="#{g.idGeneration}" />
 						<p:ajax update="@this @next" />
 					</p:selectOneMenu>
-					<p:message for="generation" />
+					<p:message for="@previous" />
 
-					<p:outputLabel for="fuel" value="Rodzaj paliwa:" />
+					<p:outputLabel for="@next" value="Rodzaj paliwa:" />
 					<p:selectOneMenu id="fuel" value="#{offerNewBB.offer.fuel}"
 						required="true" requiredMessage="Rodzaj paliwa nie może być pusty">
 						<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
 							noSelectionOption="true" />
-						<f:selectItems value="#{offerNewBB.fuels}" var="f"
+						<f:selectItems value="#{constantsBB.fuels}" var="f"
 							itemLabel="#{f}" itemValue="#{f}" />
 						<p:ajax update="@this @next" />
 					</p:selectOneMenu>
-					<p:message for="fuel" />
+					<p:message for="@previous" />
 
-					<p:outputLabel for="power" value="Moc:" />
+					<p:outputLabel for="@next" value="Moc:" />
 					<p:inputNumber id="power" value="#{offerNewBB.offer.power}"
 						required="true" requiredMessage="Moc nie może być pusta"
 						decimalPlaces="0" minValue="0">
 						<p:ajax update="@this @next" />
 					</p:inputNumber>
-					<p:message for="power" />
+					<p:message for="@previous" />
 
-					<p:outputLabel for="displacement" value="Pojemność skokowa:" />
+					<p:outputLabel for="@next" value="Pojemność skokowa:" />
 					<p:inputNumber id="displacement"
 						value="#{offerNewBB.offer.displacement}" required="true"
 						requiredMessage="Pojemność skokowa nie może być pusta"
 						decimalPlaces="0" minValue="0">
 						<p:ajax update="@this @next" />
 					</p:inputNumber>
-					<p:message for="displacement" />
+					<p:message for="@previous" />
 
-					<p:outputLabel for="doors" value="Liczba drzwi:" />
+					<p:outputLabel for="@next" value="Liczba drzwi:" />
 					<p:inputNumber id="doors" value="#{offerNewBB.offer.doors}"
 						required="true" requiredMessage="Liczba drzwi nie może być pusta"
 						decimalPlaces="0" minValue="0">
 						<p:ajax update="@this @next" />
 					</p:inputNumber>
-					<p:message for="doors" />
+					<p:message for="@previous" />
 
-					<p:outputLabel for="seats" value="Liczba miejsc:" />
+					<p:outputLabel for="@next" value="Liczba miejsc:" />
 					<p:inputNumber id="seats" value="#{offerNewBB.offer.seats}"
 						required="true" requiredMessage="Liczba miejsc nie może być pusta"
 						decimalPlaces="0" minValue="0">
 						<p:ajax update="@this @next" />
 					</p:inputNumber>
-					<p:message for="seats" />
+					<p:message for="@previous" />
 
-					<p:outputLabel for="transmission" value="Skrzynia biegów:" />
+					<p:outputLabel for="@next" value="Skrzynia biegów:" />
 					<p:selectOneMenu id="transmission"
 						value="#{offerNewBB.offer.transmission}" required="true"
 						requiredMessage="Skrzynia biegów nie może być pusta">
 						<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
 							noSelectionOption="true" />
-						<f:selectItems value="#{offerNewBB.transmissions}" var="t"
+						<f:selectItems value="#{constantsBB.transmissions}" var="t"
 							itemLabel="#{t}" itemValue="#{t}" />
 						<p:ajax update="@this @next" />
 					</p:selectOneMenu>
-					<p:message for="transmission" />
+					<p:message for="@previous" />
 
-					<p:outputLabel for="productionYear" value="Rok produkcji:" />
+					<p:outputLabel for="@next" value="Rok produkcji:" />
 					<p:inputText id="productionYear"
 						value="#{offerNewBB.offer.productionYear}" required="true"
 						requiredMessage="Rok produkcji nie może być pusty"
@@ -131,9 +131,9 @@
 						<p:keyFilter mask="num" />
 						<p:ajax update="@this @next" />
 					</p:inputText>
-					<p:message for="productionYear" />
+					<p:message for="@previous" />
 
-					<p:outputLabel for="bodyStyle" value="Typ nadwozia:" />
+					<p:outputLabel for="@next" value="Typ nadwozia:" />
 					<p:selectOneMenu id="bodyStyle"
 						value="#{offerNewBB.offer.bodyStyle.idBodyStyle}" required="true"
 						requiredMessage="Typ nadwozia nie może być pusty">
@@ -143,73 +143,75 @@
 							itemLabel="#{b.name}" itemValue="#{b.idBodyStyle}" />
 						<p:ajax update="@this @next" />
 					</p:selectOneMenu>
-					<p:message for="bodyStyle" />
+					<p:message for="@previous" />
 
-					<p:outputLabel for="drive" value="Napęd:" />
+					<p:outputLabel for="@next" value="Napęd:" />
 					<p:selectOneMenu id="drive" value="#{offerNewBB.offer.drive}"
 						required="true" requiredMessage="Napęd nie może być pusty">
 						<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
 							noSelectionOption="true" />
-						<f:selectItems value="#{offerNewBB.drives}" var="d" />
+						<f:selectItems value="#{constantsBB.drives}" var="d" />
 						<p:ajax update="@this @next" />
 					</p:selectOneMenu>
-					<p:message for="drive" />
+					<p:message for="@previous" />
 
-					<p:outputLabel for="color" value="Kolor:" />
-					<p:inputText id="color" value="#{offerNewBB.offer.color}"
-						required="true" requiredMessage="Kolor nie może być pusty">
+					<p:outputLabel for="@next" value="Kolor:" />
+					<p:selectOneMenu id="color" value="#{offerNewBB.offer.color}"
+						required="true" requiredMessage="Kolor nie może być pusty"
+						editable="true" filter="true" filterMatchMode="startsWith">
+						<f:selectItem itemLabel="Inny kolor" itemValue="Inny kolor"
+							noSelectionOption="true" />
+						<f:selectItems value="#{constantsBB.colors}" var="c" />
 						<p:ajax update="@this @next colorType" />
-					</p:inputText>
-					<p:message for="color" />
+					</p:selectOneMenu>
+					<p:message for="@previous" />
 
-					<p:outputLabel for="colorType" value="Typ koloru:" />
+					<p:outputLabel for="@next" value="Typ koloru:" />
 					<p:selectOneMenu id="colorType"
 						value="#{offerNewBB.offer.colorType}"
 						disabled="#{offerNewBB.offer.color == null}">
 						<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
 							noSelectionOption="true" />
-						<f:selectItems value="#{offerNewBB.colorTypes}" var="c"
+						<f:selectItems value="#{constantsBB.colorTypes}" var="c"
 							itemLabel="#{c}" itemValue="#{c}" />
 					</p:selectOneMenu>
-					<p:message for="colorType" />
+					<p:message for="@previous" />
 
-					<p:outputLabel for="mileage" value="Przebieg:" />
+					<p:outputLabel for="@next" value="Przebieg:" />
 					<p:inputNumber id="mileage" value="#{offerNewBB.offer.mileage}"
 						required="true" requiredMessage="Przebieg nie może być pusty"
 						decimalPlaces="0" minValue="0">
 						<p:ajax update="@this @next" />
 					</p:inputNumber>
-					<p:message for="mileage" />
+					<p:message for="@previous" />
 
-					<p:outputLabel for="vin" value="VIN:" />
+					<p:outputLabel for="@next" value="VIN:" />
 					<p:inputText id="vin" value="#{offerNewBB.offer.vin}"
 						required="true" requiredMessage="VIN nie może być pusty"
 						validatorMessage="Numer VIN składa się z 17 znaków (cyfr oraz dużych liter)">
 						<p:ajax update="@this @next" />
 						<f:validateRegex pattern="^[A-HJ-NPR-Z0-9]{17}$" />
 					</p:inputText>
-					<p:message for="vin" />
+					<p:message for="@previous" />
 
-					<p:outputLabel for="licensePlate"
-						value="Numer rejestracyjny pojazdu:" />
+					<p:outputLabel for="@next" value="Numer rejestracyjny pojazdu:" />
 					<p:inputText id="licensePlate"
 						value="#{offerNewBB.offer.licensePlate}" />
-					<p:message for="licensePlate" />
+					<p:message for="@previous" />
 
-					<p:outputLabel for="firstRegistration"
-						value="Data pierwszej rejestracji" />
+					<p:outputLabel for="@next" value="Data pierwszej rejestracji" />
 					<p:datePicker id="firstRegistration"
 						value="#{offerNewBB.offer.firstRegistration}"
 						monthNavigator="true" yearNavigator="true" yearRange="1950 : 2022" />
-					<p:message for="firstRegistration" />
+					<p:message for="@previous" />
 
-					<p:outputLabel for="title" value="Tytuł ogłoszenia:" />
+					<p:outputLabel for="@next" value="Tytuł ogłoszenia:" />
 					<p:inputText id="title" value="#{offerNewBB.offer.title}"
 						validatorMessage="Tytuł nie może być dłuższy niż 70 znaków">
 						<f:validateLength maximum="70" />
 						<p:ajax update="@this @next" />
 					</p:inputText>
-					<p:message for="title" />
+					<p:message for="@previous" />
 				</h:panelGrid>
 			</p:panel>
 
@@ -265,34 +267,34 @@
 
 			<p:panel header="Cena">
 				<h:panelGrid columns="3" cellpadding="5">
-					<p:outputLabel for="price" value="Podaj cenę" />
+					<p:outputLabel for="@next" value="Podaj cenę" />
 					<p:inputNumber id="price" value="#{offerNewBB.offer.price}"
 						required="true" requiredMessage="Cena nie może być pusta"
 						symbol=" PLN" symbolPosition="s" decimalPlaces="0" minValue="0">
 						<p:ajax update="@this @next" />
 					</p:inputNumber>
-					<p:message for="price" />
+					<p:message for="@previous" />
 				</h:panelGrid>
 			</p:panel>
 
 			<p:panel header="Dane kontaktowe">
 				<h:panelGrid columns="3" cellpadding="5">
-					<p:outputLabel for="name" value="Imię:" />
+					<p:outputLabel for="@next" value="Imię:" />
 					<h:outputText id="name" value="#{offerNewBB.offer.user.name}" />
 
-					<p:outputLabel for="phoneNumber" value="Numer telefonu:" />
+					<p:outputLabel for="@next" value="Numer telefonu:" />
 					<h:outputText id="phoneNumber"
 						value="#{offerNewBB.offer.user.phoneNumber}" />
 
-					<p:outputLabel for="email" value="E-Mail:" />
+					<p:outputLabel for="@next" value="E-Mail:" />
 					<h:outputText id="email" value="#{offerNewBB.offer.user.email}" />
 
-					<p:outputLabel for="city" value="Wpisz miasto:" />
+					<p:outputLabel for="@next" value="Wpisz miasto:" />
 					<p:inputText id="city" value="#{offerNewBB.offer.city}"
 						required="true" requiredMessage="Miasto nie może być puste">
 						<p:ajax update="@this @next" />
 					</p:inputText>
-					<p:message for="city" />
+					<p:message for="@previous" />
 				</h:panelGrid>
 			</p:panel>
 

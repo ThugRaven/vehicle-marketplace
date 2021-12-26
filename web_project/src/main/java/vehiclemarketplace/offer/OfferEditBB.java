@@ -45,11 +45,7 @@ public class OfferEditBB implements Serializable {
 	private List<Brand> brands;
 	private List<Model> models;
 	private List<Generation> generations;
-	private List<String> fuels = new ArrayList<>();
-	private List<String> transmissions = new ArrayList<>();
 	private List<BodyStyle> bodyStyles;
-	private List<SelectItem> drives = new ArrayList<>();
-	private List<String> colorTypes = new ArrayList<>();
 	private List<Equipment> equipments;
 
 	public Offer getOffer() {
@@ -72,24 +68,8 @@ public class OfferEditBB implements Serializable {
 		return generations;
 	}
 
-	public List<String> getFuels() {
-		return fuels;
-	}
-
-	public List<String> getTransmissions() {
-		return transmissions;
-	}
-
 	public List<BodyStyle> getBodyStyles() {
 		return bodyStyles;
-	}
-
-	public List<SelectItem> getDrives() {
-		return drives;
-	}
-
-	public List<String> getColorTypes() {
-		return colorTypes;
 	}
 
 	public List<Equipment> getEquipments() {
@@ -167,24 +147,7 @@ public class OfferEditBB implements Serializable {
 
 		brands = getBrandList();
 
-		fuels.add("Benzyna");
-		fuels.add("Benzyna + LPG");
-		fuels.add("Diesel");
-		fuels.add("Elektryczny");
-		fuels.add("Hybryda");
-
-		transmissions.add("Manualna");
-		transmissions.add("Automatyczna");
-
 		bodyStyles = getBodyStyleList();
-
-		drives.add(new SelectItem("FWD", "Na przednie koła"));
-		drives.add(new SelectItem("RWD", "Na tylne koła"));
-		drives.add(new SelectItem("AWD", "Na wszystkie koła 4x4"));
-
-		colorTypes.add("Matowy");
-		colorTypes.add("Metalik");
-		colorTypes.add("Perłowy");
 
 		equipments = getEquipmentList();
 		System.out.println(equipments.toString());

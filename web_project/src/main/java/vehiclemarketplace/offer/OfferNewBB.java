@@ -7,14 +7,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 import javax.faces.simplesecurity.RemoteClient;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -52,11 +50,7 @@ public class OfferNewBB implements Serializable {
 	private List<Brand> brands;
 	private List<Model> models;
 	private List<Generation> generations;
-	private List<String> fuels = new ArrayList<>();
-	private List<String> transmissions = new ArrayList<>();
 	private List<BodyStyle> bodyStyles;
-	private List<SelectItem> drives = new ArrayList<>();
-	private List<String> colorTypes = new ArrayList<>();
 	private List<Equipment> equipments;
 
 	private UploadedFile image;
@@ -82,24 +76,8 @@ public class OfferNewBB implements Serializable {
 		return generations;
 	}
 
-	public List<String> getFuels() {
-		return fuels;
-	}
-
-	public List<String> getTransmissions() {
-		return transmissions;
-	}
-
 	public List<BodyStyle> getBodyStyles() {
 		return bodyStyles;
-	}
-
-	public List<SelectItem> getDrives() {
-		return drives;
-	}
-
-	public List<String> getColorTypes() {
-		return colorTypes;
 	}
 
 	public List<Equipment> getEquipments() {
@@ -161,24 +139,7 @@ public class OfferNewBB implements Serializable {
 
 		brands = getBrandList();
 
-		fuels.add("Benzyna");
-		fuels.add("Benzyna + LPG");
-		fuels.add("Diesel");
-		fuels.add("Elektryczny");
-		fuels.add("Hybryda");
-
-		transmissions.add("Manualna");
-		transmissions.add("Automatyczna");
-
 		bodyStyles = getBodyStyleList();
-
-		drives.add(new SelectItem("FWD", "Na przednie koła"));
-		drives.add(new SelectItem("RWD", "Na tylne koła"));
-		drives.add(new SelectItem("AWD", "Na wszystkie koła 4x4"));
-
-		colorTypes.add("Matowy");
-		colorTypes.add("Metalik");
-		colorTypes.add("Perłowy");
 
 		equipments = getEquipmentList();
 		System.out.println(equipments.toString());
