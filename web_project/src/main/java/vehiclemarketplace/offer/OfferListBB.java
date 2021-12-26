@@ -8,10 +8,8 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -58,14 +56,7 @@ public class OfferListBB implements Serializable {
 	private List<Brand> brands;
 	private List<Model> models;
 	private List<Generation> generations;
-	private List<String> fuels = new ArrayList<>();
-	private List<String> transmissions = new ArrayList<>();
 	private List<BodyStyle> bodyStyles;
-	private List<SelectItem> drives = new ArrayList<>();
-	private List<Byte> doors = new ArrayList<>();
-	private List<Byte> seats = new ArrayList<>();
-	private List<String> colors = new ArrayList<>();
-	private List<String> colorTypes = new ArrayList<>();
 	private List<Equipment> equipments;
 
 	public Offer getSelectedOffer() {
@@ -108,36 +99,8 @@ public class OfferListBB implements Serializable {
 		return generations;
 	}
 
-	public List<String> getFuels() {
-		return fuels;
-	}
-
-	public List<String> getTransmissions() {
-		return transmissions;
-	}
-
 	public List<BodyStyle> getBodyStyles() {
 		return bodyStyles;
-	}
-
-	public List<SelectItem> getDrives() {
-		return drives;
-	}
-
-	public List<Byte> getDoors() {
-		return doors;
-	}
-
-	public List<Byte> getSeats() {
-		return seats;
-	}
-
-	public List<String> getColors() {
-		return colors;
-	}
-
-	public List<String> getColorTypes() {
-		return colorTypes;
 	}
 
 	public List<Equipment> getEquipments() {
@@ -190,46 +153,7 @@ public class OfferListBB implements Serializable {
 
 		brands = getBrandList();
 
-		fuels.add("Benzyna");
-		fuels.add("Benzyna + LPG");
-		fuels.add("Diesel");
-		fuels.add("Elektryczny");
-		fuels.add("Hybryda");
-
-		transmissions.add("Manualna");
-		transmissions.add("Automatyczna");
-
 		bodyStyles = getBodyStyleList();
-
-		drives.add(new SelectItem("FWD", "Na przednie koła"));
-		drives.add(new SelectItem("RWD", "Na tylne koła"));
-		drives.add(new SelectItem("AWD", "Na wszystkie koła 4x4"));
-
-		for (int i = 2; i <= 6; i++) {
-			doors.add((byte) i);
-		}
-
-		for (int i = 1; i <= 9; i++) {
-			seats.add((byte) i);
-		}
-
-		colors.add("Beżowy");
-		colors.add("Biały");
-		colors.add("Bordowy");
-		colors.add("Brązowy");
-		colors.add("Czarny");
-		colors.add("Czerwony");
-		colors.add("Fioletowy");
-		colors.add("Niebieski");
-		colors.add("Srebrny");
-		colors.add("Szary");
-		colors.add("Zielony");
-		colors.add("Złoty");
-		colors.add("Żółty");
-
-		colorTypes.add("Matowy");
-		colorTypes.add("Metalik");
-		colorTypes.add("Perłowy");
 
 		equipments = getEquipmentList();
 
@@ -365,28 +289,6 @@ public class OfferListBB implements Serializable {
 				return offers;
 			}
 		};
-	}
-
-	public List<Offer> getFullList() {
-		return offerDAO.getFullList();
-	}
-
-	public String archiveOffer() {
-		System.out.println("archive: " + selectedOffer.getIdOffer());
-
-		if (selectedOffer.getArchived()) {
-			ctx.addMessage("offerTable",
-					new FacesMessage(FacesMessage.SEVERITY_WARN, "Ogłoszenie jest już zakończone!", null));
-			return PAGE_STAY_AT_THE_SAME;
-		}
-
-		Offer offer = selectedOffer;
-		offer.setArchived(true);
-		offerDAO.merge(offer);
-		selectedOffer = null;
-		ctx.addMessage("offerTable",
-				new FacesMessage(FacesMessage.SEVERITY_INFO, "Pomyślnie zakończono ogłoszenie!", null));
-		return PAGE_STAY_AT_THE_SAME;
 	}
 
 	public List<Brand> getBrandList() {

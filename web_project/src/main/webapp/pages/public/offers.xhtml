@@ -112,7 +112,7 @@
 						<p:selectOneMenu id="fuel" value="#{offerListBB.offerFilter.fuel}">
 							<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
 								noSelectionOption="true" />
-							<f:selectItems value="#{offerListBB.fuels}" var="f"
+							<f:selectItems value="#{constantsBB.fuels}" var="f"
 								itemLabel="#{f}" itemValue="#{f}" />
 						</p:selectOneMenu>
 						<p:message for="fuel" />
@@ -215,7 +215,7 @@
 									<p:selectManyCheckbox
 										value="#{offerListBB.offerFilterList.get(0).values}"
 										layout="grid" columns="3" styleClass="grid-checkbox">
-										<f:selectItems value="#{offerListBB.transmissions}" var="t"
+										<f:selectItems value="#{constantsBB.transmissions}" var="t"
 											itemLabel="#{t}" itemValue="#{t}" />
 									</p:selectManyCheckbox>
 
@@ -223,7 +223,7 @@
 									<p:selectManyCheckbox
 										value="#{offerListBB.offerFilterList.get(1).values}"
 										layout="grid" columns="3" styleClass="grid-checkbox">
-										<f:selectItems value="#{offerListBB.drives}" var="d" />
+										<f:selectItems value="#{constantsBB.drives}" var="d" />
 									</p:selectManyCheckbox>
 								</h:panelGrid>
 
@@ -242,28 +242,28 @@
 									<p:selectManyCheckbox
 										value="#{offerListBB.offerFilterList.get(2).values}"
 										layout="grid" columns="3" styleClass="grid-checkbox">
-										<f:selectItems value="#{offerListBB.doors}" var="d" />
+										<f:selectItems value="#{constantsBB.doors}" var="d" />
 									</p:selectManyCheckbox>
 
 									<p:outputLabel for="@next" value="Liczba miejsc" />
 									<p:selectManyCheckbox
 										value="#{offerListBB.offerFilterList.get(3).values}"
 										layout="grid" columns="3" styleClass="grid-checkbox">
-										<f:selectItems value="#{offerListBB.seats}" var="s" />
+										<f:selectItems value="#{constantsBB.seats}" var="s" />
 									</p:selectManyCheckbox>
 
 									<p:outputLabel for="@next" value="Kolor" />
 									<p:selectManyMenu
 										value="#{offerListBB.offerFilterList.get(4).values}"
 										showCheckbox="true">
-										<f:selectItems value="#{offerListBB.colors}" var="d" />
+										<f:selectItems value="#{constantsBB.colors}" var="d" />
 									</p:selectManyMenu>
 
 									<p:outputLabel for="@next" value="Rodzaj koloru" />
 									<p:selectManyCheckbox
 										value="#{offerListBB.offerFilterList.get(5).values}"
 										layout="grid" columns="3" styleClass="grid-checkbox">
-										<f:selectItems value="#{offerListBB.colorTypes}" var="c"
+										<f:selectItems value="#{constantsBB.colorTypes}" var="c"
 											itemLabel="#{c}" itemValue="#{c}" />
 									</p:selectManyCheckbox>
 								</h:panelGrid>
