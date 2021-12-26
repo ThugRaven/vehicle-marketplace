@@ -103,6 +103,21 @@ public class OfferDAO {
 		return list;
 	}
 
+	public long countOffersByBrandID(int id) {
+		long count = 0;
+
+		Query query = em.createQuery("SELECT COUNT(o) FROM Offer o WHERE o.brand.idBrand = :id AND o.archived = false");
+		query.setParameter("id", id);
+
+		try {
+			count = (long) query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return count;
+	}
+
 	public List<Offer> getOffersByModelID(int id) {
 		List<Offer> list = null;
 
@@ -118,6 +133,21 @@ public class OfferDAO {
 		return list;
 	}
 
+	public long countOffersByModelID(int id) {
+		long count = 0;
+
+		Query query = em.createQuery("SELECT COUNT(o) FROM Offer o WHERE o.model.idModel = :id AND o.archived = false");
+		query.setParameter("id", id);
+
+		try {
+			count = (long) query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return count;
+	}
+
 	public List<Offer> getOffersByGenerationID(int id) {
 		List<Offer> list = null;
 
@@ -131,6 +161,21 @@ public class OfferDAO {
 		}
 
 		return list;
+	}
+
+	public long countOffersByGenerationID(int id) {
+		long count = 0;
+
+		Query query = em.createQuery("SELECT COUNT(o) FROM Offer o WHERE o.generation.idGeneration = :id AND o.archived = false");
+		query.setParameter("id", id);
+
+		try {
+			count = (long) query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return count;
 	}
 
 	public List<Offer> getOffersByUserID(int id) {

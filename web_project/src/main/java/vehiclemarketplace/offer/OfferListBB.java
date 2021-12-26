@@ -19,6 +19,7 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
 
 import vehiclemarketplace.classes.SelectFilter;
+import vehiclemarketplace.classes.SelectItemCount;
 import vehiclemarketplace.classes.SelectList;
 import vehiclemarketplace.classes.SelectType;
 import vehiclemarketplace.dao.BodyStyleDAO;
@@ -53,9 +54,9 @@ public class OfferListBB implements Serializable {
 	private Offer offerFilterTo = new Offer();
 	private List<SelectList> offerFilterList = new ArrayList<>();
 
-	private List<Brand> brands;
-	private List<Model> models;
-	private List<Generation> generations;
+	private List<SelectItemCount<Brand>> brands;
+	private List<SelectItemCount<Model>> models = new ArrayList<>();
+	private List<SelectItemCount<Generation>> generations = new ArrayList<>();
 	private List<BodyStyle> bodyStyles;
 	private List<Equipment> equipments;
 
@@ -87,15 +88,15 @@ public class OfferListBB implements Serializable {
 		return offerFilterList;
 	}
 
-	public List<Brand> getBrands() {
+	public List<SelectItemCount<Brand>> getBrands() {
 		return brands;
 	}
 
-	public List<Model> getModels() {
+	public List<SelectItemCount<Model>> getModels() {
 		return models;
 	}
 
-	public List<Generation> getGenerations() {
+	public List<SelectItemCount<Generation>> getGenerations() {
 		return generations;
 	}
 
@@ -291,13 +292,41 @@ public class OfferListBB implements Serializable {
 		};
 	}
 
-	public List<Brand> getBrandList() {
-		return brandDAO.getFullList();
+	public List<Offer> getFullList() {
+		return offerDAO.getFullList();
+	}
+
+	public long countOffersByBrandID(int id) {
+		return offerDAO.countOffersByBrandID(id);
+	}
+
+	public long countOffersByModelID(int id) {
+		return offerDAO.countOffersByModelID(id);
+	}
+
+	public long countOffersByGenerationID(int id) {
+		return offerDAO.countOffersByGenerationID(id);
+	}
+
+	public List<SelectItemCount<Brand>> getBrandList() {
+		List<SelectItemCount<Brand>> selectItemCounts = new ArrayList<>();
+
+		List<Brand> brandsList = brandDAO.getFullList();
+		for (Brand brand : brandsList) {
+			selectItemCounts.add(new SelectItemCount<Brand>(brand, countOffersByBrandID(brand.getIdBrand())));
+		}
+
+		return selectItemCounts;
 	}
 
 	public void changeBrand() {
 		if (offerFilter.getBrand() != null && offerFilter.getBrand().getIdBrand() != 0) {
-			models = modelDAO.getModelsByBrandID(offerFilter.getBrand().getIdBrand());
+			models = new ArrayList<>();
+			generations = new ArrayList<>();
+			List<Model> modelsList = modelDAO.getModelsByBrandID(offerFilter.getBrand().getIdBrand());
+			for (Model model : modelsList) {
+				models.add(new SelectItemCount<Model>(model, countOffersByModelID(model.getIdModel())));
+			}
 		} else {
 			models = null;
 			generations = null;
@@ -306,7 +335,13 @@ public class OfferListBB implements Serializable {
 
 	public void changeModel() {
 		if (offerFilter.getModel() != null && offerFilter.getModel().getIdModel() != 0) {
-			generations = generationDAO.getGenerationsByModelID(offerFilter.getModel().getIdModel());
+			generations = new ArrayList<>();
+			List<Generation> generationsList = generationDAO
+					.getGenerationsByModelID(offerFilter.getModel().getIdModel());
+			for (Generation generation : generationsList) {
+				generations.add(new SelectItemCount<Generation>(generation,
+						countOffersByGenerationID(generation.getIdGeneration())));
+			}
 		} else {
 			generations = null;
 		}

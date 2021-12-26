@@ -49,7 +49,8 @@
 							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
 								noSelectionOption="true" />
 							<f:selectItems value="#{offerListBB.brands}" var="b"
-								itemLabel="#{b.name}" itemValue="#{b.idBrand}" />
+								itemLabel="#{b.object.name} (#{b.count})"
+								itemValue="#{b.object.idBrand}" />
 							<p:ajax listener="#{offerListBB.changeBrand}"
 								update="model generation" />
 						</p:selectOneMenu>
@@ -61,7 +62,8 @@
 							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
 								noSelectionOption="true" />
 							<f:selectItems value="#{offerListBB.models}" var="m"
-								itemLabel="#{m.name}" itemValue="#{m.idModel}" />
+								itemLabel="#{m.object.name} (#{m.count})"
+								itemValue="#{m.object.idModel}" />
 							<p:ajax listener="#{offerListBB.changeModel}" update="generation" />
 						</p:selectOneMenu>
 						<p:message for="model" />
@@ -72,7 +74,8 @@
 							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
 								noSelectionOption="true" />
 							<f:selectItems value="#{offerListBB.generations}" var="g"
-								itemLabel="#{g.name}" itemValue="#{g.idGeneration}" />
+								itemLabel="#{g.object.name} (#{g.count})"
+								itemValue="#{g.object.idGeneration}" />
 						</p:selectOneMenu>
 						<p:message for="generation" />
 
