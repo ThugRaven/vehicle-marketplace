@@ -189,98 +189,7 @@ public class OfferListBB implements Serializable {
 				}
 
 				List<SelectFilter> filter = new ArrayList<>();
-				if (offerFilter.getBodyStyle() != null && offerFilter.getBodyStyle().getIdBodyStyle() != 0) {
-					filter.add(new SelectFilter("bodyStyle.idBodyStyle", "idBodyStyle",
-							offerFilter.getBodyStyle().getIdBodyStyle(), SelectType.NORMAL));
-				}
-				if (offerFilter.getBrand() != null && offerFilter.getBrand().getIdBrand() != 0) {
-					filter.add(new SelectFilter("brand.idBrand", "idBrand", offerFilter.getBrand().getIdBrand(),
-							SelectType.NORMAL));
-				}
-				if (offerFilter.getModel() != null && offerFilter.getModel().getIdModel() != 0) {
-					filter.add(new SelectFilter("model.idModel", "idModel", offerFilter.getModel().getIdModel(),
-							SelectType.NORMAL));
-				}
-				if (offerFilter.getGeneration() != null && offerFilter.getGeneration().getIdGeneration() != 0) {
-					filter.add(new SelectFilter("generation.idGeneration", "idGeneration",
-							offerFilter.getGeneration().getIdGeneration(), SelectType.NORMAL));
-				}
-				if (offerFilterFrom.getPrice() != null) {
-					filter.add(new SelectFilter("price", "priceFrom", offerFilterFrom.getPrice(),
-							SelectType.GREATER_EQUAL_THAN));
-				}
-				if (offerFilterTo.getPrice() != null) {
-					filter.add(
-							new SelectFilter("price", "priceTo", offerFilterTo.getPrice(), SelectType.LESS_EQUAL_THAN));
-				}
-				if (offerFilterFrom.getProductionYear() != null) {
-					filter.add(new SelectFilter("productionYear", "productionYearFrom",
-							offerFilterFrom.getProductionYear(), SelectType.GREATER_EQUAL_THAN));
-				}
-				if (offerFilterTo.getProductionYear() != null) {
-					filter.add(new SelectFilter("productionYear", "productionYearTo", offerFilterTo.getProductionYear(),
-							SelectType.LESS_EQUAL_THAN));
-				}
-				if (offerFilter.getFuel() != null && !offerFilter.getFuel().isEmpty()) {
-					filter.add(new SelectFilter("fuel", offerFilter.getFuel(), SelectType.NORMAL));
-				}
-				if (offerFilterFrom.getMileage() != null) {
-					filter.add(new SelectFilter("mileage", "mileageFrom", offerFilterFrom.getMileage(),
-							SelectType.GREATER_EQUAL_THAN));
-				}
-				if (offerFilterTo.getMileage() != null) {
-					filter.add(new SelectFilter("mileage", "mileageTo", offerFilterTo.getMileage(),
-							SelectType.LESS_EQUAL_THAN));
-				}
-				if (offerFilter.getLicensePlate() != null
-						&& Boolean.parseBoolean(String.valueOf(offerFilter.getLicensePlate()))) {
-					filter.add(new SelectFilter("licensePlate", offerFilter.getLicensePlate(), SelectType.IS_NOT_NULL));
-				}
-				if (offerFilter.getIsDamaged() != null) {
-					filter.add(new SelectFilter("isDamaged", offerFilter.getIsDamaged(), SelectType.NORMAL));
-				}
-				if (offerFilter.getIsAccidentFree() != null && offerFilter.getIsAccidentFree()) {
-					filter.add(new SelectFilter("isAccidentFree", offerFilter.getIsAccidentFree(), SelectType.NORMAL));
-				}
-				if (offerFilter.getIsFirstOwner() != null && offerFilter.getIsFirstOwner()) {
-					filter.add(new SelectFilter("isFirstOwner", offerFilter.getIsFirstOwner(), SelectType.NORMAL));
-				}
-				if (offerFilter.getIsRegistered() != null && offerFilter.getIsRegistered()) {
-					filter.add(new SelectFilter("isRegistered", offerFilter.getIsRegistered(), SelectType.NORMAL));
-				}
-				if (offerFilter.getIsRightHandDrive() != null && offerFilter.getIsRightHandDrive()) {
-					filter.add(
-							new SelectFilter("isRightHandDrive", offerFilter.getIsRightHandDrive(), SelectType.NORMAL));
-				}
-				if (offerFilterFrom.getDisplacement() != null) {
-					filter.add(new SelectFilter("displacement", "displacementFrom", offerFilterFrom.getDisplacement(),
-							SelectType.GREATER_EQUAL_THAN));
-				}
-				if (offerFilterTo.getDisplacement() != null) {
-					filter.add(new SelectFilter("displacement", "displacementTo", offerFilterTo.getDisplacement(),
-							SelectType.LESS_EQUAL_THAN));
-				}
-				if (offerFilterFrom.getPower() != null) {
-					filter.add(new SelectFilter("power", "powerFrom", offerFilterFrom.getPower(),
-							SelectType.GREATER_EQUAL_THAN));
-				}
-				if (offerFilterTo.getPower() != null) {
-					filter.add(
-							new SelectFilter("power", "powerTo", offerFilterTo.getPower(), SelectType.LESS_EQUAL_THAN));
-				}
-				if (offerFilterList != null && offerFilterList.size() > 0) {
-					for (SelectList selectList : offerFilterList) {
-						System.out.println("selectList: " + selectList.toString());
-
-						if (selectList.getValues() != null && selectList.getValues().size() > 0) {
-							System.out.println("add to where");
-							filter.add(new SelectFilter(selectList.getParameter(), selectList.getParameter(),
-									selectList.getValues(), SelectType.LIST));
-						}
-					}
-				}
-
-				filter.add(new SelectFilter("archived", false, SelectType.NORMAL));
+				filter = addFilters();
 
 				offers = offerDAO.getLazyList(sortMap, filter, offset, pageSize);
 
@@ -290,6 +199,106 @@ public class OfferListBB implements Serializable {
 				return offers;
 			}
 		};
+	}
+
+	public List<SelectFilter> addFilters() {
+		List<SelectFilter> filter = new ArrayList<>();
+
+		if (offerFilter.getBodyStyle() != null && offerFilter.getBodyStyle().getIdBodyStyle() != 0) {
+			filter.add(new SelectFilter("bodyStyle.idBodyStyle", "idBodyStyle",
+					offerFilter.getBodyStyle().getIdBodyStyle(), SelectType.NORMAL));
+		}
+		if (offerFilter.getBrand() != null && offerFilter.getBrand().getIdBrand() != 0) {
+			filter.add(new SelectFilter("brand.idBrand", "idBrand", offerFilter.getBrand().getIdBrand(),
+					SelectType.NORMAL));
+		}
+		if (offerFilter.getModel() != null && offerFilter.getModel().getIdModel() != 0) {
+			filter.add(new SelectFilter("model.idModel", "idModel", offerFilter.getModel().getIdModel(),
+					SelectType.NORMAL));
+		}
+		if (offerFilter.getGeneration() != null && offerFilter.getGeneration().getIdGeneration() != 0) {
+			filter.add(new SelectFilter("generation.idGeneration", "idGeneration",
+					offerFilter.getGeneration().getIdGeneration(), SelectType.NORMAL));
+		}
+		if (offerFilterFrom.getPrice() != null) {
+			filter.add(
+					new SelectFilter("price", "priceFrom", offerFilterFrom.getPrice(), SelectType.GREATER_EQUAL_THAN));
+		}
+		if (offerFilterTo.getPrice() != null) {
+			filter.add(new SelectFilter("price", "priceTo", offerFilterTo.getPrice(), SelectType.LESS_EQUAL_THAN));
+		}
+		if (offerFilterFrom.getProductionYear() != null) {
+			filter.add(new SelectFilter("productionYear", "productionYearFrom", offerFilterFrom.getProductionYear(),
+					SelectType.GREATER_EQUAL_THAN));
+		}
+		if (offerFilterTo.getProductionYear() != null) {
+			filter.add(new SelectFilter("productionYear", "productionYearTo", offerFilterTo.getProductionYear(),
+					SelectType.LESS_EQUAL_THAN));
+		}
+		if (offerFilter.getFuel() != null && !offerFilter.getFuel().isEmpty()) {
+			filter.add(new SelectFilter("fuel", offerFilter.getFuel(), SelectType.NORMAL));
+		}
+		if (offerFilterFrom.getMileage() != null) {
+			filter.add(new SelectFilter("mileage", "mileageFrom", offerFilterFrom.getMileage(),
+					SelectType.GREATER_EQUAL_THAN));
+		}
+		if (offerFilterTo.getMileage() != null) {
+			filter.add(
+					new SelectFilter("mileage", "mileageTo", offerFilterTo.getMileage(), SelectType.LESS_EQUAL_THAN));
+		}
+		if (offerFilter.getLicensePlate() != null
+				&& Boolean.parseBoolean(String.valueOf(offerFilter.getLicensePlate()))) {
+			filter.add(new SelectFilter("licensePlate", offerFilter.getLicensePlate(), SelectType.IS_NOT_NULL));
+		}
+		if (offerFilter.getIsDamaged() != null) {
+			filter.add(new SelectFilter("isDamaged", offerFilter.getIsDamaged(), SelectType.NORMAL));
+		}
+		if (offerFilter.getIsAccidentFree() != null && offerFilter.getIsAccidentFree()) {
+			filter.add(new SelectFilter("isAccidentFree", offerFilter.getIsAccidentFree(), SelectType.NORMAL));
+		}
+		if (offerFilter.getIsFirstOwner() != null && offerFilter.getIsFirstOwner()) {
+			filter.add(new SelectFilter("isFirstOwner", offerFilter.getIsFirstOwner(), SelectType.NORMAL));
+		}
+		if (offerFilter.getIsRegistered() != null && offerFilter.getIsRegistered()) {
+			filter.add(new SelectFilter("isRegistered", offerFilter.getIsRegistered(), SelectType.NORMAL));
+		}
+		if (offerFilter.getIsRightHandDrive() != null && offerFilter.getIsRightHandDrive()) {
+			filter.add(new SelectFilter("isRightHandDrive", offerFilter.getIsRightHandDrive(), SelectType.NORMAL));
+		}
+		if (offerFilterFrom.getDisplacement() != null) {
+			filter.add(new SelectFilter("displacement", "displacementFrom", offerFilterFrom.getDisplacement(),
+					SelectType.GREATER_EQUAL_THAN));
+		}
+		if (offerFilterTo.getDisplacement() != null) {
+			filter.add(new SelectFilter("displacement", "displacementTo", offerFilterTo.getDisplacement(),
+					SelectType.LESS_EQUAL_THAN));
+		}
+		if (offerFilterFrom.getPower() != null) {
+			filter.add(
+					new SelectFilter("power", "powerFrom", offerFilterFrom.getPower(), SelectType.GREATER_EQUAL_THAN));
+		}
+		if (offerFilterTo.getPower() != null) {
+			filter.add(new SelectFilter("power", "powerTo", offerFilterTo.getPower(), SelectType.LESS_EQUAL_THAN));
+		}
+		if (offerFilterList != null && offerFilterList.size() > 0) {
+			for (SelectList selectList : offerFilterList) {
+				System.out.println("selectList: " + selectList.toString());
+
+				if (selectList.getValues() != null && selectList.getValues().size() > 0) {
+					System.out.println("add to where");
+					filter.add(new SelectFilter(selectList.getParameter(), selectList.getParameter(),
+							selectList.getValues(), SelectType.LIST));
+				}
+			}
+		}
+
+		filter.add(new SelectFilter("archived", false, SelectType.NORMAL));
+
+		return filter;
+	}
+
+	public int countLazyList() {
+		return (int) offerDAO.countLazyList(addFilters());
 	}
 
 	public List<Offer> getFullList() {

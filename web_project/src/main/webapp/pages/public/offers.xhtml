@@ -40,6 +40,7 @@
 								noSelectionOption="true" />
 							<f:selectItems value="#{offerListBB.bodyStyles}" var="b"
 								itemLabel="#{b.name}" itemValue="#{b.idBodyStyle}" />
+							<p:ajax update="@obs(count)" />
 						</p:selectOneMenu>
 						<p:message for="bodyStyle" />
 
@@ -52,7 +53,7 @@
 								itemLabel="#{b.object.name} (#{b.count})"
 								itemValue="#{b.object.idBrand}" />
 							<p:ajax listener="#{offerListBB.changeBrand}"
-								update="model generation" />
+								update="model generation @obs(count)" />
 						</p:selectOneMenu>
 						<p:message for="brand" />
 
@@ -64,7 +65,8 @@
 							<f:selectItems value="#{offerListBB.models}" var="m"
 								itemLabel="#{m.object.name} (#{m.count})"
 								itemValue="#{m.object.idModel}" />
-							<p:ajax listener="#{offerListBB.changeModel}" update="generation" />
+							<p:ajax listener="#{offerListBB.changeModel}"
+								update="generation @obs(count)" />
 						</p:selectOneMenu>
 						<p:message for="model" />
 
@@ -76,19 +78,24 @@
 							<f:selectItems value="#{offerListBB.generations}" var="g"
 								itemLabel="#{g.object.name} (#{g.count})"
 								itemValue="#{g.object.idGeneration}" />
+							<p:ajax update="@obs(count)" />
 						</p:selectOneMenu>
 						<p:message for="generation" />
 
 						<p:outputLabel for="priceFrom" value="Cena od" />
 						<p:inputNumber id="priceFrom"
 							value="#{offerListBB.offerFilterFrom.price}" decimalPlaces="0"
-							minValue="0" />
+							minValue="0">
+							<p:ajax update="@obs(count)" />
+						</p:inputNumber>
 						<p:message for="priceFrom" />
 
 						<p:outputLabel for="priceTo" value="Cena do" />
 						<p:inputNumber id="priceTo"
 							value="#{offerListBB.offerFilterTo.price}" decimalPlaces="0"
-							minValue="0" />
+							minValue="0">
+							<p:ajax update="@obs(count)" />
+						</p:inputNumber>
 						<p:message for="priceTo" />
 
 						<p:outputLabel for="productionYearFrom" value="Rok produkcji od" />
@@ -98,6 +105,7 @@
 							converterMessage="Błąd konwersji roku">
 							<f:validateLength minimum="4" maximum="4" />
 							<p:keyFilter mask="num" />
+							<p:ajax update="@obs(count)" />
 						</p:inputText>
 						<p:message for="productionYearFrom" />
 
@@ -108,6 +116,7 @@
 							converterMessage="Błąd konwersji roku">
 							<f:validateLength minimum="4" maximum="4" />
 							<p:keyFilter mask="num" />
+							<p:ajax update="@obs(count)" />
 						</p:inputText>
 						<p:message for="productionYearTo" />
 
@@ -117,19 +126,24 @@
 								noSelectionOption="true" />
 							<f:selectItems value="#{constantsBB.fuels}" var="f"
 								itemLabel="#{f}" itemValue="#{f}" />
+							<p:ajax update="@obs(count)" />
 						</p:selectOneMenu>
 						<p:message for="fuel" />
 
 						<p:outputLabel for="mileageFrom" value="Przebieg od" />
 						<p:inputNumber id="mileageFrom"
 							value="#{offerListBB.offerFilterFrom.mileage}" decimalPlaces="0"
-							minValue="0" />
+							minValue="0">
+							<p:ajax update="@obs(count)" />
+						</p:inputNumber>
 						<p:message for="mileageFrom" />
 
 						<p:outputLabel for="mileageTo" value="Przebieg do" />
 						<p:inputNumber id="mileageTo"
 							value="#{offerListBB.offerFilterTo.mileage}" decimalPlaces="0"
-							minValue="0" />
+							minValue="0">
+							<p:ajax update="@obs(count)" />
+						</p:inputNumber>
 						<p:message for="mileageTo" />
 
 						<p:commandButton value="Status pojazdu" type="button"
@@ -149,7 +163,9 @@
 								<h:panelGrid columns="3" cellpadding="5">
 									<p:selectBooleanCheckbox
 										value="#{offerListBB.offerFilter.licensePlate}"
-										itemLabel="Ma numer rejestracyjny" />
+										itemLabel="Ma numer rejestracyjny">
+										<p:ajax update="@obs(count)" />
+									</p:selectBooleanCheckbox>
 
 									<p:outputLabel for="@next" value="Uszkodzony" />
 									<p:selectOneMenu value="#{offerListBB.offerFilter.isDamaged}">
@@ -157,27 +173,41 @@
 											noSelectionOption="true" />
 										<f:selectItem itemLabel="Nie" itemValue="#{false}" />
 										<f:selectItem itemLabel="Tak" itemValue="#{true}" />
+										<p:ajax update="@obs(count)" />
 									</p:selectOneMenu>
 									<p:message for="@previous" />
 
 									<p:selectBooleanCheckbox
 										value="#{offerListBB.offerFilter.isAccidentFree}"
-										itemLabel="Bezwypadkowy" />
+										itemLabel="Bezwypadkowy">
+										<p:ajax update="@obs(count)" />
+									</p:selectBooleanCheckbox>
 
 									<p:selectBooleanCheckbox
 										value="#{offerListBB.offerFilter.isFirstOwner}"
-										itemLabel="Pierwszy właściciel" />
+										itemLabel="Pierwszy właściciel">
+										<p:ajax update="@obs(count)" />
+									</p:selectBooleanCheckbox>
 
 									<p:selectBooleanCheckbox
 										value="#{offerListBB.offerFilter.isRegistered}"
-										itemLabel="Zarejestrowany w Polsce" />
+										itemLabel="Zarejestrowany w Polsce">
+										<p:ajax update="@obs(count)" />
+									</p:selectBooleanCheckbox>
 
 									<p:selectBooleanCheckbox
 										value="#{offerListBB.offerFilter.isRightHandDrive}"
-										itemLabel="Kierownica po prawej (Anglik)" />
+										itemLabel="Kierownica po prawej (Anglik)">
+										<p:ajax update="@obs(count)" />
+									</p:selectBooleanCheckbox>
 								</h:panelGrid>
 
-								<p:commandButton value="Pokaż wyniki" update="offerTable" />
+								<p:commandButton
+									value="Pokaż wyniki (#{offerListBB.countLazyList()} Ogłoszeń)"
+									update="offerTable">
+									<p:autoUpdate on="count" />
+								</p:commandButton>
+
 								<p:commandButton value="Wyczyść"
 									action="#{offerListBB.clearVehicleStatus()}"
 									update="offerTable" />
@@ -193,25 +223,33 @@
 									<p:outputLabel for="@next" value="Pojemność skokowa od" />
 									<p:inputNumber id="displacementFrom"
 										value="#{offerListBB.offerFilterFrom.displacement}"
-										decimalPlaces="0" minValue="0" />
+										decimalPlaces="0" minValue="0">
+										<p:ajax update="@obs(count)" />
+									</p:inputNumber>
 									<p:message for="@previous" />
 
 									<p:outputLabel for="@next" value="Pojemność skokowa do" />
 									<p:inputNumber id="displacementTo"
 										value="#{offerListBB.offerFilterTo.displacement}"
-										decimalPlaces="0" minValue="0" />
+										decimalPlaces="0" minValue="0">
+										<p:ajax update="@obs(count)" />
+									</p:inputNumber>
 									<p:message for="@previous" />
 
 									<p:outputLabel for="@next" value="Moc od" />
 									<p:inputNumber id="powerFrom"
 										value="#{offerListBB.offerFilterFrom.power}" decimalPlaces="0"
-										minValue="0" />
+										minValue="0">
+										<p:ajax update="@obs(count)" />
+									</p:inputNumber>
 									<p:message for="@previous" />
 
 									<p:outputLabel for="@next" value="Moc do" />
 									<p:inputNumber id="powerTo"
 										value="#{offerListBB.offerFilterTo.power}" decimalPlaces="0"
-										minValue="0" />
+										minValue="0">
+										<p:ajax update="@obs(count)" />
+									</p:inputNumber>
 									<p:message for="@previous" />
 
 									<p:outputLabel for="@next" value="Skrzynia biegów" />
@@ -220,6 +258,7 @@
 										layout="grid" columns="3" styleClass="grid-checkbox">
 										<f:selectItems value="#{constantsBB.transmissions}" var="t"
 											itemLabel="#{t}" itemValue="#{t}" />
+										<p:ajax update="@obs(count)" />
 									</p:selectManyCheckbox>
 
 									<p:outputLabel for="@next" value="Napęd" />
@@ -227,10 +266,16 @@
 										value="#{offerListBB.offerFilterList.get(1).values}"
 										layout="grid" columns="3" styleClass="grid-checkbox">
 										<f:selectItems value="#{constantsBB.drives}" var="d" />
+										<p:ajax update="@obs(count)" />
 									</p:selectManyCheckbox>
 								</h:panelGrid>
 
-								<p:commandButton value="Pokaż wyniki" update="offerTable" />
+								<p:commandButton
+									value="Pokaż wyniki (#{offerListBB.countLazyList()} Ogłoszeń)"
+									update="offerTable">
+									<p:autoUpdate on="count" />
+								</p:commandButton>
+
 								<p:commandButton value="Wyczyść"
 									action="#{offerListBB.clearEngineDrive()}" update="offerTable" />
 							</p:outputPanel>
@@ -246,6 +291,7 @@
 										value="#{offerListBB.offerFilterList.get(2).values}"
 										layout="grid" columns="3" styleClass="grid-checkbox">
 										<f:selectItems value="#{constantsBB.doors}" var="d" />
+										<p:ajax update="@obs(count)" />
 									</p:selectManyCheckbox>
 
 									<p:outputLabel for="@next" value="Liczba miejsc" />
@@ -253,6 +299,7 @@
 										value="#{offerListBB.offerFilterList.get(3).values}"
 										layout="grid" columns="3" styleClass="grid-checkbox">
 										<f:selectItems value="#{constantsBB.seats}" var="s" />
+										<p:ajax update="@obs(count)" />
 									</p:selectManyCheckbox>
 
 									<p:outputLabel for="@next" value="Kolor" />
@@ -260,6 +307,7 @@
 										value="#{offerListBB.offerFilterList.get(4).values}"
 										showCheckbox="true">
 										<f:selectItems value="#{constantsBB.colors}" var="c" />
+										<p:ajax update="@obs(count)" />
 									</p:selectManyMenu>
 
 									<p:outputLabel for="@next" value="Rodzaj koloru" />
@@ -268,16 +316,26 @@
 										layout="grid" columns="3" styleClass="grid-checkbox">
 										<f:selectItems value="#{constantsBB.colorTypes}" var="c"
 											itemLabel="#{c}" itemValue="#{c}" />
+										<p:ajax update="@obs(count)" />
 									</p:selectManyCheckbox>
 								</h:panelGrid>
 
-								<p:commandButton value="Pokaż wyniki" update="offerTable" />
+								<p:commandButton
+									value="Pokaż wyniki (#{offerListBB.countLazyList()} Ogłoszeń)"
+									update="offerTable">
+									<p:autoUpdate on="count" />
+								</p:commandButton>
+
 								<p:commandButton value="Wyczyść"
 									action="#{offerListBB.clearBody()}" update="offerTable" />
 							</p:outputPanel>
 						</p:dialog>
 
-						<p:commandButton value="Szukaj" update="offerTable" />
+						<p:commandButton
+							value="Pokaż wyniki (#{offerListBB.countLazyList()} Ogłoszeń)"
+							update="offerTable">
+							<p:autoUpdate on="count" />
+						</p:commandButton>
 
 						<p:commandButton value="Wyczyść"
 							action="#{offerListBB.clearFilters()}" update="offerTable" />
