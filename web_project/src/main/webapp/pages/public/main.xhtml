@@ -8,30 +8,182 @@
 
 <ui:composition template="/templates/page-template.xhtml">
 	<ui:define name="pageContent">
-		<p:panel>
-		Strona startowa - publiczna
-			<h:outputText
-				value="Zalogowany: #{remoteClient.details.login} #{remoteClient.details.name}" />
-			<p:link outcome="/pages/public/user?faces-redirect=true"
-				value="#{remoteClient.details.name}">
-				<f:param name="u" value="#{remoteClient.details.idUser}" />
-			</p:link>
-			<h:form>
-				<p:link outcome="/pages/public/main?faces-redirect=true"
-					value="Strona główna" />
-				<p:link outcome="/pages/public/register?faces-redirect=true"
-					value="Zarejestruj się" />
-				<p:link outcome="/pages/public/login?faces-redirect=true"
-					value="Zaloguj się" />
-				<p:commandButton action="#{loginBB.doLogout()}" value="Wyloguj się" />
-				<p:link outcome="/pages/admin/dashboard?faces-redirect=true"
-					value="Admin dashboard" />
-				<p:link outcome="/pages/offer/new-offer?faces-redirect=true"
-					value="Nowe ogłoszenie" />
-				<p:link outcome="/pages/public/offers?faces-redirect=true"
-					value="Ogłoszenia" />
+		<div class="shadow-3 px-4 py-2">
+			<h3>Czego szukasz?</h3>
+			<h:form class="formgrid grid">
+				<div class="field col-12 md:col-6 mb-0">
+					<p:outputLabel for="bodyStyle" value="Typ nadwozia" />
+					<p:selectOneMenu id="bodyStyle"
+						value="#{offerListBB.offerFilter.bodyStyle.idBodyStyle}"
+						styleClass="inputfield w-full">
+						<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{offerListBB.bodyStyles}" var="b"
+							itemLabel="#{b.name}" itemValue="#{b.idBodyStyle}" />
+						<p:ajax update="@obs(count)" />
+					</p:selectOneMenu>
+					<p:message for="bodyStyle" />
+				</div>
+
+				<div class="field col-12 md:col-6 mb-0">
+					<p:outputLabel for="brand" value="Marka" />
+					<p:selectOneMenu id="brand"
+						value="#{offerListBB.offerFilter.brand.idBrand}"
+						styleClass="inputfield w-full">
+						<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{offerListBB.brands}" var="b"
+							itemLabel="#{b.object.name} (#{b.count})"
+							itemValue="#{b.object.idBrand}" />
+						<p:ajax listener="#{offerListBB.changeBrand}"
+							update="model generation @obs(count)" />
+					</p:selectOneMenu>
+					<p:message for="brand" />
+				</div>
+
+				<div class="field col-12 md:col-6 mb-0">
+					<p:outputLabel for="model" value="Model" />
+					<p:selectOneMenu id="model"
+						value="#{offerListBB.offerFilter.model.idModel}"
+						styleClass="inputfield w-full">
+						<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{offerListBB.models}" var="m"
+							itemLabel="#{m.object.name} (#{m.count})"
+							itemValue="#{m.object.idModel}" />
+						<p:ajax listener="#{offerListBB.changeModel}"
+							update="generation @obs(count)" />
+					</p:selectOneMenu>
+					<p:message for="model" />
+				</div>
+
+				<div class="field col-12 md:col-6 mb-0">
+					<p:outputLabel for="generation" value="Generacja" />
+					<p:selectOneMenu id="generation"
+						value="#{offerListBB.offerFilter.generation.idGeneration}"
+						styleClass="inputfield w-full">
+						<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{offerListBB.generations}" var="g"
+							itemLabel="#{g.object.name} (#{g.count})"
+							itemValue="#{g.object.idGeneration}" />
+						<p:ajax update="@obs(count)" />
+					</p:selectOneMenu>
+					<p:message for="generation" />
+				</div>
+
+				<div class="field col-12 md:col-6 mb-0">
+					<div class="formgrid grid">
+						<div class="field col mb-0">
+							<p:outputLabel for="priceFrom" value="Cena" />
+							<div class="formgrid grid">
+								<div class="col">
+									<p:inputNumber id="priceFrom"
+										value="#{offerListBB.offerFilterFrom.price}" decimalPlaces="0"
+										minValue="0" styleClass="inputfield w-full"
+										inputStyle="width:100%">
+										<p:ajax update="@obs(count)" />
+									</p:inputNumber>
+									<p:message for="priceFrom" />
+								</div>
+								<div class="col">
+									<p:inputNumber id="priceTo"
+										value="#{offerListBB.offerFilterTo.price}" decimalPlaces="0"
+										minValue="0" styleClass="inputfield w-full"
+										inputStyle="width:100%">
+										<p:ajax update="@obs(count)" />
+									</p:inputNumber>
+									<p:message for="priceTo" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="field col-12 md:col-6 mb-0">
+					<div class="formgrid grid">
+						<div class="field col mb-0">
+							<p:outputLabel for="productionYearFrom" value="Rok produkcji" />
+							<div class="formgrid grid">
+								<div class="col">
+									<p:inputText id="productionYearFrom"
+										value="#{offerListBB.offerFilterFrom.productionYear}"
+										validatorMessage="Błąd formatu roku"
+										converterMessage="Błąd konwersji roku"
+										styleClass="inputfield w-full">
+										<f:validateLength minimum="4" maximum="4" />
+										<p:keyFilter mask="num" />
+										<p:ajax update="@obs(count)" />
+									</p:inputText>
+									<p:message for="productionYearFrom" />
+								</div>
+								<div class="col">
+									<p:inputText id="productionYearTo"
+										value="#{offerListBB.offerFilterTo.productionYear}"
+										validatorMessage="Błąd formatu roku"
+										converterMessage="Błąd konwersji roku"
+										styleClass="inputfield w-full">
+										<f:validateLength minimum="4" maximum="4" />
+										<p:keyFilter mask="num" />
+										<p:ajax update="@obs(count)" />
+									</p:inputText>
+									<p:message for="productionYearTo" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="field col-12 md:col-6 mb-0">
+					<p:outputLabel for="fuel" value="Rodzaj paliwa" />
+					<p:selectOneMenu id="fuel" value="#{offerListBB.offerFilter.fuel}"
+						styleClass="inputfield w-full">
+						<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{constantsBB.fuels}" var="f"
+							itemLabel="#{f}" itemValue="#{f}" />
+						<p:ajax update="@obs(count)" />
+					</p:selectOneMenu>
+					<p:message for="fuel" />
+				</div>
+
+				<div class="field col-12 md:col-6 mb-0">
+					<div class="formgrid grid">
+						<div class="field col mb-0">
+							<p:outputLabel for="mileageFrom" value="Przebieg" />
+							<div class="formgrid grid">
+								<div class="col">
+									<p:inputNumber id="mileageFrom"
+										value="#{offerListBB.offerFilterFrom.mileage}"
+										decimalPlaces="0" minValue="0" styleClass="inputfield w-full"
+										inputStyle="width:100%">
+										<p:ajax update="@obs(count)" />
+									</p:inputNumber>
+									<p:message for="mileageFrom" />
+								</div>
+								<div class="col">
+									<p:inputNumber id="mileageTo"
+										value="#{offerListBB.offerFilterTo.mileage}" decimalPlaces="0"
+										minValue="0" styleClass="inputfield w-full"
+										inputStyle="width:100%">
+										<p:ajax update="@obs(count)" />
+									</p:inputNumber>
+									<p:message for="mileageTo" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="field col-12">
+					<p:button styleClass="w-full text-lg font-medium"
+						outcome="/pages/public/offers?faces-redirect=true"
+						value="Pokaż #{offerListBB.countLazyList()} Ogłoszeń">
+						<p:autoUpdate on="count" />
+					</p:button>
+				</div>
 			</h:form>
-		</p:panel>
+		</div>
 	</ui:define>
 </ui:composition>
 </html>

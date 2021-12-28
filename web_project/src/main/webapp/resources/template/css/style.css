@@ -1,11 +1,15 @@
 body {
 	font-family: "Montserrat", sans-serif;
+}
+
+/*body {
+	font-family: "Montserrat", sans-serif;
 	background-color: #f8f9fa;
 	margin: 0 auto;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	width: min(1500px, 75%);
+		width: min(1500px, 75%);
 	margin: 0 auto;
 }
 
@@ -33,7 +37,7 @@ body .ui-panel .ui-panel-content {
 }
 
 .archived {
-	/* background-color: #FFCDD2 !important; */
+		background-color: #FFCDD2 !important; 
 	background-color: hsl(2, 83%, 31%, 0.1) !important;
 	color: #B71C1C !important;
 }
@@ -48,4 +52,4 @@ body .ui-panel .ui-panel-content {
 	width: 15em;
 	object-fit: contain;
 	background-color: #AAAAAA;
-}
+}*/
