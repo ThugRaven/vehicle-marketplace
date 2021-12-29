@@ -8,59 +8,76 @@
 
 <ui:composition template="/templates/page-template.xhtml">
 	<ui:define name="pageContent">
-		<p:panel>
+		<div
+			class="shadow-3 px-4 py-2 flex flex-column align-items-center w-max">
+			<img src="#{resource['template:img/car_logo_black.svg']}"
+				alt="Vehicle Marketplace Logo" class="logo" />
+			<h3 class="mb-2">Zarejestruj się</h3>
 			<h:form id="form">
-				<h:panelGrid id="grid" columns="3" cellpadding="5">
+				<div class="field mb-2">
 					<p:outputLabel for="login" value="Login" />
 					<p:inputText id="login" value="#{registerBB.user.login}"
 						required="true" requiredMessage="Login nie może być pusty"
-						validatorMessage="Login musi być dłuższy niż 2 znaki">
+						validatorMessage="Login musi być dłuższy niż 2 znaki"
+						styleClass="inputfield w-full">
 						<f:validateLength minimum="3" />
 					</p:inputText>
 					<p:message for="login" />
-
+				</div>
+				<div class="field mb-2">
 					<p:outputLabel for="password" value="Hasło" />
 					<p:password id="password" value="#{registerBB.user.password}"
 						feedback="true" required="true"
 						requiredMessage="Hasło nie może być puste"
 						validatorMessage="Hasło nie może być krótsze niż 5 znaków"
-						toggleMask="true" redisplay="true">
+						toggleMask="true" redisplay="true" styleClass="inputfield w-full">
 						<f:validateLength minimum="3" />
 					</p:password>
 					<p:message for="password" />
-
+				</div>
+				<div class="field mb-2">
 					<p:outputLabel for="name" value="Imię" />
 					<p:inputText id="name" value="#{registerBB.user.name}"
-						required="true" requiredMessage="Imię nie może być puste">
-					</p:inputText>
+						required="true" requiredMessage="Imię nie może być puste"
+						styleClass="inputfield w-full" />
 					<p:message for="name" />
-
+				</div>
+				<div class="field mb-2">
 					<p:outputLabel for="surname" value="Nazwisko" />
 					<p:inputText id="surname" value="#{registerBB.user.surname}"
-						required="true" requiredMessage="Nazwisko nie może być puste">
-					</p:inputText>
+						required="true" requiredMessage="Nazwisko nie może być puste"
+						styleClass="inputfield w-full" />
 					<p:message for="surname" />
-
+				</div>
+				<div class="field mb-2">
 					<p:outputLabel for="phone" value="Numer telefonu" />
 					<p:inputText id="phone" value="#{registerBB.user.phoneNumber}"
 						required="true"
-						requiredMessage="Numer telefonu nie może być pusty">
-					</p:inputText>
+						requiredMessage="Numer telefonu nie może być pusty"
+						styleClass="inputfield w-full" />
 					<p:message for="phone" />
-
+				</div>
+				<div class="field mb-2">
 					<p:outputLabel for="email" value="Email" />
 					<p:inputText id="email" value="#{registerBB.user.email}"
-						required="true" requiredMessage="Email nie może być pusty">
-					</p:inputText>
+						required="true" requiredMessage="Email nie może być pusty"
+						styleClass="inputfield w-full" />
 					<p:message for="email" />
+				</div>
 
-					<p:commandButton value="Zarejestruj się"
-						action="#{registerBB.register()}" update="@form" />
-				</h:panelGrid>
+				<p class="text-600">
+					Masz już konto?
+					<p:link outcome="/pages/public/login?faces-redirect=true"
+						value="Zaloguj się" />
+				</p>
+
+				<p:commandButton styleClass="my-2 w-full" value="Zarejestruj się"
+					action="#{registerBB.register()}" update="@form" />
+
 
 				<p:messages id="msg" />
 			</h:form>
-		</p:panel>
+		</div>
 	</ui:define>
 </ui:composition>
 </html>

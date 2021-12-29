@@ -13,7 +13,7 @@
 	<link rel="stylesheet"
 		href="https://unpkg.com/primeflex@3.1.0/primeflex.css" />
 	<link type="image/png" rel="icon"
-		href="#{resource['template:img/calc_icon.png']}" />
+		href="#{resource['template:img/car_logo_white.svg']}" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
 	<link
@@ -21,14 +21,15 @@
 		rel="stylesheet" />
 </h:head>
 
-<h:body>
+<h:body class="flex flex-column justify-content-between">
 	<ui:insert name="header">
 		<div id="header" class="sticky top-0 bg-white z-5">
 			<ui:include src="/templates/header-snippet.xhtml" />
 		</div>
 	</ui:insert>
-	<div id="content" class="flex justify-content-center">
-		<div class="w-12 md:w-8">
+	<div id="content"
+		class="flex justify-content-center align-items-center">
+		<div class="w-12 md:w-8 flex justify-content-center">
 			<ui:insert name="content"></ui:insert>
 		</div>
 	</div>

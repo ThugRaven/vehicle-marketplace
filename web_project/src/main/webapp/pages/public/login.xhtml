@@ -8,34 +8,45 @@
 
 <ui:composition template="/templates/page-template.xhtml">
 	<ui:define name="pageContent">
-		<p:panel>
+		<div
+			class="shadow-3 px-4 py-2 flex flex-column align-items-center w-max">
+			<img src="#{resource['template:img/car_logo_black.svg']}"
+				alt="Vehicle Marketplace Logo" class="logo" />
+			<h3 class="mb-2">Zaloguj się</h3>
 			<h:form id="form">
-				<h:panelGrid id="grid" columns="3" cellpadding="5">
+				<div class="field mb-2">
 					<p:outputLabel for="login" value="Login" />
-					<p:inputText id="login" value="#{loginBB.login}"
-						required="true" requiredMessage="Login nie może być pusty"
-						validatorMessage="Login musi być dłuższy niż 2 znaki">
+					<p:inputText id="login" value="#{loginBB.login}" required="true"
+						requiredMessage="Login nie może być pusty"
+						validatorMessage="Login musi być dłuższy niż 2 znaki"
+						styleClass="inputfield w-full">
 						<f:validateLength minimum="3" />
 					</p:inputText>
 					<p:message for="login" />
-
+				</div>
+				<div class="field mb-2">
 					<p:outputLabel for="password" value="Hasło" />
 					<p:password id="password" value="#{loginBB.password}"
-						required="true"
-						requiredMessage="Hasło nie może być puste"
+						required="true" requiredMessage="Hasło nie może być puste"
 						validatorMessage="Hasło nie może być krótsze niż 5 znaków"
-						toggleMask="true">
+						toggleMask="true" styleClass="inputfield w-full">
 						<f:validateLength minimum="3" />
 					</p:password>
 					<p:message for="password" />
+				</div>
 
-					<p:commandButton value="Zaloguj się"
-						action="#{loginBB.doLogin()}" update="@form" />
-				</h:panelGrid>
+				<p class="text-600">
+					Nie masz jeszcze konta?
+					<p:link outcome="/pages/public/register?faces-redirect=true"
+						value="Zarejestruj się" />
+				</p>
 
-				<p:messages id="msg" />
+				<p:commandButton styleClass="my-2 w-full" value="Zaloguj się"
+					action="#{loginBB.doLogin()}" update="@form" />
+
+				<p:messages id="msg" for="form" />
 			</h:form>
-		</p:panel>
+		</div>
 	</ui:define>
 </ui:composition>
 </html>

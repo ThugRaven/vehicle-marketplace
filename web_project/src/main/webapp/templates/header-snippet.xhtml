@@ -6,43 +6,48 @@
 
 
 	<header class="flex justify-content-between align-items-center p-4">
-		<h1 class="m-0">Vehicle Marketplace</h1>
+
+		<p:link styleClass="text-900 hover:text-700 no-underline"
+			outcome="/pages/public/main?faces-redirect=true">
+			<h1 class="m-0">Vehicle Marketplace</h1>
+		</p:link>
+
 		<h:form>
 			<nav class="m-0">
 				<ul class="flex flex-row list-none align-items-center m-0 pl-0">
 					<ui:fragment rendered="#{empty remoteClient.details.login}">
 						<li><i class="pi pi-sign-in" /> <p:link
-								class="ml-1 mr-3 text-800"
+								styleClass="ml-1 mr-3 text-800"
 								outcome="/pages/public/login?faces-redirect=true"
 								value="Zaloguj się" /></li>
 						<li><i class="pi pi-user-plus" /> <p:link
-								class="ml-1 mr-3 text-800"
+								styleClass="ml-1 mr-3 text-800"
 								outcome="/pages/public/register?faces-redirect=true"
 								value="Zarejestruj się" /></li>
 					</ui:fragment>
 
 					<ui:fragment rendered="#{not empty remoteClient.details.login}">
 						<li><i class="pi pi-user" /> <p:link
-								class="ml-1 mr-3 text-800"
+								styleClass="ml-1 mr-3 text-800"
 								outcome="/pages/public/user?faces-redirect=true"
 								value="#{remoteClient.details.name}">
 								<f:param name="u" value="#{remoteClient.details.idUser}" />
 							</p:link></li>
 						<li><i class="pi pi-sign-out" /> <p:commandLink
-								class="ml-1 mr-3 text-800" action="#{loginBB.doLogout()}"
+								styleClass="ml-1 mr-3 text-800" action="#{loginBB.doLogout()}"
 								value="Wyloguj się" /></li>
 					</ui:fragment>
 
 					<ui:fragment rendered="#{remoteClient.isInRole('admin')}">
 						<li><i class="pi pi-table" /> <p:link
-								class="ml-1 mr-3 text-800"
+								styleClass="ml-1 mr-3 text-800"
 								outcome="/pages/admin/dashboard?faces-redirect=true"
 								value="Admin
 							dashboard" /></li>
 					</ui:fragment>
 
 					<li><i class="pi pi-plus" /> <p:link
-							class="ml-1 mr-3 text-800"
+							styleClass="ml-1 mr-3 text-800"
 							outcome="/pages/offer/new-offer?faces-redirect=true"
 							value="Nowe
 						ogłoszenie" /></li>

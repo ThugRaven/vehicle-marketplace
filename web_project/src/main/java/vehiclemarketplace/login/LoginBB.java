@@ -70,12 +70,12 @@ public class LoginBB {
 		User user = userDAO.getUserByLogin(login);
 
 		if (user == null) {
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Niepoprawny login lub hasło", null));
+			ctx.addMessage("form", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Niepoprawny login lub hasło", null));
 			return PAGE_STAY_AT_THE_SAME;
 		}
 
 		if (user.getArchived()) {
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Twoje konto jest zablokowane!", null));
+			ctx.addMessage("form", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Twoje konto jest zablokowane!", null));
 			return PAGE_STAY_AT_THE_SAME;
 		}
 
@@ -85,13 +85,13 @@ public class LoginBB {
 			System.out.println(matched);
 		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 			e.printStackTrace();
-			ctx.addMessage(null,
+			ctx.addMessage("form",
 					new FacesMessage(FacesMessage.SEVERITY_FATAL, "Błąd przy przetwarzaniu logowania!", null));
 			return PAGE_STAY_AT_THE_SAME;
 		}
 
 		if (!matched) {
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Niepoprawny login lub hasło", null));
+			ctx.addMessage("form", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Niepoprawny login lub hasło", null));
 			return PAGE_STAY_AT_THE_SAME;
 		}
 
