@@ -414,24 +414,43 @@
 				</f:facet>
 
 				<p:dataViewListItem>
-					<p:link outcome="/pages/public/offer?faces-redirect=true">
+					<p:link outcome="/pages/public/offer?faces-redirect=true"
+						styleClass="no-underline">
 						<f:param name="c"
 							value="#{o.brand.name} #{o.model.name} #{o.title}" />
 						<f:param name="o" value="#{o.idOffer}" />
-						<div>
+						<div
+							class="p-4 mb-2 border-1 border-200 list__content flex flex-row text-800">
 							<p:graphicImage rendered="#{not empty o.image}"
-								value="/offer_images/#{o.image}" styleClass="list__image" />
-							<div>
-								<span>#{o.brand.name} #{o.model.name} #{o.displacement /
-									1000}</span> <span>#{o.title}</span>
-								<ul>
+								value="/offer_images/#{o.image}"
+								styleClass="list__image flex-shrink-0 surface-200" />
+							<div class="mx-3 flex flex-column">
+								<span class="text-xl text-900 font-medium list__title">#{o.brand.name}
+									#{o.model.name} <h:outputText value="#{o.displacement / 1000}">
+										<f:convertNumber type="number" pattern="0.0" locale="en_US" />
+									</h:outputText>
+								</span> <span class="mt-1 text-sm">#{o.title}</span>
+								<ul
+									class="flex flex-row list-none list__list p-0 align-items-end flex-wrap text-sm">
 									<li>#{o.productionYear}</li>
-									<li>#{o.mileage} km</li>
-									<li>#{o.displacement} cm<sup>3</sup></li>
+									<li><h:outputText value="#{o.mileage}">
+											<f:convertNumber type="number" />
+										</h:outputText> km</li>
+									<li><h:outputText value="#{o.displacement}">
+											<f:convertNumber type="number" />
+										</h:outputText> cm<sup>3</sup></li>
 									<li>#{o.fuel}</li>
 								</ul>
-								<i class="pi pi-map-marker">#{o.city}</i> <span>#{o.price}
-									PLN</span>
+								<div class="mt-2 text-sm">
+									<i class="pi pi-map-marker font-bold" /> <span
+										class="font-normal">#{o.city}</span>
+								</div>
+							</div>
+							<div class="ml-auto font-bold text-xl text-orange-500 text-right">
+								<h:outputText value="#{o.price}">
+									<f:convertNumber type="number" />
+								</h:outputText>
+								PLN
 							</div>
 						</div>
 					</p:link>

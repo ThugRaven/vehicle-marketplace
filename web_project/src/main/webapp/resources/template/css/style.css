@@ -60,11 +60,34 @@ body, body .ui-widget {
 	height: 100%;
 }
 
+.list__content {
+	border-radius: 0.5rem;
+}
+
+.ui-dataview-row {
+	border: 0 !important;
+}
+
+.ui-dataview-row:hover .list__title {
+	font-weight: bold !important;
+}
+
+.ui-dataview-row:hover {
+	background-color: #F5F5F5 !important;
+}
+
+.list__list {
+	column-gap: 0.5em;
+}
+
+.list__list>li {
+	width: max-content;
+}
+
 .list__image {
-	height: 10em;
-	width: 15em;
+	height: 10rem;
+	width: 15rem;
 	object-fit: contain;
-	background-color: #AAAAAA;
 }
 
 /*body {
