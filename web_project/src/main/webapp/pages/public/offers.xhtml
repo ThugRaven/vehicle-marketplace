@@ -7,6 +7,10 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <ui:composition template="/templates/page-template.xhtml">
+	<ui:define name="title">
+		Ogłoszenia - Vehicle Marketplace
+	</ui:define>
+
 	<ui:define name="pageContent">
 		<h:form id="offerForm">
 			<p:dataView id="offerTable" var="o" widgetVar="offerTable"
@@ -78,52 +82,69 @@
 						</div>
 
 						<div class="field col-6 xl:col-2">
-							<p:inputNumber id="priceFrom"
-								value="#{offerListBB.offerFilterFrom.price}" decimalPlaces="0"
-								minValue="0" placeholder="Cena od"
+							<p:autoComplete id="priceFrom" widgetVar="priceFrom"
+								value="#{offerListBB.offerFilterFrom.price}"
+								placeholder="Cena od"
+								completeMethod="#{offerListBB.completePrices}"
+								autoHighlight="false" scrollHeight="250"
 								styleClass="inputfield w-full" inputStyle="width:100%">
+								<p:ajax event="focus" oncomplete="PF('priceFrom').search('')" />
 								<p:ajax update="@obs(count)"
 									listener="#{offerListBB.countLazyList()}" />
-							</p:inputNumber>
+								<p:keyFilter mask="num" />
+							</p:autoComplete>
 							<p:message for="priceFrom" />
 						</div>
 
 						<div class="field col-6 xl:col-2">
-							<p:inputNumber id="priceTo"
-								value="#{offerListBB.offerFilterTo.price}" decimalPlaces="0"
-								minValue="0" placeholder="Cena do"
+							<p:autoComplete id="priceTo" widgetVar="priceTo"
+								value="#{offerListBB.offerFilterTo.price}" placeholder="Cena do"
+								completeMethod="#{offerListBB.completePrices}"
+								autoHighlight="false" scrollHeight="250"
 								styleClass="inputfield w-full" inputStyle="width:100%">
+								<p:ajax event="focus" oncomplete="PF('priceTo').search('')" />
 								<p:ajax update="@obs(count)"
 									listener="#{offerListBB.countLazyList()}" />
-							</p:inputNumber>
+								<p:keyFilter mask="num" />
+							</p:autoComplete>
 							<p:message for="priceTo" />
 						</div>
 
 						<div class="field col-6 xl:col-2">
-							<p:inputText id="productionYearFrom"
+							<p:autoComplete id="productionYearFrom"
+								widgetVar="productionYearFrom"
 								value="#{offerListBB.offerFilterFrom.productionYear}"
 								validatorMessage="Błąd formatu roku"
 								converterMessage="Błąd konwersji roku"
-								placeholder="Rok produkcji od" styleClass="inputfield w-full">
-								<f:validateLength minimum="4" maximum="4" />
-								<p:keyFilter mask="num" />
+								placeholder="Rok produkcji od"
+								completeMethod="#{offerListBB.completeYears}" scrollHeight="250"
+								styleClass="inputfield w-full" inputStyle="width:100%">
+								<p:ajax event="focus"
+									oncomplete="PF('productionYearFrom').search('')" />
 								<p:ajax update="@obs(count)"
 									listener="#{offerListBB.countLazyList()}" />
-							</p:inputText>
+								<f:validateLength minimum="4" maximum="4" />
+								<p:keyFilter mask="num" />
+							</p:autoComplete>
 							<p:message for="productionYearFrom" />
 						</div>
 
 						<div class="field col-6 xl:col-2">
-							<p:inputText id="productionYearTo"
+							<p:autoComplete id="productionYearTo"
+								widgetVar="productionYearTo"
 								value="#{offerListBB.offerFilterTo.productionYear}"
 								validatorMessage="Błąd formatu roku"
 								converterMessage="Błąd konwersji roku"
-								placeholder="Rok produkcji do" styleClass="inputfield w-full">
-								<f:validateLength minimum="4" maximum="4" />
-								<p:keyFilter mask="num" />
+								placeholder="Rok produkcji do"
+								completeMethod="#{offerListBB.completeYears}" scrollHeight="250"
+								styleClass="inputfield w-full" inputStyle="width:100%">
+								<p:ajax event="focus"
+									oncomplete="PF('productionYearTo').search('')" />
 								<p:ajax update="@obs(count)"
 									listener="#{offerListBB.countLazyList()}" />
-							</p:inputText>
+								<f:validateLength minimum="4" maximum="4" />
+								<p:keyFilter mask="num" />
+							</p:autoComplete>
 							<p:message for="productionYearTo" />
 						</div>
 
@@ -142,24 +163,32 @@
 						</div>
 
 						<div class="field col-6 xl:col-2">
-							<p:inputNumber id="mileageFrom"
-								value="#{offerListBB.offerFilterFrom.mileage}" decimalPlaces="0"
-								minValue="0" placeholder="Przebieg od"
+							<p:autoComplete id="mileageFrom" widgetVar="mileageFrom"
+								value="#{offerListBB.offerFilterFrom.mileage}"
+								placeholder="Przebieg od"
+								completeMethod="#{offerListBB.completeMileages}"
+								autoHighlight="false" scrollHeight="250"
 								styleClass="inputfield w-full" inputStyle="width:100%">
+								<p:ajax event="focus" oncomplete="PF('mileageFrom').search('')" />
 								<p:ajax update="@obs(count)"
 									listener="#{offerListBB.countLazyList()}" />
-							</p:inputNumber>
+								<p:keyFilter mask="num" />
+							</p:autoComplete>
 							<p:message for="mileageFrom" />
 						</div>
 
 						<div class="field col-6 xl:col-2">
-							<p:inputNumber id="mileageTo"
-								value="#{offerListBB.offerFilterTo.mileage}" decimalPlaces="0"
-								minValue="0" placeholder="Przebieg do"
+							<p:autoComplete id="mileageTo" widgetVar="mileageTo"
+								value="#{offerListBB.offerFilterTo.mileage}"
+								placeholder="Przebieg do"
+								completeMethod="#{offerListBB.completeMileages}"
+								autoHighlight="false" scrollHeight="250"
 								styleClass="inputfield w-full" inputStyle="width:100%">
+								<p:ajax event="focus" oncomplete="PF('mileageTo').search('')" />
 								<p:ajax update="@obs(count)"
 									listener="#{offerListBB.countLazyList()}" />
-							</p:inputNumber>
+								<p:keyFilter mask="num" />
+							</p:autoComplete>
 							<p:message for="mileageTo" />
 						</div>
 					</div>

@@ -18,6 +18,7 @@ import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
 
+import vehiclemarketplace.ConstantsBB;
 import vehiclemarketplace.classes.SelectFilter;
 import vehiclemarketplace.classes.SelectItemCount;
 import vehiclemarketplace.classes.SelectList;
@@ -139,6 +140,9 @@ public class OfferListBB implements Serializable {
 
 	@EJB
 	EquipmentDAO equipmentDAO;
+
+	@Inject
+	ConstantsBB constantsBB;
 
 	@Inject
 	FacesContext ctx;
@@ -317,6 +321,42 @@ public class OfferListBB implements Serializable {
 
 	public String countListText() {
 		return countList + " " + getCountText(countList);
+	}
+
+	public List<String> completePrices(String query) {
+		List<String> list = new ArrayList<>();
+
+		for (String price : constantsBB.getPrices()) {
+			if (price.startsWith(query)) {
+				list.add(price);
+			}
+		}
+
+		return list;
+	}
+
+	public List<String> completeYears(String query) {
+		List<String> list = new ArrayList<>();
+
+		for (String year : constantsBB.getYears()) {
+			if (year.startsWith(query)) {
+				list.add(year);
+			}
+		}
+
+		return list;
+	}
+
+	public List<String> completeMileages(String query) {
+		List<String> list = new ArrayList<>();
+
+		for (String mileage : constantsBB.getMileages()) {
+			if (mileage.startsWith(query)) {
+				list.add(mileage);
+			}
+		}
+
+		return list;
 	}
 
 	public List<Offer> getFullList() {
