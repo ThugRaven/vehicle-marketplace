@@ -1,21 +1,19 @@
 package vehiclemarketplace.login;
 
-import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
 import javax.faces.simplesecurity.RemoteClient;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -75,7 +73,8 @@ public class LoginBB {
 		}
 
 		if (user.getArchived()) {
-			ctx.addMessage("form", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Twoje konto jest zablokowane!", null));
+			ctx.addMessage("form",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Twoje konto jest zablokowane!", null));
 			return PAGE_STAY_AT_THE_SAME;
 		}
 

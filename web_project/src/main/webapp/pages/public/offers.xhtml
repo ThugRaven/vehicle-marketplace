@@ -8,370 +8,412 @@
 
 <ui:composition template="/templates/page-template.xhtml">
 	<ui:define name="pageContent">
-		<p:panel>
-			<h:outputText
-				value="Zalogowany: #{remoteClient.details.login} #{remoteClient.details.name}" />
-			<h:form>
-				<p:commandLink action="/pages/public/register?faces-redirect=true"
-					value="Zarejestruj się" />
-				<p:commandLink action="/pages/public/login?faces-redirect=true"
-					value="Zaloguj się" />
-				<p:commandButton action="#{loginBB.doLogout()}" value="Wyloguj się" />
-				<p:commandLink action="/pages/admin/dashboard?faces-redirect=true"
-					value="Admin dashboard" />
-			</h:form>
-		</p:panel>
-
 		<h:form id="offerForm">
-			<p:panel header="Lista ogłoszeń" toggleable="true"
-				toggleableHeader="true" toggleSpeed="300">
-				<p:dataView id="offerTable" var="o" widgetVar="offerTable"
-					value="#{offerListBB.lazyOffers}" paginator="true"
-					paginatorPosition="bottom" rows="5"
-					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="1,5,10,15" allowUnsorting="true"
-					sortMode="multiple" gridIcon="pi pi-th-large" listIcon="pi pi-bars">
+			<p:dataView id="offerTable" var="o" widgetVar="offerTable"
+				value="#{offerListBB.lazyOffers}" paginator="true"
+				paginatorPosition="bottom" rows="5"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="1,5,10,15" allowUnsorting="true"
+				sortMode="multiple" gridIcon="pi pi-th-large" listIcon="pi pi-bars">
 
-					<f:facet name="header">
-						<p:outputLabel for="bodyStyle" value="Typ nadwozia" />
-						<p:selectOneMenu id="bodyStyle"
-							value="#{offerListBB.offerFilter.bodyStyle.idBodyStyle}">
-							<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
-								noSelectionOption="true" />
-							<f:selectItems value="#{offerListBB.bodyStyles}" var="b"
-								itemLabel="#{b.name}" itemValue="#{b.idBodyStyle}" />
-							<p:ajax update="@obs(count)" />
-						</p:selectOneMenu>
-						<p:message for="bodyStyle" />
+				<f:facet name="header">
+					<div class="formgrid grid">
+						<div class="field col-6 xl:col-2">
+							<p:selectOneMenu id="bodyStyle"
+								value="#{offerListBB.offerFilter.bodyStyle.idBodyStyle}"
+								styleClass="inputfield w-full">
+								<f:selectItem itemLabel="Typ nadwozia" itemValue="#{null}"
+									noSelectionOption="true" />
+								<f:selectItems value="#{offerListBB.bodyStyles}" var="b"
+									itemLabel="#{b.name}" itemValue="#{b.idBodyStyle}" />
+								<p:ajax update="@obs(count)"
+									listener="#{offerListBB.countLazyList()}" />
+							</p:selectOneMenu>
+							<p:message for="bodyStyle" />
+						</div>
 
-						<p:outputLabel for="brand" value="Marka" />
-						<p:selectOneMenu id="brand"
-							value="#{offerListBB.offerFilter.brand.idBrand}">
-							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
-								noSelectionOption="true" />
-							<f:selectItems value="#{offerListBB.brands}" var="b"
-								itemLabel="#{b.object.name} (#{b.count})"
-								itemValue="#{b.object.idBrand}" />
-							<p:ajax listener="#{offerListBB.changeBrand}"
-								update="model generation @obs(count)" />
-						</p:selectOneMenu>
-						<p:message for="brand" />
+						<div class="field col-6 xl:col-2">
+							<p:selectOneMenu id="brand"
+								value="#{offerListBB.offerFilter.brand.idBrand}"
+								styleClass="inputfield w-full">
+								<f:selectItem itemLabel="Marka" itemValue="#{null}"
+									noSelectionOption="true" />
+								<f:selectItems value="#{offerListBB.brands}" var="b"
+									itemLabel="#{b.object.name} (#{b.count})"
+									itemValue="#{b.object.idBrand}" />
+								<p:ajax listener="#{offerListBB.changeBrand}"
+									update="model generation @obs(count)" />
+							</p:selectOneMenu>
+							<p:message for="brand" />
+						</div>
 
-						<p:outputLabel for="model" value="Model" />
-						<p:selectOneMenu id="model"
-							value="#{offerListBB.offerFilter.model.idModel}">
-							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
-								noSelectionOption="true" />
-							<f:selectItems value="#{offerListBB.models}" var="m"
-								itemLabel="#{m.object.name} (#{m.count})"
-								itemValue="#{m.object.idModel}" />
-							<p:ajax listener="#{offerListBB.changeModel}"
-								update="generation @obs(count)" />
-						</p:selectOneMenu>
-						<p:message for="model" />
+						<div class="field col-6 xl:col-2">
+							<p:selectOneMenu id="model"
+								value="#{offerListBB.offerFilter.model.idModel}"
+								styleClass="inputfield w-full">
+								<f:selectItem itemLabel="Model" itemValue="#{null}"
+									noSelectionOption="true" />
+								<f:selectItems value="#{offerListBB.models}" var="m"
+									itemLabel="#{m.object.name} (#{m.count})"
+									itemValue="#{m.object.idModel}" />
+								<p:ajax listener="#{offerListBB.changeModel}"
+									update="generation @obs(count)" />
+							</p:selectOneMenu>
+							<p:message for="model" />
+						</div>
 
-						<p:outputLabel for="generation" value="Generacja" />
-						<p:selectOneMenu id="generation"
-							value="#{offerListBB.offerFilter.generation.idGeneration}">
-							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
-								noSelectionOption="true" />
-							<f:selectItems value="#{offerListBB.generations}" var="g"
-								itemLabel="#{g.object.name} (#{g.count})"
-								itemValue="#{g.object.idGeneration}" />
-							<p:ajax update="@obs(count)" />
-						</p:selectOneMenu>
-						<p:message for="generation" />
+						<div class="field col-6 xl:col-2">
+							<p:selectOneMenu id="generation"
+								value="#{offerListBB.offerFilter.generation.idGeneration}"
+								styleClass="inputfield w-full">
+								<f:selectItem itemLabel="Generacja" itemValue="#{null}"
+									noSelectionOption="true" />
+								<f:selectItems value="#{offerListBB.generations}" var="g"
+									itemLabel="#{g.object.name} (#{g.count})"
+									itemValue="#{g.object.idGeneration}" />
+								<p:ajax update="@obs(count)"
+									listener="#{offerListBB.countLazyList()}" />
+							</p:selectOneMenu>
+							<p:message for="generation" />
+						</div>
 
-						<p:outputLabel for="priceFrom" value="Cena od" />
-						<p:inputNumber id="priceFrom"
-							value="#{offerListBB.offerFilterFrom.price}" decimalPlaces="0"
-							minValue="0">
-							<p:ajax update="@obs(count)" />
-						</p:inputNumber>
-						<p:message for="priceFrom" />
+						<div class="field col-6 xl:col-2">
+							<p:inputNumber id="priceFrom"
+								value="#{offerListBB.offerFilterFrom.price}" decimalPlaces="0"
+								minValue="0" placeholder="Cena od"
+								styleClass="inputfield w-full" inputStyle="width:100%">
+								<p:ajax update="@obs(count)"
+									listener="#{offerListBB.countLazyList()}" />
+							</p:inputNumber>
+							<p:message for="priceFrom" />
+						</div>
 
-						<p:outputLabel for="priceTo" value="Cena do" />
-						<p:inputNumber id="priceTo"
-							value="#{offerListBB.offerFilterTo.price}" decimalPlaces="0"
-							minValue="0">
-							<p:ajax update="@obs(count)" />
-						</p:inputNumber>
-						<p:message for="priceTo" />
+						<div class="field col-6 xl:col-2">
+							<p:inputNumber id="priceTo"
+								value="#{offerListBB.offerFilterTo.price}" decimalPlaces="0"
+								minValue="0" placeholder="Cena do"
+								styleClass="inputfield w-full" inputStyle="width:100%">
+								<p:ajax update="@obs(count)"
+									listener="#{offerListBB.countLazyList()}" />
+							</p:inputNumber>
+							<p:message for="priceTo" />
+						</div>
 
-						<p:outputLabel for="productionYearFrom" value="Rok produkcji od" />
-						<p:inputText id="productionYearFrom"
-							value="#{offerListBB.offerFilterFrom.productionYear}"
-							validatorMessage="Błąd formatu roku"
-							converterMessage="Błąd konwersji roku">
-							<f:validateLength minimum="4" maximum="4" />
-							<p:keyFilter mask="num" />
-							<p:ajax update="@obs(count)" />
-						</p:inputText>
-						<p:message for="productionYearFrom" />
+						<div class="field col-6 xl:col-2">
+							<p:inputText id="productionYearFrom"
+								value="#{offerListBB.offerFilterFrom.productionYear}"
+								validatorMessage="Błąd formatu roku"
+								converterMessage="Błąd konwersji roku"
+								placeholder="Rok produkcji od" styleClass="inputfield w-full">
+								<f:validateLength minimum="4" maximum="4" />
+								<p:keyFilter mask="num" />
+								<p:ajax update="@obs(count)"
+									listener="#{offerListBB.countLazyList()}" />
+							</p:inputText>
+							<p:message for="productionYearFrom" />
+						</div>
 
-						<p:outputLabel for="productionYearTo" value="Rok produkcji do" />
-						<p:inputText id="productionYearTo"
-							value="#{offerListBB.offerFilterTo.productionYear}"
-							validatorMessage="Błąd formatu roku"
-							converterMessage="Błąd konwersji roku">
-							<f:validateLength minimum="4" maximum="4" />
-							<p:keyFilter mask="num" />
-							<p:ajax update="@obs(count)" />
-						</p:inputText>
-						<p:message for="productionYearTo" />
+						<div class="field col-6 xl:col-2">
+							<p:inputText id="productionYearTo"
+								value="#{offerListBB.offerFilterTo.productionYear}"
+								validatorMessage="Błąd formatu roku"
+								converterMessage="Błąd konwersji roku"
+								placeholder="Rok produkcji do" styleClass="inputfield w-full">
+								<f:validateLength minimum="4" maximum="4" />
+								<p:keyFilter mask="num" />
+								<p:ajax update="@obs(count)"
+									listener="#{offerListBB.countLazyList()}" />
+							</p:inputText>
+							<p:message for="productionYearTo" />
+						</div>
 
-						<p:outputLabel for="fuel" value="Rodzaj paliwa" />
-						<p:selectOneMenu id="fuel" value="#{offerListBB.offerFilter.fuel}">
-							<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
-								noSelectionOption="true" />
-							<f:selectItems value="#{constantsBB.fuels}" var="f"
-								itemLabel="#{f}" itemValue="#{f}" />
-							<p:ajax update="@obs(count)" />
-						</p:selectOneMenu>
-						<p:message for="fuel" />
+						<div class="field col-6 xl:col-2">
+							<p:selectOneMenu id="fuel"
+								value="#{offerListBB.offerFilter.fuel}"
+								styleClass="inputfield w-full">
+								<f:selectItem itemLabel="Rodzaj paliwa" itemValue="#{null}"
+									noSelectionOption="true" />
+								<f:selectItems value="#{constantsBB.fuels}" var="f"
+									itemLabel="#{f}" itemValue="#{f}" />
+								<p:ajax update="@obs(count)"
+									listener="#{offerListBB.countLazyList()}" />
+							</p:selectOneMenu>
+							<p:message for="fuel" />
+						</div>
 
-						<p:outputLabel for="mileageFrom" value="Przebieg od" />
-						<p:inputNumber id="mileageFrom"
-							value="#{offerListBB.offerFilterFrom.mileage}" decimalPlaces="0"
-							minValue="0">
-							<p:ajax update="@obs(count)" />
-						</p:inputNumber>
-						<p:message for="mileageFrom" />
+						<div class="field col-6 xl:col-2">
+							<p:inputNumber id="mileageFrom"
+								value="#{offerListBB.offerFilterFrom.mileage}" decimalPlaces="0"
+								minValue="0" placeholder="Przebieg od"
+								styleClass="inputfield w-full" inputStyle="width:100%">
+								<p:ajax update="@obs(count)"
+									listener="#{offerListBB.countLazyList()}" />
+							</p:inputNumber>
+							<p:message for="mileageFrom" />
+						</div>
 
-						<p:outputLabel for="mileageTo" value="Przebieg do" />
-						<p:inputNumber id="mileageTo"
-							value="#{offerListBB.offerFilterTo.mileage}" decimalPlaces="0"
-							minValue="0">
-							<p:ajax update="@obs(count)" />
-						</p:inputNumber>
-						<p:message for="mileageTo" />
-
+						<div class="field col-6 xl:col-2">
+							<p:inputNumber id="mileageTo"
+								value="#{offerListBB.offerFilterTo.mileage}" decimalPlaces="0"
+								minValue="0" placeholder="Przebieg do"
+								styleClass="inputfield w-full" inputStyle="width:100%">
+								<p:ajax update="@obs(count)"
+									listener="#{offerListBB.countLazyList()}" />
+							</p:inputNumber>
+							<p:message for="mileageTo" />
+						</div>
+					</div>
+					<div
+						class="flex flex-row justify-content-between md:justify-content-end w-full mt-0 mb-4">
 						<p:commandButton value="Status pojazdu" type="button"
-							onclick="PF('vehicleStatusDialog').show()" />
+							onclick="PF('vehicleStatusDialog').show()"
+							styleClass="w-full md:w-auto mr-2" />
 
 						<p:commandButton value="Silnik i napęd" type="button"
-							onclick="PF('engineDriveDialog').show()" />
+							onclick="PF('engineDriveDialog').show()"
+							styleClass="w-full md:w-auto mr-2" />
 
 						<p:commandButton value="Nadwozie" type="button"
-							onclick="PF('bodyDialog').show()" />
+							onclick="PF('bodyDialog').show()" styleClass="w-full md:w-auto" />
+					</div>
 
-						<p:dialog header="Status pojazdu" widgetVar="vehicleStatusDialog"
-							modal="true" showEffect="fade" hideEffect="fade"
-							resizable="false" draggable="false" closeOnEscape="true"
-							responsive="true">
-							<p:outputPanel id="vehicleStatus">
-								<h:panelGrid columns="3" cellpadding="5">
-									<p:selectBooleanCheckbox
-										value="#{offerListBB.offerFilter.licensePlate}"
-										itemLabel="Ma numer rejestracyjny">
-										<p:ajax update="@obs(count)" />
-									</p:selectBooleanCheckbox>
+					<p:dialog header="Status pojazdu" widgetVar="vehicleStatusDialog"
+						modal="true" showEffect="fade" hideEffect="fade" resizable="false"
+						draggable="false" closeOnEscape="true" responsive="true">
+						<p:outputPanel id="vehicleStatus">
+							<h:panelGrid columns="3" cellpadding="5">
+								<p:selectBooleanCheckbox
+									value="#{offerListBB.offerFilter.licensePlate}"
+									itemLabel="Ma numer rejestracyjny">
+									<p:ajax update="@obs(count)"
+										listener="#{offerListBB.countLazyList()}" />
+								</p:selectBooleanCheckbox>
 
-									<p:outputLabel for="@next" value="Uszkodzony" />
-									<p:selectOneMenu value="#{offerListBB.offerFilter.isDamaged}">
-										<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
-											noSelectionOption="true" />
-										<f:selectItem itemLabel="Nie" itemValue="#{false}" />
-										<f:selectItem itemLabel="Tak" itemValue="#{true}" />
-										<p:ajax update="@obs(count)" />
-									</p:selectOneMenu>
-									<p:message for="@previous" />
+								<p:outputLabel for="@next" value="Uszkodzony" />
+								<p:selectOneMenu value="#{offerListBB.offerFilter.isDamaged}">
+									<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
+										noSelectionOption="true" />
+									<f:selectItem itemLabel="Nie" itemValue="#{false}" />
+									<f:selectItem itemLabel="Tak" itemValue="#{true}" />
+									<p:ajax update="@obs(count)"
+										listener="#{offerListBB.countLazyList()}" />
+								</p:selectOneMenu>
+								<p:message for="@previous" />
 
-									<p:selectBooleanCheckbox
-										value="#{offerListBB.offerFilter.isAccidentFree}"
-										itemLabel="Bezwypadkowy">
-										<p:ajax update="@obs(count)" />
-									</p:selectBooleanCheckbox>
+								<p:selectBooleanCheckbox
+									value="#{offerListBB.offerFilter.isAccidentFree}"
+									itemLabel="Bezwypadkowy">
+									<p:ajax update="@obs(count)"
+										listener="#{offerListBB.countLazyList()}" />
+								</p:selectBooleanCheckbox>
 
-									<p:selectBooleanCheckbox
-										value="#{offerListBB.offerFilter.isFirstOwner}"
-										itemLabel="Pierwszy właściciel">
-										<p:ajax update="@obs(count)" />
-									</p:selectBooleanCheckbox>
+								<p:selectBooleanCheckbox
+									value="#{offerListBB.offerFilter.isFirstOwner}"
+									itemLabel="Pierwszy właściciel">
+									<p:ajax update="@obs(count)"
+										listener="#{offerListBB.countLazyList()}" />
+								</p:selectBooleanCheckbox>
 
-									<p:selectBooleanCheckbox
-										value="#{offerListBB.offerFilter.isRegistered}"
-										itemLabel="Zarejestrowany w Polsce">
-										<p:ajax update="@obs(count)" />
-									</p:selectBooleanCheckbox>
+								<p:selectBooleanCheckbox
+									value="#{offerListBB.offerFilter.isRegistered}"
+									itemLabel="Zarejestrowany w Polsce">
+									<p:ajax update="@obs(count)"
+										listener="#{offerListBB.countLazyList()}" />
+								</p:selectBooleanCheckbox>
 
-									<p:selectBooleanCheckbox
-										value="#{offerListBB.offerFilter.isRightHandDrive}"
-										itemLabel="Kierownica po prawej (Anglik)">
-										<p:ajax update="@obs(count)" />
-									</p:selectBooleanCheckbox>
-								</h:panelGrid>
+								<p:selectBooleanCheckbox
+									value="#{offerListBB.offerFilter.isRightHandDrive}"
+									itemLabel="Kierownica po prawej (Anglik)">
+									<p:ajax update="@obs(count)"
+										listener="#{offerListBB.countLazyList()}" />
+								</p:selectBooleanCheckbox>
+							</h:panelGrid>
 
-								<p:commandButton
-									value="Pokaż wyniki (#{offerListBB.countLazyList()} Ogłoszeń)"
-									update="offerTable">
-									<p:autoUpdate on="count" />
-								</p:commandButton>
+							<p:commandButton
+								value="Pokaż wyniki (#{offerListBB.countListText()})"
+								update="offerTable">
+								<p:autoUpdate on="count" />
+							</p:commandButton>
 
-								<p:commandButton value="Wyczyść"
-									action="#{offerListBB.clearVehicleStatus()}"
-									update="offerTable" />
-							</p:outputPanel>
-						</p:dialog>
+							<p:commandButton value="Wyczyść"
+								action="#{offerListBB.clearVehicleStatus()}" />
+						</p:outputPanel>
+					</p:dialog>
 
-						<p:dialog header="Silnik i napęd" widgetVar="engineDriveDialog"
-							modal="true" showEffect="fade" hideEffect="fade"
-							resizable="false" draggable="false" closeOnEscape="true"
-							responsive="true">
-							<p:outputPanel id="engineDrive">
-								<h:panelGrid columns="3" cellpadding="5">
-									<p:outputLabel for="@next" value="Pojemność skokowa od" />
-									<p:inputNumber id="displacementFrom"
-										value="#{offerListBB.offerFilterFrom.displacement}"
-										decimalPlaces="0" minValue="0">
-										<p:ajax update="@obs(count)" />
-									</p:inputNumber>
-									<p:message for="@previous" />
+					<p:dialog header="Silnik i napęd" widgetVar="engineDriveDialog"
+						modal="true" showEffect="fade" hideEffect="fade" resizable="false"
+						draggable="false" closeOnEscape="true" responsive="true">
+						<p:outputPanel id="engineDrive">
+							<h:panelGrid columns="3" cellpadding="5">
+								<p:outputLabel for="@next" value="Pojemność skokowa od" />
+								<p:inputNumber id="displacementFrom"
+									value="#{offerListBB.offerFilterFrom.displacement}"
+									decimalPlaces="0" minValue="0">
+									<p:ajax update="@obs(count)"
+										listener="#{offerListBB.countLazyList()}" />
+								</p:inputNumber>
+								<p:message for="@previous" />
 
-									<p:outputLabel for="@next" value="Pojemność skokowa do" />
-									<p:inputNumber id="displacementTo"
-										value="#{offerListBB.offerFilterTo.displacement}"
-										decimalPlaces="0" minValue="0">
-										<p:ajax update="@obs(count)" />
-									</p:inputNumber>
-									<p:message for="@previous" />
+								<p:outputLabel for="@next" value="Pojemność skokowa do" />
+								<p:inputNumber id="displacementTo"
+									value="#{offerListBB.offerFilterTo.displacement}"
+									decimalPlaces="0" minValue="0">
+									<p:ajax update="@obs(count)"
+										listener="#{offerListBB.countLazyList()}" />
+								</p:inputNumber>
+								<p:message for="@previous" />
 
-									<p:outputLabel for="@next" value="Moc od" />
-									<p:inputNumber id="powerFrom"
-										value="#{offerListBB.offerFilterFrom.power}" decimalPlaces="0"
-										minValue="0">
-										<p:ajax update="@obs(count)" />
-									</p:inputNumber>
-									<p:message for="@previous" />
+								<p:outputLabel for="@next" value="Moc od" />
+								<p:inputNumber id="powerFrom"
+									value="#{offerListBB.offerFilterFrom.power}" decimalPlaces="0"
+									minValue="0">
+									<p:ajax update="@obs(count)"
+										listener="#{offerListBB.countLazyList()}" />
+								</p:inputNumber>
+								<p:message for="@previous" />
 
-									<p:outputLabel for="@next" value="Moc do" />
-									<p:inputNumber id="powerTo"
-										value="#{offerListBB.offerFilterTo.power}" decimalPlaces="0"
-										minValue="0">
-										<p:ajax update="@obs(count)" />
-									</p:inputNumber>
-									<p:message for="@previous" />
+								<p:outputLabel for="@next" value="Moc do" />
+								<p:inputNumber id="powerTo"
+									value="#{offerListBB.offerFilterTo.power}" decimalPlaces="0"
+									minValue="0">
+									<p:ajax update="@obs(count)"
+										listener="#{offerListBB.countLazyList()}" />
+								</p:inputNumber>
+								<p:message for="@previous" />
 
-									<p:outputLabel for="@next" value="Skrzynia biegów" />
-									<p:selectManyCheckbox
-										value="#{offerListBB.offerFilterList.get(0).values}"
-										layout="grid" columns="3" styleClass="grid-checkbox">
-										<f:selectItems value="#{constantsBB.transmissions}" var="t"
-											itemLabel="#{t}" itemValue="#{t}" />
-										<p:ajax update="@obs(count)" />
-									</p:selectManyCheckbox>
+								<p:outputLabel for="@next" value="Skrzynia biegów" />
+								<p:selectManyCheckbox
+									value="#{offerListBB.offerFilterList.get(0).values}"
+									layout="grid" columns="3" styleClass="grid-checkbox">
+									<f:selectItems value="#{constantsBB.transmissions}" var="t"
+										itemLabel="#{t}" itemValue="#{t}" />
+									<p:ajax update="@obs(count)"
+										listener="#{offerListBB.countLazyList()}" />
+								</p:selectManyCheckbox>
 
-									<p:outputLabel for="@next" value="Napęd" />
-									<p:selectManyCheckbox
-										value="#{offerListBB.offerFilterList.get(1).values}"
-										layout="grid" columns="3" styleClass="grid-checkbox">
-										<f:selectItems value="#{constantsBB.drives}" var="d" />
-										<p:ajax update="@obs(count)" />
-									</p:selectManyCheckbox>
-								</h:panelGrid>
+								<p:outputLabel for="@next" value="Napęd" />
+								<p:selectManyCheckbox
+									value="#{offerListBB.offerFilterList.get(1).values}"
+									layout="grid" columns="3" styleClass="grid-checkbox">
+									<f:selectItems value="#{constantsBB.drives}" var="d" />
+									<p:ajax update="@obs(count)"
+										listener="#{offerListBB.countLazyList()}" />
+								</p:selectManyCheckbox>
+							</h:panelGrid>
 
-								<p:commandButton
-									value="Pokaż wyniki (#{offerListBB.countLazyList()} Ogłoszeń)"
-									update="offerTable">
-									<p:autoUpdate on="count" />
-								</p:commandButton>
+							<p:commandButton
+								value="Pokaż wyniki (#{offerListBB.countListText()})"
+								update="offerTable">
+								<p:autoUpdate on="count" />
+							</p:commandButton>
 
-								<p:commandButton value="Wyczyść"
-									action="#{offerListBB.clearEngineDrive()}" update="offerTable" />
-							</p:outputPanel>
-						</p:dialog>
+							<p:commandButton value="Wyczyść"
+								action="#{offerListBB.clearEngineDrive()}" />
+						</p:outputPanel>
+					</p:dialog>
 
-						<p:dialog header="Nadwozie" widgetVar="bodyDialog" modal="true"
-							showEffect="fade" hideEffect="fade" resizable="false"
-							draggable="false" closeOnEscape="true" responsive="true">
-							<p:outputPanel id="body">
-								<h:panelGrid columns="3" cellpadding="5">
-									<p:outputLabel for="@next" value="Liczba drzwi" />
-									<p:selectManyCheckbox
-										value="#{offerListBB.offerFilterList.get(2).values}"
-										layout="grid" columns="3" styleClass="grid-checkbox">
-										<f:selectItems value="#{constantsBB.doors}" var="d" />
-										<p:ajax update="@obs(count)" />
-									</p:selectManyCheckbox>
+					<p:dialog header="Nadwozie" widgetVar="bodyDialog" modal="true"
+						showEffect="fade" hideEffect="fade" resizable="false"
+						draggable="false" closeOnEscape="true" responsive="true">
+						<p:outputPanel id="body">
+							<h:panelGrid columns="3" cellpadding="5">
+								<p:outputLabel for="@next" value="Liczba drzwi" />
+								<p:selectManyCheckbox
+									value="#{offerListBB.offerFilterList.get(2).values}"
+									layout="grid" columns="3" styleClass="grid-checkbox">
+									<f:selectItems value="#{constantsBB.doors}" var="d" />
+									<p:ajax update="@obs(count)"
+										listener="#{offerListBB.countLazyList()}" />
+								</p:selectManyCheckbox>
 
-									<p:outputLabel for="@next" value="Liczba miejsc" />
-									<p:selectManyCheckbox
-										value="#{offerListBB.offerFilterList.get(3).values}"
-										layout="grid" columns="3" styleClass="grid-checkbox">
-										<f:selectItems value="#{constantsBB.seats}" var="s" />
-										<p:ajax update="@obs(count)" />
-									</p:selectManyCheckbox>
+								<p:outputLabel for="@next" value="Liczba miejsc" />
+								<p:selectManyCheckbox
+									value="#{offerListBB.offerFilterList.get(3).values}"
+									layout="grid" columns="3" styleClass="grid-checkbox">
+									<f:selectItems value="#{constantsBB.seats}" var="s" />
+									<p:ajax update="@obs(count)"
+										listener="#{offerListBB.countLazyList()}" />
+								</p:selectManyCheckbox>
 
-									<p:outputLabel for="@next" value="Kolor" />
-									<p:selectManyMenu
-										value="#{offerListBB.offerFilterList.get(4).values}"
-										showCheckbox="true">
-										<f:selectItems value="#{constantsBB.colors}" var="c" />
-										<p:ajax update="@obs(count)" />
-									</p:selectManyMenu>
+								<p:outputLabel for="@next" value="Kolor" />
+								<p:selectManyMenu
+									value="#{offerListBB.offerFilterList.get(4).values}"
+									showCheckbox="true">
+									<f:selectItems value="#{constantsBB.colors}" var="c" />
+									<p:ajax update="@obs(count)"
+										listener="#{offerListBB.countLazyList()}" />
+								</p:selectManyMenu>
 
-									<p:outputLabel for="@next" value="Rodzaj koloru" />
-									<p:selectManyCheckbox
-										value="#{offerListBB.offerFilterList.get(5).values}"
-										layout="grid" columns="3" styleClass="grid-checkbox">
-										<f:selectItems value="#{constantsBB.colorTypes}" var="c"
-											itemLabel="#{c}" itemValue="#{c}" />
-										<p:ajax update="@obs(count)" />
-									</p:selectManyCheckbox>
-								</h:panelGrid>
+								<p:outputLabel for="@next" value="Rodzaj koloru" />
+								<p:selectManyCheckbox
+									value="#{offerListBB.offerFilterList.get(5).values}"
+									layout="grid" columns="3" styleClass="grid-checkbox">
+									<f:selectItems value="#{constantsBB.colorTypes}" var="c"
+										itemLabel="#{c}" itemValue="#{c}" />
+									<p:ajax update="@obs(count)"
+										listener="#{offerListBB.countLazyList()}" />
+								</p:selectManyCheckbox>
+							</h:panelGrid>
 
-								<p:commandButton
-									value="Pokaż wyniki (#{offerListBB.countLazyList()} Ogłoszeń)"
-									update="offerTable">
-									<p:autoUpdate on="count" />
-								</p:commandButton>
+							<p:commandButton
+								value="Pokaż wyniki (#{offerListBB.countListText()})"
+								update="offerTable">
+								<p:autoUpdate on="count" />
+							</p:commandButton>
 
-								<p:commandButton value="Wyczyść"
-									action="#{offerListBB.clearBody()}" update="offerTable" />
-							</p:outputPanel>
-						</p:dialog>
+							<p:commandButton value="Wyczyść"
+								action="#{offerListBB.clearBody()}" />
+						</p:outputPanel>
+					</p:dialog>
 
+					<div
+						class="flex flex-row justify-content-between md:justify-content-end w-full">
 						<p:commandButton
-							value="Pokaż wyniki (#{offerListBB.countLazyList()} Ogłoszeń)"
-							update="offerTable">
+							value="Pokaż wyniki (#{offerListBB.countListText()})"
+							update="offerTable" styleClass="w-full md:w-auto mr-2">
 							<p:autoUpdate on="count" />
 						</p:commandButton>
 
 						<p:commandButton value="Wyczyść"
-							action="#{offerListBB.clearFilters()}" update="offerTable" />
-					</f:facet>
+							action="#{offerListBB.clearFilters()}" update="offerTable"
+							styleClass="w-full md:w-auto ui-button-outlined ui-button-danger" />
+					</div>
 
-					<p:dataViewListItem>
-						<p:link outcome="/pages/public/offer?faces-redirect=true">
-							<f:param name="c"
-								value="#{o.brand.name} #{o.model.name} #{o.title}" />
-							<f:param name="o" value="#{o.idOffer}" />
+					<h2 class="text-left">Samochody -
+						#{offerListBB.lazyOffers.rowCount}
+						#{offerListBB.getCountText(null)}</h2>
+				</f:facet>
+
+				<p:dataViewListItem>
+					<p:link outcome="/pages/public/offer?faces-redirect=true">
+						<f:param name="c"
+							value="#{o.brand.name} #{o.model.name} #{o.title}" />
+						<f:param name="o" value="#{o.idOffer}" />
+						<div>
+							<p:graphicImage rendered="#{not empty o.image}"
+								value="/offer_images/#{o.image}" styleClass="list__image" />
 							<div>
-								<p:graphicImage rendered="#{not empty o.image}"
-									value="/offer_images/#{o.image}" styleClass="list__image" />
-								<div>
-									<span>#{o.brand.name} #{o.model.name} #{o.displacement /
-										1000}</span> <span>#{o.title}</span>
-									<ul>
-										<li>#{o.productionYear}</li>
-										<li>#{o.mileage} km</li>
-										<li>#{o.displacement} cm<sup>3</sup></li>
-										<li>#{o.fuel}</li>
-									</ul>
-									<i class="pi pi-map-marker">#{o.city}</i> <span>#{o.price}
-										PLN</span>
-								</div>
+								<span>#{o.brand.name} #{o.model.name} #{o.displacement /
+									1000}</span> <span>#{o.title}</span>
+								<ul>
+									<li>#{o.productionYear}</li>
+									<li>#{o.mileage} km</li>
+									<li>#{o.displacement} cm<sup>3</sup></li>
+									<li>#{o.fuel}</li>
+								</ul>
+								<i class="pi pi-map-marker">#{o.city}</i> <span>#{o.price}
+									PLN</span>
 							</div>
-						</p:link>
-					</p:dataViewListItem>
+						</div>
+					</p:link>
+				</p:dataViewListItem>
 
-					<f:facet name="footer">
-						<span>W sumie jest #{offerListBB.lazyOffers.rowCount}
-							ogłoszeń.</span>
-					</f:facet>
+				<f:facet name="footer">
+					<span>W sumie jest #{offerListBB.lazyOffers.rowCount}
+						ogłoszeń.</span>
+				</f:facet>
 
-				</p:dataView>
-			</p:panel>
+			</p:dataView>
 
 			<p:growl id="growl" for="offerTable" showDetail="true"
 				skipDetailIfEqualsSummary="true" />

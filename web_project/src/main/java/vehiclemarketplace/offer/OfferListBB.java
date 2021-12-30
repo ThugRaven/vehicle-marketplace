@@ -46,6 +46,7 @@ public class OfferListBB implements Serializable {
 	private static final String PAGE_STAY_AT_THE_SAME = null;
 
 	private LazyDataModel<Offer> lazyOffers;
+	private int countList;
 
 	private Offer selectedOffer;
 
@@ -70,6 +71,10 @@ public class OfferListBB implements Serializable {
 
 	public LazyDataModel<Offer> getLazyOffers() {
 		return lazyOffers;
+	}
+
+	public int getCountList() {
+		return countList;
 	}
 
 	public Offer getOfferFilter() {
@@ -194,6 +199,7 @@ public class OfferListBB implements Serializable {
 				offers = offerDAO.getLazyList(sortMap, filter, offset, pageSize);
 
 				int rowCount = (int) offerDAO.countLazyList(filter);
+				countList = rowCount;
 				setRowCount(rowCount);
 
 				return offers;
@@ -297,8 +303,20 @@ public class OfferListBB implements Serializable {
 		return filter;
 	}
 
-	public int countLazyList() {
-		return (int) offerDAO.countLazyList(addFilters());
+	public void countLazyList() {
+		countList = (int) offerDAO.countLazyList(addFilters());
+	}
+
+	public String getCountText(Integer count) {
+		if (count == null) {
+			count = lazyOffers.getRowCount();
+		}
+		String text = ((count == 1) ? "ogłoszenie" : ((count >= 2 && count <= 5) ? "ogłoszenia" : "ogłoszeń"));
+		return text;
+	}
+
+	public String countListText() {
+		return countList + " " + getCountText(countList);
 	}
 
 	public List<Offer> getFullList() {
@@ -340,6 +358,9 @@ public class OfferListBB implements Serializable {
 			models = null;
 			generations = null;
 		}
+		offerFilter.setModel(new Model());
+		offerFilter.setGeneration(new Generation());
+		countLazyList();
 	}
 
 	public void changeModel() {
@@ -354,6 +375,8 @@ public class OfferListBB implements Serializable {
 		} else {
 			generations = null;
 		}
+		offerFilter.setGeneration(new Generation());
+		countLazyList();
 	}
 
 	public List<BodyStyle> getBodyStyleList() {
