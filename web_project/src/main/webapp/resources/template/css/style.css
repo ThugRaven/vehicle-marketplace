@@ -68,12 +68,20 @@ body, body .ui-widget {
 	border: 0 !important;
 }
 
-.ui-dataview-row:hover .list__title {
-	font-weight: bold !important;
+.list__item:hover .list__title {
+	color: white !important;
+	background-color: black !important;
+	transition: color 100ms ease-in-out, background-color 100ms ease-in-out
+		!important;
 }
 
-.ui-dataview-row:hover {
+.list__content:hover {
 	background-color: #F5F5F5 !important;
+	transition: background-color 100ms ease-in-out !important;
+}
+
+.list__title {
+	width: max-content;
 }
 
 .list__list {
