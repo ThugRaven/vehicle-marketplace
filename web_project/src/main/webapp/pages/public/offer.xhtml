@@ -18,35 +18,103 @@
 	</ui:define>
 
 	<ui:define name="pageContent">
-		<p:panel>
-			<h:outputText
-				value="Zalogowany: #{remoteClient.details.login} #{remoteClient.details.name}" />
-			<h:form>
-				<p:commandLink action="/pages/public/register?faces-redirect=true"
-					value="Zarejestruj się" />
-				<p:commandLink action="/pages/public/login?faces-redirect=true"
-					value="Zaloguj się" />
-				<p:commandButton action="#{loginBB.doLogout()}" value="Wyloguj się" />
-				<p:commandLink action="/pages/admin/dashboard?faces-redirect=true"
-					value="Admin dashboard" />
-			</h:form>
-		</p:panel>
+		<h:form>
+			<p:breadCrumb homeDisplay="text">
+				<p:menuitem value="Ogłoszenia"
+					outcome="/pages/public/offers?faces-redirect=true" />
+				<p:menuitem value="#{offerBB.offer.brand.name}"
+					outcome="/pages/public/offers?faces-redirect=true" />
+				<p:menuitem value="#{offerBB.offer.model.name}"
+					outcome="/pages/public/offers?faces-redirect=true" />
+				<p:menuitem
+					value="#{offerBB.offer.generation.name} (#{offerBB.offer.generation.productionStart}-#{offerBB.offer.generation.productionEnd})"
+					outcome="/pages/public/offers?faces-redirect=true" />
+			</p:breadCrumb>
 
-		<p:panel
-			header="#{offerBB.offer.brand.name} #{offerBB.offer.model.name} #{offerBB.offer.displacement / 1000}"
-			toggleable="true" toggleableHeader="true" toggleSpeed="300">
-			<p:graphicImage rendered="#{not empty offerBB.offer.image}"
-				value="/offer_images/#{offerBB.offer.image}" styleClass="image" />
 
-			<p:link
-				rendered="#{offerBB.offer.user.idUser eq remoteClient.details.idUser}"
-				outcome="/pages/offer/edit-offer?faces-redirect=true" value="Edytuj">
-				<f:param name="o" value="#{offerBB.offer.idOffer}" />
-			</p:link>
-		</p:panel>
 
-		<p:growl id="growl" globalOnly="true" showDetail="true"
-			skipDetailIfEqualsSummary="true" />
+
+			<div class="grid">
+				<div class="col-8">
+					<p:graphicImage rendered="#{not empty offerBB.offer.image}"
+						value="/offer_images/#{offerBB.offer.image}" styleClass="image" />
+
+
+					<ui:fragment
+						rendered="#{offerBB.offer.updateTime ne offerBB.offer.createTime}">
+						<i class="pi pi-map-pencil" />
+						<span> <h:outputText value="#{offerBB.offer.updateTime}">
+								<f:convertDateTime type="both" timeStyle="short"
+									dateStyle="long" />
+							</h:outputText></span>
+					</ui:fragment>
+					<span> <h:outputText value="#{offerBB.offer.updateTime}">
+							<f:convertDateTime type="both" timeStyle="short" dateStyle="long" />
+						</h:outputText></span>
+				</div>
+
+				<div class="col-4">
+					<div class="mx-3 flex flex-column">
+						<span class="text-3xl text-900 font-medium list__title">#{offerBB.offer.brand.name}
+							#{offerBB.offer.model.name} <h:outputText
+								value="#{offerBB.offer.displacement / 1000}">
+								<f:convertNumber type="number" pattern="0.0" locale="en_US" />
+							</h:outputText>
+						</span>
+						<ul
+							class="flex flex-row list-none list__list p-0 mt-0 mb-3 align-items-end flex-wrap text-sm">
+							<li>#{offerBB.offer.productionYear}</li>
+							<li><h:outputText value="#{offerBB.offer.mileage}">
+									<f:convertNumber type="number" />
+								</h:outputText> km</li>
+							<li><h:outputText value="#{offerBB.offer.displacement}">
+									<f:convertNumber type="number" />
+								</h:outputText> cm<sup>3</sup></li>
+							<li>#{offerBB.offer.fuel}</li>
+						</ul>
+						<div class="font-bold text-orange-500">
+							<h:outputText value="#{offerBB.offer.price}"
+								styleClass="text-3xl">
+								<f:convertNumber type="number" />
+							</h:outputText>
+							<span class="text-lg">PLN</span>
+						</div>
+						<div class="flex flex-column border-1 border-300 p-3 mt-2">
+							<span class="text-xl font-medium mb-4">#{offerBB.offer.user.name}</span>
+							<span class="my-1">Osoba prywatna</span> <span class="my-1">Sprzedający
+								od <h:outputText value="#{offerBB.offer.user.createTime}">
+									<f:convertDateTime pattern="yyyy" />
+								</h:outputText>
+							</span>
+							<p:inplace label="Wyświetl numer" styleClass="my-1 w-full">
+								<span><i class="pi pi-phone mr-2" />#{offerBB.offer.user.phoneNumber}</span>
+							</p:inplace>
+							<div class="mt-2">
+								<i class="pi pi-map-marker font-bold" /> <span
+									class="font-normal">#{offerBB.offer.city}</span>
+							</div>
+						</div>
+					</div>
+
+					<p:link
+						rendered="#{offerBB.offer.user.idUser eq remoteClient.details.idUser}"
+						outcome="/pages/offer/edit-offer?faces-redirect=true"
+						value="Edytuj">
+						<f:param name="o" value="#{offerBB.offer.idOffer}" />
+					</p:link>
+				</div>
+			</div>
+
+
+
+
+
+
+
+			<p:growl id="growl" globalOnly="true" showDetail="true"
+				skipDetailIfEqualsSummary="true" />
+
+		</h:form>
 	</ui:define>
 </ui:composition>
 </html>

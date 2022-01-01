@@ -98,6 +98,21 @@ body, body .ui-widget {
 	object-fit: contain;
 }
 
+.ui-inplace-display {
+	display: block !important;
+	text-align: center;
+	background-color: #f57c00 !important;
+	color: white !important;
+}
+
+.ui-inplace-display[style*="display: none;"] {
+	display: none !important;
+}
+
+.ui-inplace-display:hover {
+	background-color: #d06900 !important;
+}
+
 /*body {
 	font-family: "Montserrat", sans-serif;
 	background-color: #f8f9fa;
