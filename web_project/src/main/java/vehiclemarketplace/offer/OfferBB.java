@@ -13,6 +13,7 @@ import javax.inject.Named;
 
 import vehiclemarketplace.dao.BodyStyleDAO;
 import vehiclemarketplace.dao.BrandDAO;
+import vehiclemarketplace.dao.EquipmentDAO;
 import vehiclemarketplace.dao.GenerationDAO;
 import vehiclemarketplace.dao.ModelDAO;
 import vehiclemarketplace.dao.OfferDAO;
@@ -57,6 +58,9 @@ public class OfferBB implements Serializable {
 	@EJB
 	BodyStyleDAO bodyStyleDAO;
 
+	@EJB
+	EquipmentDAO equipmentDAO;
+
 	@Inject
 	FacesContext ctx;
 
@@ -67,6 +71,7 @@ public class OfferBB implements Serializable {
 		}
 		if (loaded != null) {
 			offer = loaded;
+			offer.setEquipments(equipmentDAO.getEquipmentsByOfferID(offer.getIdOffer()));
 		} else {
 			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błędne użycie systemu", null));
 		}

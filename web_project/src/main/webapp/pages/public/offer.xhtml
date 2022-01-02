@@ -31,30 +31,156 @@
 					outcome="/pages/public/offers?faces-redirect=true" />
 			</p:breadCrumb>
 
-
-
-
 			<div class="grid">
-				<div class="col-8">
+				<div class="col-12 lg:col-8">
 					<p:graphicImage rendered="#{not empty offerBB.offer.image}"
 						value="/offer_images/#{offerBB.offer.image}" styleClass="image" />
-
-
-					<ui:fragment
-						rendered="#{offerBB.offer.updateTime ne offerBB.offer.createTime}">
-						<i class="pi pi-map-pencil" />
-						<span> <h:outputText value="#{offerBB.offer.updateTime}">
+					<div class="m-3">
+						<div class="my-2">
+							<ui:fragment
+								rendered="#{offerBB.offer.updateTime ne offerBB.offer.createTime}">
+								<span
+									title="Edytowano, data utworzenia: #{offerBB.offer.createTime}">
+									<i class="pi pi-pencil text-sm mr-1"></i> <h:outputText
+										value="#{offerBB.offer.updateTime}">
+										<f:convertDateTime type="both" timeStyle="short"
+											dateStyle="long" />
+									</h:outputText>
+								</span>
+							</ui:fragment>
+							<h:outputText value="#{offerBB.offer.createTime}"
+								rendered="#{offerBB.offer.updateTime eq offerBB.offer.createTime}">
 								<f:convertDateTime type="both" timeStyle="short"
 									dateStyle="long" />
-							</h:outputText></span>
-					</ui:fragment>
-					<span> <h:outputText value="#{offerBB.offer.updateTime}">
-							<f:convertDateTime type="both" timeStyle="short" dateStyle="long" />
-						</h:outputText></span>
+							</h:outputText>
+							<p:link
+								rendered="#{offerBB.offer.user.idUser eq remoteClient.details.idUser}"
+								outcome="/pages/offer/edit-offer?faces-redirect=true"
+								value="Edytuj ogłoszenie"
+								styleClass="text-orange-500 font-bold ml-1">
+								<f:param name="o" value="#{offerBB.offer.idOffer}" />
+							</p:link>
+						</div>
+						<h3 class="text-xl font-medium border-top-1 border-300 py-2">Szczegóły</h3>
+						<div class="grid text-sm my-2">
+							<div class="col-12 lg:col-6 grid">
+								<span class="col-6">Marka pojazdu</span>
+								<h:outputText value="#{offerBB.offer.brand.name}"
+									styleClass="col-6" />
+								<span class="col-6">Model pojazdu</span>
+								<h:outputText value="#{offerBB.offer.model.name}"
+									styleClass="col-6" />
+								<span class="col-6">Generacja</span>
+								<h:outputText value="#{offerBB.offer.generation.name}"
+									styleClass="col-6" />
+								<span class="col-6">Rok produkcji</span>
+								<h:outputText value="#{offerBB.offer.productionYear}"
+									styleClass="col-6" />
+								<span class="col-6">Przebieg</span>
+								<div class="col-6">
+									<h:outputText value="#{offerBB.offer.mileage}">
+										<f:convertNumber type="number" />
+									</h:outputText>
+									km
+								</div>
+								<span class="col-6">Pojemność skokowa</span>
+								<div class="col-6">
+									<h:outputText value="#{offerBB.offer.productionYear}">
+										<f:convertNumber type="number" />
+									</h:outputText>
+									cm<sup>3</sup>
+								</div>
+								<span class="col-6">Rodzaj paliwa</span>
+								<h:outputText value="#{offerBB.offer.fuel}" styleClass="col-6" />
+								<span class="col-6">Moc</span>
+								<div class="col-6">
+									<h:outputText value="#{offerBB.offer.power}" />
+									KM
+								</div>
+								<span class="col-6">Skrzynia biegów</span>
+								<h:outputText value="#{offerBB.offer.transmission}"
+									styleClass="col-6" />
+								<span class="col-6">Napęd</span>
+								<h:outputText
+									value="#{offerBB.offer.drive eq 'AWD' ? 'Na wszystkie koła' : offerBB.offer.drive eq 'FWD' ? 'Na przednie koła' : 'Na tylne koła'}"
+									styleClass="col-6" />
+								<span class="col-6">Typ nadwozia</span>
+								<h:outputText value="#{offerBB.offer.bodyStyle.name}"
+									styleClass="col-6" />
+							</div>
+							<div class="col-12 lg:col-6 grid align-content-start">
+								<span class="col-6">Liczba drzwi</span>
+								<h:outputText value="#{offerBB.offer.doors}" styleClass="col-6" />
+								<span class="col-6">Liczba miejsc</span>
+								<h:outputText value="#{offerBB.offer.seats}" styleClass="col-6" />
+								<span class="col-6">Kolor</span>
+								<h:outputText value="#{offerBB.offer.color}" styleClass="col-6" />
+								<ui:fragment rendered="#{not empty offerBB.offer.colorType}">
+									<span class="col-6">Rodzaj koloru</span>
+									<h:outputText value="#{offerBB.offer.colorType}"
+										styleClass="col-6" />
+								</ui:fragment>
+								<ui:fragment rendered="#{not empty offerBB.offer.licensePlate}">
+									<span class="col-6">Numer rejestracyjny pojazdu</span>
+									<h:outputText value="#{offerBB.offer.licensePlate}"
+										styleClass="col-6" />
+								</ui:fragment>
+								<span class="col-6">VIN</span>
+								<h:outputText value="#{offerBB.offer.vin}" styleClass="col-6" />
+								<ui:fragment
+									rendered="#{not empty offerBB.offer.firstRegistration}">
+									<span class="col-6">Pierwsza rejestracja</span>
+									<h:outputText value="#{offerBB.offer.firstRegistration}"
+										styleClass="col-6">
+										<f:convertDateTime dateStyle="short" />
+									</h:outputText>
+								</ui:fragment>
+								<span class="col-6">Stan</span>
+								<h:outputText
+									value="#{offerBB.offer.isNew ? 'Nowe' : 'Używane'}"
+									styleClass="col-6" />
+								<ui:fragment rendered="#{offerBB.offer.isDamaged}">
+									<span class="col-6">Uszkodzony</span>
+									<span class="col-6">Tak</span>
+								</ui:fragment>
+								<ui:fragment rendered="#{offerBB.offer.isAccidentFree}">
+									<span class="col-6">Bezwypadkowy</span>
+									<span class="col-6">Tak</span>
+								</ui:fragment>
+								<ui:fragment rendered="#{offerBB.offer.isFirstOwner}">
+									<span class="col-6">Pierwszy właściciel</span>
+									<span class="col-6">Tak</span>
+								</ui:fragment>
+								<ui:fragment rendered="#{offerBB.offer.isRegistered}">
+									<span class="col-6">Zarejestrowany w Polsce</span>
+									<span class="col-6">Tak</span>
+								</ui:fragment>
+								<ui:fragment rendered="#{offerBB.offer.isRightHandDrive}">
+									<span class="col-6">Kierownica po prawej (Anglik)</span>
+									<span class="col-6">Tak</span>
+								</ui:fragment>
+							</div>
+
+						</div>
+
+						<h3 class="text-xl font-medium border-top-1 border-300 py-2">Wyposażenie</h3>
+						<div class="my-2">
+							<ul class="equipment__list list-none p-0 text-sm">
+								<ui:repeat value="#{offerBB.offer.equipments}" var="e">
+									<li><i class="pi pi-check-circle mr-1 text-xs"></i>#{e.name}</li>
+								</ui:repeat>
+							</ul>
+						</div>
+						<h3 class="text-xl font-medium border-top-1 border-300 py-2">Opis</h3>
+						<div class="my-2">
+							<h:outputText value="#{offerBB.offer.description}"
+								styleClass="description" />
+						</div>
+					</div>
 				</div>
 
-				<div class="col-4">
-					<div class="mx-3 flex flex-column">
+				<div class="col-12 lg:col-4">
+					<div class="flex flex-column mx-3 lg:m-0">
 						<span class="text-3xl text-900 font-medium list__title">#{offerBB.offer.brand.name}
 							#{offerBB.offer.model.name} <h:outputText
 								value="#{offerBB.offer.displacement / 1000}">
@@ -67,10 +193,8 @@
 							<li><h:outputText value="#{offerBB.offer.mileage}">
 									<f:convertNumber type="number" />
 								</h:outputText> km</li>
-							<li><h:outputText value="#{offerBB.offer.displacement}">
-									<f:convertNumber type="number" />
-								</h:outputText> cm<sup>3</sup></li>
 							<li>#{offerBB.offer.fuel}</li>
+							<li>#{offerBB.offer.bodyStyle.name}</li>
 						</ul>
 						<div class="font-bold text-orange-500">
 							<h:outputText value="#{offerBB.offer.price}"
@@ -87,21 +211,16 @@
 								</h:outputText>
 							</span>
 							<p:inplace label="Wyświetl numer" styleClass="my-1 w-full">
-								<span><i class="pi pi-phone mr-2" />#{offerBB.offer.user.phoneNumber}</span>
+								<span><i class="pi pi-phone mr-2"></i>#{offerBB.offer.user.phoneNumber}</span>
 							</p:inplace>
 							<div class="mt-2">
-								<i class="pi pi-map-marker font-bold" /> <span
+								<i class="pi pi-map-marker font-bold"></i> <span
 									class="font-normal">#{offerBB.offer.city}</span>
 							</div>
 						</div>
 					</div>
 
-					<p:link
-						rendered="#{offerBB.offer.user.idUser eq remoteClient.details.idUser}"
-						outcome="/pages/offer/edit-offer?faces-redirect=true"
-						value="Edytuj">
-						<f:param name="o" value="#{offerBB.offer.idOffer}" />
-					</p:link>
+
 				</div>
 			</div>
 

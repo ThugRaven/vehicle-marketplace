@@ -57,7 +57,9 @@ body, body .ui-widget {
 
 .image {
 	width: 100%;
-	height: 100%;
+	aspect-ratio: 1.91 / 1;
+	object-fit: contain;
+	background-color: #EEEEEE;
 }
 
 .list__content {
@@ -93,8 +95,8 @@ body, body .ui-widget {
 }
 
 .list__image {
-	height: 10rem;
 	width: 15rem;
+	aspect-ratio: 4 / 3;
 	object-fit: contain;
 }
 
@@ -111,6 +113,15 @@ body, body .ui-widget {
 
 .ui-inplace-display:hover {
 	background-color: #d06900 !important;
+}
+
+.equipment__list {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+}
+
+.description {
+	white-space: pre-line;
 }
 
 /*body {
