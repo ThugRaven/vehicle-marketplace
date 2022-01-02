@@ -46,6 +46,23 @@ body, body .ui-widget {
 	font-family: "Montserrat", sans-serif;
 }
 
+.header {
+	gap: 0.5rem;
+}
+
+.header__nav {
+	gap: 0.5rem;
+}
+
+.header__side-nav {
+	gap: 1rem;
+}
+
+.header__side-nav > li {
+	padding-bottom: 1rem;
+	border-bottom: 1px solid #e0e0e0;
+}
+
 .logo {
 	height: 5em;
 	width: 5em;

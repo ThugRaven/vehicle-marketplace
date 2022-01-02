@@ -35,7 +35,19 @@
 				<div class="grid grid-nogutter">
 					<div class="col-12 lg:col-8">
 						<p:graphicImage rendered="#{not empty offerBB.offer.image}"
-							value="/offer_images/#{offerBB.offer.image}" styleClass="image" />
+							value="/offer_images/#{offerBB.offer.image}"
+							styleClass="image cursor-pointer"
+							onclick="PF('imageDialog').show()" />
+
+						<p:dialog
+							header="#{offerBB.offer.brand.name} #{offerBB.offer.model.name}"
+							widgetVar="imageDialog" showEffect="fade" modal="true"
+							draggable="false" closeOnEscape="true" responsive="true"
+							fitViewport="true" styleClass="m-4">
+							<p:graphicImage rendered="#{not empty offerBB.offer.image}"
+								value="/offer_images/#{offerBB.offer.image}" styleClass="image"
+								style="max-height: 80vh;" />
+						</p:dialog>
 					</div>
 					<div class="col-12 lg:col-4">
 						<div class="flex flex-column mx-3 my-1">
@@ -208,9 +220,10 @@
 
 					<h3 class="text-xl font-medium border-top-1 border-300 py-2">Wyposażenie</h3>
 					<div class="my-2">
-						<ul class="equipment__list list-none p-0 text-sm">
+						<ul class="equipment__list list-none p-0">
 							<ui:repeat value="#{offerBB.offer.equipments}" var="e">
-								<li><i class="pi pi-check-circle mr-1 text-xs"></i>#{e.name}</li>
+								<li class="flex align-items-center"><i
+									class="pi pi-check-circle mr-1 text-xs"></i>#{e.name}</li>
 							</ui:repeat>
 						</ul>
 					</div>
