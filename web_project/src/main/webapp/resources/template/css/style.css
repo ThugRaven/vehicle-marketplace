@@ -57,7 +57,7 @@ body, body .ui-widget {
 
 .image {
 	width: 100%;
-	aspect-ratio: 1.91 / 1;
+	aspect-ratio: 1.91/1;
 	object-fit: contain;
 	background-color: #EEEEEE;
 }
@@ -96,7 +96,7 @@ body, body .ui-widget {
 
 .list__image {
 	width: 15rem;
-	aspect-ratio: 4 / 3;
+	aspect-ratio: 4/3;
 	object-fit: contain;
 }
 
@@ -118,10 +118,20 @@ body, body .ui-widget {
 .equipment__list {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
+	gap: 0.25rem;
 }
 
 .description {
 	white-space: pre-line;
+}
+
+.offer__details {
+	column-gap: 0.5rem;
+	row-gap: 0.75rem;
+}
+
+.details__list {
+	row-gap: 0.75rem;
 }
 
 /*body {
