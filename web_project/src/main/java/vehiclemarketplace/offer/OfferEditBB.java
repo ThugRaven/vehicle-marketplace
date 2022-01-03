@@ -37,6 +37,7 @@ public class OfferEditBB implements Serializable {
 
 	private static final String PAGE_STAY_AT_THE_SAME = null;
 	private static final String PAGE_OFFER = "/pages/public/offer?faces-redirect=true";
+	private static final String PAGE_OFFERS = "/pages/public/offers?faces-redirect=true";
 
 	private Offer offer = new Offer();
 
@@ -108,6 +109,16 @@ public class OfferEditBB implements Serializable {
 		Offer loaded = null;
 		if (offer.getIdOffer() != 0) {
 			loaded = offerDAO.find(offer.getIdOffer());
+		}
+		if (loaded != null) {
+			if (loaded.getArchived()) {
+				System.out.println("Offer archived!");
+
+				ctx.addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN, "Podana oferta została już zakończona!", null));
+				extcontext.getFlash().setKeepMessages(true);
+				return PAGE_OFFERS;
+			}
 
 			HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 			RemoteClient<User> client = (RemoteClient<User>) RemoteClient.load(session);
@@ -122,14 +133,15 @@ public class OfferEditBB implements Serializable {
 				extcontext.getFlash().setKeepMessages(true);
 				return offerUrl;
 			}
-		}
-		if (loaded != null) {
+
 			offer = loaded;
 			changeBrand();
 			changeModel();
 			offer.setEquipments(equipmentDAO.getEquipmentsByOfferID(offer.getIdOffer()));
 		} else {
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błędne użycie systemu", null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Brak podanej oferty!", null));
+			extcontext.getFlash().setKeepMessages(true);
+			return PAGE_OFFERS;
 		}
 
 		return PAGE_STAY_AT_THE_SAME;
