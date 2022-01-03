@@ -115,6 +115,14 @@
 							styleClass="text-orange-500 font-bold ml-1">
 							<f:param name="o" value="#{offerBB.offer.idOffer}" />
 						</p:link>
+						<p:commandLink
+							rendered="#{offerBB.offer.user.idUser eq remoteClient.details.idUser}"
+							value="Zakończ ogłoszenie" action="#{offerBB.endOffer()}"
+							styleClass="text-orange-500 font-bold ml-1">
+							<p:confirm header="Potwierdzenie"
+								message="Czy na pewno chcesz zakończyć swoje ogłoszenie?"
+								icon="pi pi-exclamation-triangle" />
+						</p:commandLink>
 					</div>
 					<h3 class="text-xl font-medium border-top-1 border-300 py-2">Szczegóły</h3>
 					<div
@@ -235,9 +243,16 @@
 				</div>
 			</div>
 
+			<p:confirmDialog global="true" showEffect="fade" responsive="true"
+				width="350">
+				<p:commandButton value="Nie" type="button"
+					styleClass="ui-confirmdialog-no ui-button-flat" />
+				<p:commandButton value="Tak" type="button"
+					styleClass="ui-confirmdialog-yes" />
+			</p:confirmDialog>
+
 			<p:growl id="growl" globalOnly="true" showDetail="true"
 				skipDetailIfEqualsSummary="true" />
-
 		</h:form>
 	</ui:define>
 </ui:composition>

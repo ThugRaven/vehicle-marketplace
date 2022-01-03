@@ -27,6 +27,7 @@ public class OfferBB implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private static final String PAGE_STAY_AT_THE_SAME = null;
+	private static final String PAGE_OFFERS = "/pages/public/offers?faces-redirect=true";
 
 	private Offer offer = new Offer();
 
@@ -64,16 +65,39 @@ public class OfferBB implements Serializable {
 	@Inject
 	FacesContext ctx;
 
-	public void onLoad() throws IOException {
+	public String onLoad() throws IOException {
 		Offer loaded = null;
 		if (offer.getIdOffer() != 0) {
 			loaded = offerDAO.find(offer.getIdOffer());
 		}
 		if (loaded != null) {
+			if (loaded.getArchived()) {
+				System.out.println("Offer archived!");
+
+				ctx.addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN, "Podana oferta została już zakończona!", null));
+				extcontext.getFlash().setKeepMessages(true);
+				return PAGE_OFFERS;
+			}
+
 			offer = loaded;
 			offer.setEquipments(equipmentDAO.getEquipmentsByOfferID(offer.getIdOffer()));
 		} else {
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błędne użycie systemu", null));
+			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Brak podanej oferty!", null));
+			extcontext.getFlash().setKeepMessages(true);
+			return PAGE_OFFERS;
 		}
+
+		return PAGE_STAY_AT_THE_SAME;
+	}
+
+	public String endOffer() {
+		offer.setArchived(true);
+		offerDAO.merge(offer);
+
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Pomyślnie zakończono ogłoszenie!", null));
+		extcontext.getFlash().setKeepMessages(true);
+
+		return PAGE_OFFERS;
 	}
 }

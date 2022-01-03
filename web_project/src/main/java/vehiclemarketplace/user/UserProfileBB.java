@@ -11,9 +11,9 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.faces.view.ViewScoped;
 
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
@@ -28,7 +28,7 @@ import vehiclemarketplace.entities.User;
 
 @Named
 @ViewScoped
-public class UserProfileBB implements Serializable{
+public class UserProfileBB implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private static final String PAGE_STAY_AT_THE_SAME = null;
