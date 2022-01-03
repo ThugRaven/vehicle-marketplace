@@ -161,6 +161,8 @@ public class OfferListBB implements Serializable {
 		offerFilterList.add(new SelectList("color", new ArrayList<>()));
 		offerFilterList.add(new SelectList("colorType", new ArrayList<>()));
 
+		countLazyList();
+
 		brands = getBrandList();
 
 		bodyStyles = getBodyStyleList();
@@ -468,5 +470,19 @@ public class OfferListBB implements Serializable {
 		offerFilterList.set(3, new SelectList("seats", new ArrayList<>()));
 		offerFilterList.set(4, new SelectList("color", new ArrayList<>()));
 		offerFilterList.set(5, new SelectList("colorType", new ArrayList<>()));
+	}
+
+	public List<Offer> mainViewList() {
+		List<Offer> offers;
+
+		Map<String, String> sortMap = new HashMap<String, String>();
+		sortMap.put("createTime", "DESCENDING");
+
+		List<SelectFilter> filter = new ArrayList<>();
+		filter.add(new SelectFilter("archived", false, SelectType.NORMAL));
+
+		offers = offerDAO.getLazyList(sortMap, filter, 0, 15);
+
+		return offers;
 	}
 }

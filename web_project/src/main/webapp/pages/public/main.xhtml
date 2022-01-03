@@ -12,7 +12,7 @@
 	</ui:define>
 
 	<ui:define name="pageContent">
-		<div class="shadow-3 p-4 border-round">
+		<div class="shadow-3 p-4 m-2 border-round">
 			<h3 class="mb-2">Czego szukasz?</h3>
 			<h:form class="formgrid grid">
 				<div class="field col-12 md:col-6 mb-0">
@@ -24,7 +24,8 @@
 							noSelectionOption="true" />
 						<f:selectItems value="#{offerListBB.bodyStyles}" var="b"
 							itemLabel="#{b.name}" itemValue="#{b.idBodyStyle}" />
-						<p:ajax update="@obs(count)" />
+						<p:ajax update="@obs(count)"
+							listener="#{offerListBB.countLazyList()}" />
 					</p:selectOneMenu>
 					<p:message for="bodyStyle" />
 				</div>
@@ -71,7 +72,8 @@
 						<f:selectItems value="#{offerListBB.generations}" var="g"
 							itemLabel="#{g.object.name} (#{g.count})"
 							itemValue="#{g.object.idGeneration}" />
-						<p:ajax update="@obs(count)" />
+						<p:ajax update="@obs(count)"
+							listener="#{offerListBB.countLazyList()}" />
 					</p:selectOneMenu>
 					<p:message for="generation" />
 				</div>
@@ -86,7 +88,8 @@
 										value="#{offerListBB.offerFilterFrom.price}" decimalPlaces="0"
 										minValue="0" styleClass="inputfield w-full"
 										inputStyle="width:100%">
-										<p:ajax update="@obs(count)" />
+										<p:ajax update="@obs(count)"
+											listener="#{offerListBB.countLazyList()}" />
 									</p:inputNumber>
 									<p:message for="priceFrom" />
 								</div>
@@ -95,7 +98,8 @@
 										value="#{offerListBB.offerFilterTo.price}" decimalPlaces="0"
 										minValue="0" styleClass="inputfield w-full"
 										inputStyle="width:100%">
-										<p:ajax update="@obs(count)" />
+										<p:ajax update="@obs(count)"
+											listener="#{offerListBB.countLazyList()}" />
 									</p:inputNumber>
 									<p:message for="priceTo" />
 								</div>
@@ -117,7 +121,8 @@
 										styleClass="inputfield w-full">
 										<f:validateLength minimum="4" maximum="4" />
 										<p:keyFilter mask="num" />
-										<p:ajax update="@obs(count)" />
+										<p:ajax update="@obs(count)"
+											listener="#{offerListBB.countLazyList()}" />
 									</p:inputText>
 									<p:message for="productionYearFrom" />
 								</div>
@@ -129,7 +134,8 @@
 										styleClass="inputfield w-full">
 										<f:validateLength minimum="4" maximum="4" />
 										<p:keyFilter mask="num" />
-										<p:ajax update="@obs(count)" />
+										<p:ajax update="@obs(count)"
+											listener="#{offerListBB.countLazyList()}" />
 									</p:inputText>
 									<p:message for="productionYearTo" />
 								</div>
@@ -146,7 +152,8 @@
 							noSelectionOption="true" />
 						<f:selectItems value="#{constantsBB.fuels}" var="f"
 							itemLabel="#{f}" itemValue="#{f}" />
-						<p:ajax update="@obs(count)" />
+						<p:ajax update="@obs(count)"
+							listener="#{offerListBB.countLazyList()}" />
 					</p:selectOneMenu>
 					<p:message for="fuel" />
 				</div>
@@ -161,7 +168,8 @@
 										value="#{offerListBB.offerFilterFrom.mileage}"
 										decimalPlaces="0" minValue="0" styleClass="inputfield w-full"
 										inputStyle="width:100%">
-										<p:ajax update="@obs(count)" />
+										<p:ajax update="@obs(count)"
+											listener="#{offerListBB.countLazyList()}" />
 									</p:inputNumber>
 									<p:message for="mileageFrom" />
 								</div>
@@ -170,7 +178,8 @@
 										value="#{offerListBB.offerFilterTo.mileage}" decimalPlaces="0"
 										minValue="0" styleClass="inputfield w-full"
 										inputStyle="width:100%">
-										<p:ajax update="@obs(count)" />
+										<p:ajax update="@obs(count)"
+											listener="#{offerListBB.countLazyList()}" />
 									</p:inputNumber>
 									<p:message for="mileageTo" />
 								</div>
@@ -182,10 +191,63 @@
 				<div class="field col-12">
 					<p:button styleClass="w-full text-lg font-medium"
 						outcome="/pages/public/offers?faces-redirect=true"
-						value="Pokaż #{offerListBB.countLazyList()} Ogłoszeń">
+						value="Pokaż #{offerListBB.countListText()}">
 						<p:autoUpdate on="count" />
 					</p:button>
 				</div>
+			</h:form>
+		</div>
+
+		<div class="shadow-3 p-4 m-2 border-round w-full">
+			<h:form id="offerForm">
+				<h3 class="mb-2">Ostatnie ogłoszenia</h3>
+				<div class="main__list">
+					<ui:repeat value="#{offerListBB.mainViewList()}" var="o">
+						<p:link outcome="/pages/public/offer?faces-redirect=true"
+							styleClass="no-underline list__item">
+							<f:param name="c"
+								value="#{o.brand.name} #{o.model.name} #{o.title}" />
+							<f:param name="o" value="#{o.idOffer}" />
+							<div
+								class="border-1 border-200 main__content flex flex-column align-items-center text-800">
+								<p:graphicImage rendered="#{not empty o.image}"
+									value="/offer_images/#{o.image}"
+									styleClass="main__image flex-shrink-0 surface-200 w-full" />
+								<div class="mt-2 flex flex-column">
+									<span class="text-xl text-900 font-medium list__title">#{o.brand.name}
+										#{o.model.name} <h:outputText value="#{o.displacement / 1000}">
+											<f:convertNumber type="number" pattern="0.0" locale="en_US" />
+										</h:outputText>
+									</span>
+									<ul
+										class="flex flex-row list-none list__list p-0 m-0 mt-1 align-items-end flex-wrap text-sm">
+										<li>#{o.productionYear}</li>
+										<li><h:outputText value="#{o.mileage}">
+												<f:convertNumber type="number" />
+											</h:outputText> km</li>
+										<li><h:outputText value="#{o.displacement}">
+												<f:convertNumber type="number" />
+											</h:outputText> cm<sup>3</sup></li>
+										<li>#{o.fuel}</li>
+									</ul>
+									<div class="mt-2 text-sm">
+										<i class="pi pi-map-marker font-bold" /> <span
+											class="font-normal">#{o.city}</span>
+									</div>
+									<div class="font-bold text-xl text-orange-500 my-2 mr-auto">
+										<h:outputText value="#{o.price}">
+											<f:convertNumber type="number" />
+										</h:outputText>
+										PLN
+									</div>
+								</div>
+							</div>
+						</p:link>
+					</ui:repeat>
+				</div>
+
+				<p:growl id="growl" globalOnly="true" showDetail="true"
+					skipDetailIfEqualsSummary="true" />
 			</h:form>
 		</div>
 	</ui:define>
