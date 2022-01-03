@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
+import org.primefaces.PrimeFaces;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.shaded.commons.io.FilenameUtils;
@@ -196,11 +197,10 @@ public class OfferNewBB implements Serializable {
 
 			userFileManager.destroy();
 			userFileManager.addUnconfirmedUploadedFile(filePath.toFile());
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		// Use Cropper for images
 	}
 
 	public String addOffer() {

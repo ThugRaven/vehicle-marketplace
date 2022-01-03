@@ -7,24 +7,16 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <ui:composition template="/templates/page-template.xhtml">
-	<ui:define name="pageContent">
-		<p:panel>
-			<h:outputText
-				value="Zalogowany: #{remoteClient.details.login} #{remoteClient.details.name}" />
-			<h:form>
-				<p:commandLink action="/pages/public/register?faces-redirect=true"
-					value="Zarejestruj się" />
-				<p:commandLink action="/pages/public/login?faces-redirect=true"
-					value="Zaloguj się" />
-				<p:commandButton action="#{loginBB.doLogout()}" value="Wyloguj się" />
-				<p:commandLink action="/pages/admin/dashboard?faces-redirect=true"
-					value="Admin dashboard" />
-			</h:form>
-		</p:panel>
+	<ui:define name="title">
+		Nowe ogłoszenie - Vehicle Marketplace
+	</ui:define>
 
-		<h:form id="offerForm">
-			<p:panel header="Twój pojazd">
-				<h:panelGrid columns="3" cellpadding="5">
+	<ui:define name="pageContent">
+		<h:form id="offerForm" styleClass="p-2">
+			<p:panel header="Twój pojazd" styleClass="my-3 shadow-2">
+				<p:panelGrid columns="2" layout="flex"
+					contentStyleClass="grid grid-nogutter input__list"
+					columnClasses="col-12 sm:col-6 p-0,col-12 sm:col-6 p-0 flex flex-column">
 					<p:outputLabel for="@next" value="Marka:" />
 					<p:selectOneMenu id="brand"
 						value="#{offerNewBB.offer.brand.idBrand}" required="true"
@@ -34,9 +26,8 @@
 						<f:selectItems value="#{offerNewBB.brands}" var="b"
 							itemLabel="#{b.name}" itemValue="#{b.idBrand}" />
 						<p:ajax listener="#{offerNewBB.changeBrand}"
-							update="@this @next model generation" />
+							update="@this growl model generation" />
 					</p:selectOneMenu>
-					<p:message for="@previous" />
 
 					<p:outputLabel for="@next" value="Model:" />
 					<p:selectOneMenu id="model"
@@ -48,9 +39,8 @@
 						<f:selectItems value="#{offerNewBB.models}" var="m"
 							itemLabel="#{m.name}" itemValue="#{m.idModel}" />
 						<p:ajax listener="#{offerNewBB.changeModel}"
-							update="@this @next generation" />
+							update="@this growl generation" />
 					</p:selectOneMenu>
-					<p:message for="@previous" />
 
 					<p:outputLabel for="@next" value="Generacja:" />
 					<p:selectOneMenu id="generation"
@@ -61,9 +51,8 @@
 							noSelectionOption="true" />
 						<f:selectItems value="#{offerNewBB.generations}" var="g"
 							itemLabel="#{g.name}" itemValue="#{g.idGeneration}" />
-						<p:ajax update="@this @next" />
+						<p:ajax update="@this growl" />
 					</p:selectOneMenu>
-					<p:message for="@previous" />
 
 					<p:outputLabel for="@next" value="Rodzaj paliwa:" />
 					<p:selectOneMenu id="fuel" value="#{offerNewBB.offer.fuel}"
@@ -72,42 +61,37 @@
 							noSelectionOption="true" />
 						<f:selectItems value="#{constantsBB.fuels}" var="f"
 							itemLabel="#{f}" itemValue="#{f}" />
-						<p:ajax update="@this @next" />
+						<p:ajax update="@this growl" />
 					</p:selectOneMenu>
-					<p:message for="@previous" />
 
 					<p:outputLabel for="@next" value="Moc:" />
 					<p:inputNumber id="power" value="#{offerNewBB.offer.power}"
 						required="true" requiredMessage="Moc nie może być pusta"
-						decimalPlaces="0" minValue="0">
-						<p:ajax update="@this @next" />
+						decimalPlaces="0" minValue="0" inputStyle="width:100%">
+						<p:ajax update="@this growl" />
 					</p:inputNumber>
-					<p:message for="@previous" />
 
 					<p:outputLabel for="@next" value="Pojemność skokowa:" />
 					<p:inputNumber id="displacement"
 						value="#{offerNewBB.offer.displacement}" required="true"
 						requiredMessage="Pojemność skokowa nie może być pusta"
-						decimalPlaces="0" minValue="0">
-						<p:ajax update="@this @next" />
+						decimalPlaces="0" minValue="0" inputStyle="width:100%">
+						<p:ajax update="@this growl" />
 					</p:inputNumber>
-					<p:message for="@previous" />
 
 					<p:outputLabel for="@next" value="Liczba drzwi:" />
 					<p:inputNumber id="doors" value="#{offerNewBB.offer.doors}"
 						required="true" requiredMessage="Liczba drzwi nie może być pusta"
-						decimalPlaces="0" minValue="0">
-						<p:ajax update="@this @next" />
+						decimalPlaces="0" minValue="0" inputStyle="width:100%">
+						<p:ajax update="@this growl" />
 					</p:inputNumber>
-					<p:message for="@previous" />
 
 					<p:outputLabel for="@next" value="Liczba miejsc:" />
 					<p:inputNumber id="seats" value="#{offerNewBB.offer.seats}"
 						required="true" requiredMessage="Liczba miejsc nie może być pusta"
-						decimalPlaces="0" minValue="0">
-						<p:ajax update="@this @next" />
+						decimalPlaces="0" minValue="0" inputStyle="width:100%">
+						<p:ajax update="@this growl" />
 					</p:inputNumber>
-					<p:message for="@previous" />
 
 					<p:outputLabel for="@next" value="Skrzynia biegów:" />
 					<p:selectOneMenu id="transmission"
@@ -117,9 +101,8 @@
 							noSelectionOption="true" />
 						<f:selectItems value="#{constantsBB.transmissions}" var="t"
 							itemLabel="#{t}" itemValue="#{t}" />
-						<p:ajax update="@this @next" />
+						<p:ajax update="@this growl" />
 					</p:selectOneMenu>
-					<p:message for="@previous" />
 
 					<p:outputLabel for="@next" value="Rok produkcji:" />
 					<p:inputText id="productionYear"
@@ -129,9 +112,8 @@
 						converterMessage="Błąd konwersji roku">
 						<f:validateLength minimum="4" maximum="4" />
 						<p:keyFilter mask="num" />
-						<p:ajax update="@this @next" />
+						<p:ajax update="@this growl" />
 					</p:inputText>
-					<p:message for="@previous" />
 
 					<p:outputLabel for="@next" value="Typ nadwozia:" />
 					<p:selectOneMenu id="bodyStyle"
@@ -141,9 +123,8 @@
 							noSelectionOption="true" />
 						<f:selectItems value="#{offerNewBB.bodyStyles}" var="b"
 							itemLabel="#{b.name}" itemValue="#{b.idBodyStyle}" />
-						<p:ajax update="@this @next" />
+						<p:ajax update="@this growl" />
 					</p:selectOneMenu>
-					<p:message for="@previous" />
 
 					<p:outputLabel for="@next" value="Napęd:" />
 					<p:selectOneMenu id="drive" value="#{offerNewBB.offer.drive}"
@@ -151,9 +132,8 @@
 						<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
 							noSelectionOption="true" />
 						<f:selectItems value="#{constantsBB.drives}" var="d" />
-						<p:ajax update="@this @next" />
+						<p:ajax update="@this growl" />
 					</p:selectOneMenu>
-					<p:message for="@previous" />
 
 					<p:outputLabel for="@next" value="Kolor:" />
 					<p:selectOneMenu id="color" value="#{offerNewBB.offer.color}"
@@ -162,9 +142,8 @@
 						<f:selectItem itemLabel="Inny kolor" itemValue="Inny kolor"
 							noSelectionOption="true" />
 						<f:selectItems value="#{constantsBB.colors}" var="c" />
-						<p:ajax update="@this @next colorType" />
+						<p:ajax update="@this growl colorType" />
 					</p:selectOneMenu>
-					<p:message for="@previous" />
 
 					<p:outputLabel for="@next" value="Typ koloru:" />
 					<p:selectOneMenu id="colorType"
@@ -175,75 +154,73 @@
 						<f:selectItems value="#{constantsBB.colorTypes}" var="c"
 							itemLabel="#{c}" itemValue="#{c}" />
 					</p:selectOneMenu>
-					<p:message for="@previous" />
 
 					<p:outputLabel for="@next" value="Przebieg:" />
 					<p:inputNumber id="mileage" value="#{offerNewBB.offer.mileage}"
 						required="true" requiredMessage="Przebieg nie może być pusty"
-						decimalPlaces="0" minValue="0">
-						<p:ajax update="@this @next" />
+						decimalPlaces="0" minValue="0" inputStyle="width:100%">
+						<p:ajax update="@this growl" />
 					</p:inputNumber>
-					<p:message for="@previous" />
 
 					<p:outputLabel for="@next" value="VIN:" />
 					<p:inputText id="vin" value="#{offerNewBB.offer.vin}"
 						required="true" requiredMessage="VIN nie może być pusty"
 						validatorMessage="Numer VIN składa się z 17 znaków (cyfr oraz dużych liter)">
-						<p:ajax update="@this @next" />
+						<p:ajax update="@this growl" />
 						<f:validateRegex pattern="^[A-HJ-NPR-Z0-9]{17}$" />
 					</p:inputText>
-					<p:message for="@previous" />
 
 					<p:outputLabel for="@next" value="Numer rejestracyjny pojazdu:" />
 					<p:inputText id="licensePlate"
 						value="#{offerNewBB.offer.licensePlate}" />
-					<p:message for="@previous" />
 
-					<p:outputLabel for="@next" value="Data pierwszej rejestracji" />
+					<p:outputLabel for="@next" value="Data pierwszej rejestracji:" />
 					<p:datePicker id="firstRegistration"
 						value="#{offerNewBB.offer.firstRegistration}"
-						monthNavigator="true" yearNavigator="true" yearRange="1950 : 2022" />
-					<p:message for="@previous" />
+						monthNavigator="true" yearNavigator="true" yearRange="1950 : 2022"
+						inputStyle="width:100%" />
 
 					<p:outputLabel for="@next" value="Tytuł ogłoszenia:" />
 					<p:inputText id="title" value="#{offerNewBB.offer.title}"
 						validatorMessage="Tytuł nie może być dłuższy niż 70 znaków">
 						<f:validateLength maximum="70" />
-						<p:ajax update="@this @next" />
+						<p:ajax update="@this growl" />
 					</p:inputText>
-					<p:message for="@previous" />
-				</h:panelGrid>
+				</p:panelGrid>
+
 			</p:panel>
 
-			<p:panel header="Dodaj zdjęcie">
-				<h:panelGrid columns="3" cellpadding="5">
-					<p:fileUpload mode="advanced" skinSimple="true"
-						listener="#{offerNewBB.handleFileUpload}" fileLimit="1"
-						sizeLimit="5000000" allowTypes="/(\.|\/)(jpe?g|png)$/"
-						accept="image/*" update="@this @next" />
-					<p:graphicImage
-						value="/offer_images/#{offerNewBB.filePath.getFileName()}"
-						styleClass="image" />
-				</h:panelGrid>
+			<p:panel id="fileUploadPanel" header="Dodaj zdjęcie"
+				styleClass="my-3 shadow-2">
+				<p:fileUpload mode="advanced" skinSimple="true"
+					listener="#{offerNewBB.handleFileUpload}" fileLimit="1"
+					sizeLimit="5000000" allowTypes="/(\.|\/)(jpe?g|png)$/"
+					accept="image/*" update="@this fileUploadPanel" />
+				<p:graphicImage rendered="#{offerNewBB.filePath != null}"
+					value="/offer_images/#{offerNewBB.filePath.getFileName()}"
+					styleClass="image" />
 			</p:panel>
 
-			<p:panel header="Wyposażenie">
+			<p:panel header="Wyposażenie" styleClass="my-3 shadow-2">
 				<p:selectManyCheckbox value="#{offerNewBB.offer.equipments}"
-					layout="grid" columns="3" styleClass="grid-checkbox">
+					layout="responsive" columns="3">
 					<f:selectItems value="#{offerNewBB.equipments}" var="e"
 						itemLabel="#{e.name}" itemValue="#{e}" />
 				</p:selectManyCheckbox>
 			</p:panel>
 
-			<p:panel header="Opis:">
-				<p:inputTextarea rows="3" cols="50" counter="display"
-					maxlength="4096" counterTemplate="{0} znaków pozostało"
-					value="#{offerNewBB.offer.description}" />
-				<h:outputText id="display" />
+			<p:panel header="Opis:" styleClass="my-3 shadow-2">
+				<div class="flex flex-column">
+					<p:inputTextarea rows="3" counter="display" maxlength="4096"
+						counterTemplate="{0} znaków pozostało"
+						value="#{offerNewBB.offer.description}" />
+					<h:outputText id="display" styleClass="mt-2" />
+				</div>
 			</p:panel>
 
-			<p:panel header="Historia pojazdu">
-				<h:panelGrid columns="3" cellpadding="5">
+			<p:panel header="Historia pojazdu" styleClass="my-3 shadow-2">
+				<p:panelGrid columns="3" layout="flex" contentStyleClass="grid"
+					columnClasses="col-12 md:col-6 lg:col-4,col-12 md:col-6 lg:col-4,col-12 md:col-6 lg:col-4">
 					<p:selectBooleanCheckbox value="#{offerNewBB.offer.isNew}"
 						itemLabel="Nowy" />
 
@@ -262,44 +239,44 @@
 					<p:selectBooleanCheckbox
 						value="#{offerNewBB.offer.isRightHandDrive}"
 						itemLabel="Kierownica po prawej (Anglik)" />
-				</h:panelGrid>
+				</p:panelGrid>
 			</p:panel>
 
-			<p:panel header="Cena">
-				<h:panelGrid columns="3" cellpadding="5">
-					<p:outputLabel for="@next" value="Podaj cenę" />
-					<p:inputNumber id="price" value="#{offerNewBB.offer.price}"
-						required="true" requiredMessage="Cena nie może być pusta"
-						symbol=" PLN" symbolPosition="s" decimalPlaces="0" minValue="0">
-						<p:ajax update="@this @next" />
-					</p:inputNumber>
-					<p:message for="@previous" />
-				</h:panelGrid>
+			<p:panel header="Cena" styleClass="my-3 shadow-2">
+				<p:outputLabel for="@next" value="Podaj cenę" />
+				<p:inputNumber id="price" value="#{offerNewBB.offer.price}"
+					required="true" requiredMessage="Cena nie może być pusta"
+					symbol=" PLN" symbolPosition="s" decimalPlaces="0" minValue="0"
+					styleClass="ml-2">
+					<p:ajax update="@this growl" />
+				</p:inputNumber>
 			</p:panel>
 
-			<p:panel header="Dane kontaktowe">
-				<h:panelGrid columns="3" cellpadding="5">
-					<p:outputLabel for="@next" value="Imię:" />
-					<h:outputText id="name" value="#{offerNewBB.offer.user.name}" />
+			<p:panel header="Dane kontaktowe" styleClass="my-3 shadow-2">
+				<p:panelGrid columns="2" layout="flex"
+					contentStyleClass="grid grid-nogutter input__list"
+					columnClasses="col-12 sm:col-6 p-0,col-12 sm:col-6 p-0">
+					<h:outputText value="Imię: #{offerNewBB.offer.user.name}" />
 
-					<p:outputLabel for="@next" value="Numer telefonu:" />
-					<h:outputText id="phoneNumber"
-						value="#{offerNewBB.offer.user.phoneNumber}" />
+					<h:outputText value="Nazwisko: #{offerNewBB.offer.user.surname}" />
 
-					<p:outputLabel for="@next" value="E-Mail:" />
-					<h:outputText id="email" value="#{offerNewBB.offer.user.email}" />
+					<h:outputText
+						value=" Numer telefonu: #{offerNewBB.offer.user.phoneNumber}" />
+
+					<h:outputText value=" E-Mail: #{offerNewBB.offer.user.email}" />
 
 					<p:outputLabel for="@next" value="Wpisz miasto:" />
 					<p:inputText id="city" value="#{offerNewBB.offer.city}"
-						required="true" requiredMessage="Miasto nie może być puste">
-						<p:ajax update="@this @next" />
+						required="true" requiredMessage="Miasto nie może być puste"
+						styleClass="inputfield w-full">
+						<p:ajax update="@this growl" />
 					</p:inputText>
-					<p:message for="@previous" />
-				</h:panelGrid>
+				</p:panelGrid>
 			</p:panel>
 
 			<p:commandButton value="Dodaj" action="#{offerNewBB.addOffer()}"
-				update="@form">
+				update="@form"
+				styleClass="w-full ui-button-flat bg-orange-500 hover:bg-orange-600 focus:bg-orange-700 text-0 mt-2 mb-4 py-1 text-xl">
 				<p:confirm header="Potwierdzenie"
 					message="Czy na pewno chcesz dodać nową ofertę?"
 					icon="pi pi-exclamation-triangle" />
@@ -312,6 +289,9 @@
 				<p:commandButton value="Tak" type="button"
 					styleClass="ui-confirmdialog-yes" />
 			</p:confirmDialog>
+
+			<p:growl id="growl" showDetail="true"
+				skipDetailIfEqualsSummary="true" />
 		</h:form>
 	</ui:define>
 </ui:composition>

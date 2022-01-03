@@ -58,7 +58,7 @@ body, body .ui-widget {
 	gap: 1rem;
 }
 
-.header__side-nav > li {
+.header__side-nav>li {
 	padding-bottom: 1rem;
 	border-bottom: 1px solid #e0e0e0;
 }
@@ -149,6 +149,18 @@ body, body .ui-widget {
 
 .details__list {
 	row-gap: 0.75rem;
+}
+
+.gap {
+	gap: 0.5rem;
+}
+
+.input__list {
+	row-gap: 0.75rem;
+}
+
+body .ui-panel {
+	border-radius: 4px;
 }
 
 /*body {
