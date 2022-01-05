@@ -129,7 +129,7 @@ public class DashboardEquipmentBB implements Serializable {
 
 	public String addEquipment() {
 		if (equipmentDAO.getEquipmentByName(equipment.getName()) != null) {
-			ctx.addMessage("addEquipmentForm",
+			ctx.addMessage("equipmentForm",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Wyposażenie o podanej nazwie już istnieje!", null));
 			return PAGE_STAY_AT_THE_SAME;
 		}

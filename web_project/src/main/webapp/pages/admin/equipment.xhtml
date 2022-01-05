@@ -16,7 +16,7 @@
 			<ui:include src="/templates/header-dashboard.xhtml" />
 		</ui:insert>
 
-		<h:form id="addEquipmentForm">
+		<h:form id="equipmentForm">
 			<p:panel header="Dodaj wyposażenie" styleClass="my-3 shadow-2">
 				<h:panelGrid columns="3" cellpadding="5">
 					<p:outputLabel for="name" value="Wyposażenie" />
@@ -29,11 +29,9 @@
 						update="@form equipmentForm" />
 				</h:panelGrid>
 
-				<p:message for="addEquipmentForm" id="msg" />
+				<p:message for="equipmentForm" id="msg" />
 			</p:panel>
-		</h:form>
 
-		<h:form id="equipmentForm">
 			<p:panel header="Lista wyposażenia" toggleable="true"
 				toggleableHeader="true" toggleSpeed="300" styleClass="my-3 shadow-2">
 				<p:dataTable id="equipmentTable" var="e" widgetVar="equipmentTable"
