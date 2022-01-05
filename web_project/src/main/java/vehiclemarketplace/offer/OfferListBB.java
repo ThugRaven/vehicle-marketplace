@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.context.Flash;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -45,6 +46,7 @@ public class OfferListBB implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private static final String PAGE_STAY_AT_THE_SAME = null;
+	private static final String PAGE_OFFERS = "/pages/public/offers?faces-redirect=true";
 
 	private LazyDataModel<Offer> lazyOffers;
 	private int countList;
@@ -146,6 +148,32 @@ public class OfferListBB implements Serializable {
 
 	@Inject
 	FacesContext ctx;
+
+	@Inject
+	Flash flash;
+
+	public void onLoad() {
+		Offer loadedFilter = null;
+		Offer loadedFilterFrom = null;
+		Offer loadedFilterTo = null;
+
+		loadedFilter = (Offer) flash.get("offerFilter");
+		loadedFilterFrom = (Offer) flash.get("offerFilterFrom");
+		loadedFilterTo = (Offer) flash.get("offerFilterTo");
+
+		if (loadedFilter != null) {
+			offerFilter = loadedFilter;
+		}
+		if (loadedFilterFrom != null) {
+			offerFilterFrom = loadedFilterFrom;
+		}
+		if (loadedFilterTo != null) {
+			offerFilterTo = loadedFilterTo;
+		}
+
+		loadBrand();
+		loadModel();
+	}
 
 	@PostConstruct
 	public void init() {
@@ -405,6 +433,20 @@ public class OfferListBB implements Serializable {
 		countLazyList();
 	}
 
+	public void loadBrand() {
+		if (offerFilter.getBrand() != null && offerFilter.getBrand().getIdBrand() != 0) {
+			models = new ArrayList<>();
+			generations = new ArrayList<>();
+			List<Model> modelsList = modelDAO.getModelsByBrandID(offerFilter.getBrand().getIdBrand());
+			for (Model model : modelsList) {
+				models.add(new SelectItemCount<Model>(model, countOffersByModelID(model.getIdModel())));
+			}
+		} else {
+			models = null;
+			generations = null;
+		}
+	}
+
 	public void changeModel() {
 		if (offerFilter.getModel() != null && offerFilter.getModel().getIdModel() != 0) {
 			generations = new ArrayList<>();
@@ -419,6 +461,20 @@ public class OfferListBB implements Serializable {
 		}
 		offerFilter.setGeneration(new Generation());
 		countLazyList();
+	}
+
+	public void loadModel() {
+		if (offerFilter.getModel() != null && offerFilter.getModel().getIdModel() != 0) {
+			generations = new ArrayList<>();
+			List<Generation> generationsList = generationDAO
+					.getGenerationsByModelID(offerFilter.getModel().getIdModel());
+			for (Generation generation : generationsList) {
+				generations.add(new SelectItemCount<Generation>(generation,
+						countOffersByGenerationID(generation.getIdGeneration())));
+			}
+		} else {
+			generations = null;
+		}
 	}
 
 	public List<BodyStyle> getBodyStyleList() {
@@ -484,5 +540,13 @@ public class OfferListBB implements Serializable {
 		offers = offerDAO.getLazyList(sortMap, filter, 0, 15);
 
 		return offers;
+	}
+
+	public String showOffers() {
+		flash.put("offerFilter", offerFilter);
+		flash.put("offerFilterFrom", offerFilterFrom);
+		flash.put("offerFilterTo", offerFilterTo);
+
+		return PAGE_OFFERS;
 	}
 }

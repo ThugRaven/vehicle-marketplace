@@ -177,11 +177,11 @@
 				</div>
 
 				<div class="field col-12">
-					<p:button styleClass="w-full text-lg font-medium"
-						outcome="/pages/public/offers?faces-redirect=true"
+					<p:commandButton styleClass="w-full text-lg font-medium"
+						action="#{offerListBB.showOffers()}"
 						value="Pokaż #{offerListBB.countListText()}">
 						<p:autoUpdate on="count" />
-					</p:button>
+					</p:commandButton>
 				</div>
 			</h:form>
 		</div>
