@@ -7,23 +7,17 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <ui:composition template="/templates/page-template.xhtml">
+	<ui:define name="title">
+		Wyposażenie - Admin dashboard - Vehicle Marketplace
+	</ui:define>
+
 	<ui:define name="pageContent">
-		<p:panel>
-			<h:outputText
-				value="Zalogowany: #{remoteClient.details.login} #{remoteClient.details.name}" />
-			<h:form>
-				<p:commandLink action="/pages/public/register?faces-redirect=true"
-					value="Zarejestruj się" />
-				<p:commandLink action="/pages/public/login?faces-redirect=true"
-					value="Zaloguj się" />
-				<p:commandButton action="#{loginBB.doLogout()}" value="Wyloguj się" />
-				<p:commandLink action="/pages/admin/dashboard?faces-redirect=true"
-					value="Admin dashboard" />
-			</h:form>
-		</p:panel>
+		<ui:insert name="headerDashboard">
+			<ui:include src="/templates/header-dashboard.xhtml" />
+		</ui:insert>
 
 		<h:form id="addEquipmentForm">
-			<p:panel header="Dodaj wyposażenie">
+			<p:panel header="Dodaj wyposażenie" styleClass="my-3 shadow-2">
 				<h:panelGrid columns="3" cellpadding="5">
 					<p:outputLabel for="name" value="Wyposażenie" />
 					<p:inputText id="name" value="#{dashEquipmentBB.equipment.name}"
@@ -41,7 +35,7 @@
 
 		<h:form id="equipmentForm">
 			<p:panel header="Lista wyposażenia" toggleable="true"
-				toggleableHeader="true" toggleSpeed="300">
+				toggleableHeader="true" toggleSpeed="300" styleClass="my-3 shadow-2">
 				<p:dataTable id="equipmentTable" var="e" widgetVar="equipmentTable"
 					value="#{dashEquipmentBB.lazyEquipment}" paginator="true" rows="5"
 					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -50,18 +44,27 @@
 					rowKey="#{e.idEquipment}" allowUnsorting="true" sortMode="multiple">
 
 					<f:facet name="header">
-						<p:outputLabel for="id" value="ID" />
-						<p:inputNumber id="id"
-							value="#{dashEquipmentBB.equipmentFilter.idEquipment}" />
-						<p:message for="id" />
+						<p:panelGrid columns="4" layout="flex"
+							contentStyleClass="grid grid-nogutter align-items-center"
+							columnClasses="col-12 md:col-6 lg:col-3 p-2,col-12 md:col-6 lg:col-3 p-2 flex flex-column,col-12 md:col-6 lg:col-3 p-2,col-12 md:col-6 lg:col-3 p-2 flex flex-column">
 
-						<p:outputLabel for="name" value="Wyposażenie" />
-						<p:inputText id="name"
-							value="#{dashEquipmentBB.equipmentFilter.name}" />
-						<p:message for="name" />
+							<p:outputLabel for="id" value="ID" />
+							<p:inputNumber id="id"
+								value="#{dashEquipmentBB.equipmentFilter.idEquipment}"
+								inputStyle="width:100%" />
 
-						<p:commandButton value="Szukaj"
-							onclick="PF('equipmentTable').filter()" />
+							<p:outputLabel for="name" value="Wyposażenie" />
+							<p:inputText id="name"
+								value="#{dashEquipmentBB.equipmentFilter.name}" />
+
+						</p:panelGrid>
+
+						<div
+							class="flex flex-row justify-content-between md:justify-content-end w-full">
+							<p:commandButton value="Szukaj"
+								onclick="PF('equipmentTable').filter()"
+								styleClass="w-full md:w-auto mt-2" />
+						</div>
 					</f:facet>
 
 					<p:column field="idEquipment" headerText="ID" filterable="false" />
@@ -118,15 +121,20 @@
 							<p:message for="name" />
 						</h:panelGrid>
 
-						<p:commandButton value="Aktualizuj"
-							action="#{dashEquipmentBB.editEquipment()}"
-							update="@form equipmentForm:equipmentTable">
-							<p:confirm header="Potwierdzenie"
-								message="Zmienić podane wyposażenie?"
-								icon="pi pi-exclamation-triangle" />
-						</p:commandButton>
-						<p:commandButton value="Anuluj" type="button"
-							onclick="PF('equipmentEditDialog').hide()" />
+						<div
+							class="flex flex-row justify-content-between md:justify-content-center w-full">
+							<p:commandButton value="Aktualizuj"
+								action="#{dashEquipmentBB.editEquipment()}"
+								update="@form equipmentForm:equipmentTable"
+								styleClass="w-full md:w-auto mr-2">
+								<p:confirm header="Potwierdzenie"
+									message="Zmienić podane wyposażenie?"
+									icon="pi pi-exclamation-triangle" />
+							</p:commandButton>
+							<p:commandButton value="Anuluj" type="button"
+								onclick="PF('equipmentEditDialog').hide()"
+								styleClass="w-full md:w-auto ui-button-outlined ui-button-danger" />
+						</div>
 
 						<p:messages for="equipmentDialogForm" id="msgs" />
 					</h:form>

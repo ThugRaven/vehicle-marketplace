@@ -7,132 +7,26 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <ui:composition template="/templates/page-template.xhtml">
+	<ui:define name="title">
+		Admin dashboard - Vehicle Marketplace
+	</ui:define>
+
 	<ui:define name="pageContent">
-		<p:panel>
-			<h:outputText
-				value="Zalogowany: #{remoteClient.details.login} #{remoteClient.details.name}" />
-			<h:form>
-				<p:link outcome="/pages/public/main?faces-redirect=true"
-					value="Strona główna" />
-				<p:link outcome="/pages/public/register?faces-redirect=true"
-					value="Zarejestruj się" />
-				<p:link outcome="/pages/public/login?faces-redirect=true"
-					value="Zaloguj się" />
-				<p:commandButton action="#{loginBB.doLogout()}" value="Wyloguj się" />
-				<p:link outcome="/pages/admin/cars?faces-redirect=true"
-					value="Pojazdy" />
-				<p:link outcome="/pages/admin/users?faces-redirect=true"
-					value="Użytkownicy" />
-				<p:link outcome="/pages/admin/equipment?faces-redirect=true"
-					value="Wyposażenie" />
-				<p:link outcome="/pages/admin/offers?faces-redirect=true"
-					value="Oferty" />
-			</h:form>
-		</p:panel>
-
-		<p:panel>
-			<p:dataTable value="#{userListBB.getFullList()}" var="u">
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Login" />
-					</f:facet>
-					<h:outputText value="#{u.login}" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Name" />
-					</f:facet>
-					<h:outputText value="#{u.name}" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Surname" />
-					</f:facet>
-					<h:outputText value="#{u.surname}" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Role" />
-					</f:facet>
-					<h:outputText value="#{u.userRole.roleName}" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Create time" />
-					</f:facet>
-					<h:outputText value="#{u.createTime}">
-						<f:convertDateTime pattern="dd-MM-yyyy" />
-					</h:outputText>
-				</p:column>
-
-			</p:dataTable>
-		</p:panel>
-
-		<p:panel>
-			<p:dataTable value="#{offerListBB.getFullList()}" var="o">
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="ID" />
-					</f:facet>
-					<h:outputText value="#{o.idOffer}" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Brand" />
-					</f:facet>
-					<h:outputText value="#{o.brand.name}" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Model" />
-					</f:facet>
-					<h:outputText value="#{o.model.name}" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Generation" />
-					</f:facet>
-					<h:outputText value="#{o.generation.name}" />
-				</p:column>
-
-			</p:dataTable>
-		</p:panel>
-
-		<p:panel>
-			<p:dataTable value="#{generationListBB.getFullList()}" var="g">
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Generation" />
-					</f:facet>
-					<h:outputText value="#{g.name}" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Model" />
-					</f:facet>
-					<h:outputText value="#{g.model.name}" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Brand" />
-					</f:facet>
-					<h:outputText value="#{g.model.brand.name}" />
-				</p:column>
-
-			</p:dataTable>
-		</p:panel>
+		<div
+			class="flex flex-column xl:flex-row justify-content-between gap-xl">
+			<p:link outcome="/pages/admin/cars?faces-redirect=true"
+				styleClass="flex flex-column align-items-center text-800 hover:text-600 text-5xl no-underline">
+				<i class="pi pi-book"></i>Pojazdy</p:link>
+			<p:link outcome="/pages/admin/users?faces-redirect=true"
+				styleClass="flex flex-column align-items-center text-800 hover:text-600 text-5xl no-underline">
+				<i class="pi pi-users"></i>Użytkownicy</p:link>
+			<p:link outcome="/pages/admin/equipment?faces-redirect=true"
+				styleClass="flex flex-column align-items-center text-800 hover:text-600 text-5xl no-underline">
+				<i class="pi pi-list"></i>Wyposażenie</p:link>
+			<p:link outcome="/pages/admin/offers?faces-redirect=true"
+				styleClass="flex flex-column align-items-center text-800 hover:text-600 text-5xl no-underline">
+				<i class="pi pi-shopping-cart"></i>Oferty</p:link>
+		</div>
 	</ui:define>
 </ui:composition>
 </html>

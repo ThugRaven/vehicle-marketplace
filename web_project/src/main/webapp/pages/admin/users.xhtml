@@ -7,24 +7,18 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <ui:composition template="/templates/page-template.xhtml">
+	<ui:define name="title">
+		Użytkownicy - Admin dashboard - Vehicle Marketplace
+	</ui:define>
+
 	<ui:define name="pageContent">
-		<p:panel>
-			<h:outputText
-				value="Zalogowany: #{remoteClient.details.login} #{remoteClient.details.name}" />
-			<h:form>
-				<p:commandLink action="/pages/public/register?faces-redirect=true"
-					value="Zarejestruj się" />
-				<p:commandLink action="/pages/public/login?faces-redirect=true"
-					value="Zaloguj się" />
-				<p:commandButton action="#{loginBB.doLogout()}" value="Wyloguj się" />
-				<p:commandLink action="/pages/admin/dashboard?faces-redirect=true"
-					value="Admin dashboard" />
-			</h:form>
-		</p:panel>
+		<ui:insert name="headerDashboard">
+			<ui:include src="/templates/header-dashboard.xhtml" />
+		</ui:insert>
 
 		<h:form id="userForm">
 			<p:panel header="Lista użytkowników" toggleable="true"
-				toggleableHeader="true" toggleSpeed="300">
+				toggleableHeader="true" toggleSpeed="300" styleClass="my-3 shadow-2">
 				<p:dataTable id="userTable" var="u" widgetVar="userTable"
 					value="#{dashUsersBB.lazyUsers}" paginator="true" rows="5"
 					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -34,52 +28,54 @@
 					rowStyleClass="#{u.archived ? 'archived' : null}">
 
 					<f:facet name="header">
-						<p:outputLabel for="id" value="ID" />
-						<p:inputNumber id="id" value="#{dashUsersBB.userFilter.idUser}" />
-						<p:message for="id" />
+						<p:panelGrid columns="4" layout="flex"
+							contentStyleClass="grid grid-nogutter align-items-center"
+							columnClasses="col-12 md:col-6 lg:col-3 p-1,col-12 md:col-6 lg:col-3 p-1 flex flex-column,col-12 md:col-6 lg:col-3 p-1,col-12 md:col-6 lg:col-3 p-1 flex flex-column">
+							<p:outputLabel for="id" value="ID" />
+							<p:inputNumber id="id" value="#{dashUsersBB.userFilter.idUser}"
+								inputStyle="width:100%" />
 
-						<p:outputLabel for="login" value="Login" />
-						<p:inputText id="login" value="#{dashUsersBB.userFilter.login}" />
-						<p:message for="login" />
+							<p:outputLabel for="role" value="Rola" />
+							<p:selectOneMenu id="role"
+								value="#{dashUsersBB.userFilter.userRole.idUserRole}">
+								<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
+									noSelectionOption="true" />
+								<f:selectItems value="#{dashUsersBB.roles}" var="r"
+									itemLabel="#{r.roleName}" itemValue="#{r.idUserRole}" />
+							</p:selectOneMenu>
 
-						<p:outputLabel for="email" value="E-Mail" />
-						<p:inputText id="email" value="#{dashUsersBB.userFilter.email}" />
-						<p:message for="email" />
+							<p:outputLabel for="login" value="Login" />
+							<p:inputText id="login" value="#{dashUsersBB.userFilter.login}" />
 
-						<p:outputLabel for="name" value="Imię" />
-						<p:inputText id="name" value="#{dashUsersBB.userFilter.name}" />
-						<p:message for="name" />
+							<p:outputLabel for="email" value="E-Mail" />
+							<p:inputText id="email" value="#{dashUsersBB.userFilter.email}" />
 
-						<p:outputLabel for="surname" value="Nazwisko" />
-						<p:inputText id="surname"
-							value="#{dashUsersBB.userFilter.surname}" />
-						<p:message for="surname" />
+							<p:outputLabel for="name" value="Imię" />
+							<p:inputText id="name" value="#{dashUsersBB.userFilter.name}" />
 
-						<p:outputLabel for="role" value="Rola" />
-						<p:selectOneMenu id="role"
-							value="#{dashUsersBB.userFilter.userRole.idUserRole}">
-							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
-								noSelectionOption="true" />
-							<f:selectItems value="#{dashUsersBB.roles}" var="r"
-								itemLabel="#{r.roleName}" itemValue="#{r.idUserRole}" />
-						</p:selectOneMenu>
-						<p:message for="role" />
+							<p:outputLabel for="surname" value="Nazwisko" />
+							<p:inputText id="surname"
+								value="#{dashUsersBB.userFilter.surname}" />
 
-						<p:outputLabel for="archived" value="Status konta" />
-						<p:selectOneMenu id="archived"
-							value="#{dashUsersBB.userFilter.archived}">
-							<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
-								noSelectionOption="true" />
-							<f:selectItem itemLabel="Aktywne" itemValue="#{false}" />
-							<f:selectItem itemLabel="Zablokowane" itemValue="#{true}" />
-						</p:selectOneMenu>
-						<p:message for="archived" />
+							<p:outputLabel for="archived" value="Status konta" />
+							<p:selectOneMenu id="archived"
+								value="#{dashUsersBB.userFilter.archived}">
+								<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
+									noSelectionOption="true" />
+								<f:selectItem itemLabel="Aktywne" itemValue="#{false}" />
+								<f:selectItem itemLabel="Zablokowane" itemValue="#{true}" />
+							</p:selectOneMenu>
+						</p:panelGrid>
 
-						<p:commandButton value="Szukaj" onclick="PF('userTable').filter()" />
 
-						<div>
+						<div
+							class="flex flex-row justify-content-between md:justify-content-end w-full">
+							<p:commandButton value="Szukaj"
+								onclick="PF('userTable').filter()"
+								styleClass="w-full md:w-auto mr-2" />
 							<p:commandButton id="toggler" type="button" value="Columns"
-								icon="pi pi-align-justify" />
+								icon="pi pi-align-justify"
+								styleClass="w-full md:w-auto ui-button-secondary" />
 							<p:columnToggler datasource="userTable" trigger="toggler" />
 						</div>
 					</f:facet>
@@ -180,15 +176,20 @@
 							<p:message for="role" />
 						</h:panelGrid>
 
-						<p:commandButton value="Aktualizuj"
-							action="#{dashUsersBB.editUser()}"
-							update="@form userForm:userTable">
-							<p:confirm header="Potwierdzenie"
-								message="Zmienić rolę podanego użytkownika?"
-								icon="pi pi-exclamation-triangle" />
-						</p:commandButton>
-						<p:commandButton value="Anuluj" type="button"
-							onclick="PF('userEditDialog').hide()" />
+						<div
+							class="flex flex-row justify-content-between md:justify-content-center w-full">
+							<p:commandButton value="Aktualizuj"
+								action="#{dashUsersBB.editUser()}"
+								update="@form userForm:userTable"
+								styleClass="w-full md:w-auto mr-2">
+								<p:confirm header="Potwierdzenie"
+									message="Zmienić rolę podanego użytkownika?"
+									icon="pi pi-exclamation-triangle" />
+							</p:commandButton>
+							<p:commandButton value="Anuluj" type="button"
+								onclick="PF('userEditDialog').hide()"
+								styleClass="w-full md:w-auto ui-button-outlined ui-button-danger" />
+						</div>
 
 						<p:messages for="userDialogForm" id="msgs" />
 					</h:form>

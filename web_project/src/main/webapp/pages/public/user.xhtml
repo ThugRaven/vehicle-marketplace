@@ -67,7 +67,7 @@
 		<h:form id="offerForm" styleClass="w-full">
 			<p:panel
 				header="#{userProfileBB.user.idUser eq remoteClient.details.idUser ? 'Lista Twoich ogłoszeń' : 'Lista ogłoszeń użytkownika'}"
-				toggleable="true" toggleableHeader="true" toggleSpeed="300">
+				toggleable="true" toggleableHeader="true" toggleSpeed="300" styleClass="my-3 shadow-2">
 				<p:dataView id="userOfferTable" var="o" widgetVar="userOfferTable"
 					value="#{userProfileBB.lazyOffers}" paginator="true"
 					paginatorPosition="bottom" rows="5"

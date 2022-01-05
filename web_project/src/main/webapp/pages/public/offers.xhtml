@@ -34,7 +34,6 @@
 								<p:ajax update="@obs(count)"
 									listener="#{offerListBB.countLazyList()}" />
 							</p:selectOneMenu>
-							<p:message for="bodyStyle" />
 						</div>
 
 						<div class="field col-6 xl:col-2">
@@ -49,7 +48,6 @@
 								<p:ajax listener="#{offerListBB.changeBrand}"
 									update="model generation @obs(count)" />
 							</p:selectOneMenu>
-							<p:message for="brand" />
 						</div>
 
 						<div class="field col-6 xl:col-2">
@@ -64,7 +62,6 @@
 								<p:ajax listener="#{offerListBB.changeModel}"
 									update="generation @obs(count)" />
 							</p:selectOneMenu>
-							<p:message for="model" />
 						</div>
 
 						<div class="field col-6 xl:col-2">
@@ -79,7 +76,6 @@
 								<p:ajax update="@obs(count)"
 									listener="#{offerListBB.countLazyList()}" />
 							</p:selectOneMenu>
-							<p:message for="generation" />
 						</div>
 
 						<div class="field col-6 xl:col-2">
@@ -90,11 +86,10 @@
 								autoHighlight="false" scrollHeight="250"
 								styleClass="inputfield w-full" inputStyle="width:100%">
 								<p:ajax event="focus" oncomplete="PF('priceFrom').search('')" />
-								<p:ajax update="@obs(count)"
+								<p:ajax update="@obs(count) @this"
 									listener="#{offerListBB.countLazyList()}" />
-								<p:keyFilter mask="num" />
 							</p:autoComplete>
-							<p:message for="priceFrom" />
+							<p:keyFilter for="@previous" mask="num" />
 						</div>
 
 						<div class="field col-6 xl:col-2">
@@ -104,11 +99,10 @@
 								autoHighlight="false" scrollHeight="250"
 								styleClass="inputfield w-full" inputStyle="width:100%">
 								<p:ajax event="focus" oncomplete="PF('priceTo').search('')" />
-								<p:ajax update="@obs(count)"
+								<p:ajax update="@obs(count) @this"
 									listener="#{offerListBB.countLazyList()}" />
-								<p:keyFilter mask="num" />
 							</p:autoComplete>
-							<p:message for="priceTo" />
+							<p:keyFilter for="@previous" mask="num" />
 						</div>
 
 						<div class="field col-6 xl:col-2">
@@ -117,17 +111,15 @@
 								value="#{offerListBB.offerFilterFrom.productionYear}"
 								validatorMessage="Błąd formatu roku"
 								converterMessage="Błąd konwersji roku"
-								placeholder="Rok produkcji od"
+								placeholder="Rok produkcji od" maxlength="4"
 								completeMethod="#{offerListBB.completeYears}" scrollHeight="250"
 								styleClass="inputfield w-full" inputStyle="width:100%">
 								<p:ajax event="focus"
 									oncomplete="PF('productionYearFrom').search('')" />
-								<p:ajax update="@obs(count)"
+								<p:ajax update="@obs(count) @this"
 									listener="#{offerListBB.countLazyList()}" />
-								<f:validateLength minimum="4" maximum="4" />
-								<p:keyFilter mask="num" />
 							</p:autoComplete>
-							<p:message for="productionYearFrom" />
+							<p:keyFilter for="@previous" mask="num" />
 						</div>
 
 						<div class="field col-6 xl:col-2">
@@ -136,17 +128,15 @@
 								value="#{offerListBB.offerFilterTo.productionYear}"
 								validatorMessage="Błąd formatu roku"
 								converterMessage="Błąd konwersji roku"
-								placeholder="Rok produkcji do"
+								placeholder="Rok produkcji do" maxlength="4"
 								completeMethod="#{offerListBB.completeYears}" scrollHeight="250"
 								styleClass="inputfield w-full" inputStyle="width:100%">
 								<p:ajax event="focus"
 									oncomplete="PF('productionYearTo').search('')" />
-								<p:ajax update="@obs(count)"
+								<p:ajax update="@obs(count) @this"
 									listener="#{offerListBB.countLazyList()}" />
-								<f:validateLength minimum="4" maximum="4" />
-								<p:keyFilter mask="num" />
 							</p:autoComplete>
-							<p:message for="productionYearTo" />
+							<p:keyFilter for="@previous" mask="num" />
 						</div>
 
 						<div class="field col-6 xl:col-2">
@@ -160,7 +150,6 @@
 								<p:ajax update="@obs(count)"
 									listener="#{offerListBB.countLazyList()}" />
 							</p:selectOneMenu>
-							<p:message for="fuel" />
 						</div>
 
 						<div class="field col-6 xl:col-2">
@@ -171,11 +160,10 @@
 								autoHighlight="false" scrollHeight="250"
 								styleClass="inputfield w-full" inputStyle="width:100%">
 								<p:ajax event="focus" oncomplete="PF('mileageFrom').search('')" />
-								<p:ajax update="@obs(count)"
+								<p:ajax update="@obs(count) @this"
 									listener="#{offerListBB.countLazyList()}" />
-								<p:keyFilter mask="num" />
 							</p:autoComplete>
-							<p:message for="mileageFrom" />
+							<p:keyFilter for="@previous" mask="num" />
 						</div>
 
 						<div class="field col-6 xl:col-2">
@@ -186,13 +174,13 @@
 								autoHighlight="false" scrollHeight="250"
 								styleClass="inputfield w-full" inputStyle="width:100%">
 								<p:ajax event="focus" oncomplete="PF('mileageTo').search('')" />
-								<p:ajax update="@obs(count)"
+								<p:ajax update="@obs(count) @this"
 									listener="#{offerListBB.countLazyList()}" />
-								<p:keyFilter mask="num" />
 							</p:autoComplete>
-							<p:message for="mileageTo" />
+							<p:keyFilter for="@previous" mask="num" />
 						</div>
 					</div>
+
 					<div
 						class="flex flex-row justify-content-between md:justify-content-end w-full mt-0 mb-4">
 						<p:commandButton value="Status pojazdu" type="button"
