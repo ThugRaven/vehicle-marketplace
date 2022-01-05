@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.simplesecurity.RemoteClient;
@@ -19,7 +20,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
-import org.primefaces.PrimeFaces;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.file.UploadedFile;
 import org.primefaces.shaded.commons.io.FilenameUtils;
@@ -45,6 +45,7 @@ public class OfferNewBB implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private static final String PAGE_STAY_AT_THE_SAME = null;
+	private static final String PAGE_OFFER = "/pages/public/offer?faces-redirect=true";
 
 	private Offer offer = new Offer();
 
@@ -210,6 +211,11 @@ public class OfferNewBB implements Serializable {
 		System.out.println(offer);
 		offer.setArchived(false);
 		offerDAO.create(offer);
-		return PAGE_STAY_AT_THE_SAME;
+		String offerUrl = PAGE_OFFER + "c=" + offer.getBrand().getName() + " " + offer.getModel().getName() + " "
+				+ offer.getTitle() + "&o=" + offer.getIdOffer();
+		ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Pomyślnie dodano ogłoszenie!", null));
+		extcontext.getFlash().setKeepMessages(true);
+
+		return offerUrl;
 	}
 }
