@@ -30,7 +30,7 @@
 						<div class="field col-6 xl:col-2">
 							<p:selectOneMenu id="bodyStyle"
 								value="#{offerListBB.offerFilter.bodyStyle.idBodyStyle}"
-								styleClass="inputfield w-full">
+								styleClass="inputfield w-full" autoWidth="false">
 								<f:selectItem itemLabel="Typ nadwozia" itemValue="#{null}"
 									noSelectionOption="true" />
 								<f:selectItems value="#{offerListBB.bodyStyles}" var="b"
@@ -43,7 +43,7 @@
 						<div class="field col-6 xl:col-2">
 							<p:selectOneMenu id="brand"
 								value="#{offerListBB.offerFilter.brand.idBrand}"
-								styleClass="inputfield w-full">
+								styleClass="inputfield w-full" autoWidth="false">
 								<f:selectItem itemLabel="Marka" itemValue="#{null}"
 									noSelectionOption="true" />
 								<f:selectItems value="#{offerListBB.brands}" var="b"
@@ -57,7 +57,7 @@
 						<div class="field col-6 xl:col-2">
 							<p:selectOneMenu id="model"
 								value="#{offerListBB.offerFilter.model.idModel}"
-								styleClass="inputfield w-full">
+								styleClass="inputfield w-full" autoWidth="false">
 								<f:selectItem itemLabel="Model" itemValue="#{null}"
 									noSelectionOption="true" />
 								<f:selectItems value="#{offerListBB.models}" var="m"
@@ -71,7 +71,7 @@
 						<div class="field col-6 xl:col-2">
 							<p:selectOneMenu id="generation"
 								value="#{offerListBB.offerFilter.generation.idGeneration}"
-								styleClass="inputfield w-full">
+								styleClass="inputfield w-full" autoWidth="false">
 								<f:selectItem itemLabel="Generacja" itemValue="#{null}"
 									noSelectionOption="true" />
 								<f:selectItems value="#{offerListBB.generations}" var="g"
@@ -146,7 +146,7 @@
 						<div class="field col-6 xl:col-2">
 							<p:selectOneMenu id="fuel"
 								value="#{offerListBB.offerFilter.fuel}"
-								styleClass="inputfield w-full">
+								styleClass="inputfield w-full" autoWidth="false">
 								<f:selectItem itemLabel="Rodzaj paliwa" itemValue="#{null}"
 									noSelectionOption="true" />
 								<f:selectItems value="#{constantsBB.fuels}" var="f"
@@ -186,14 +186,14 @@
 					</div>
 
 					<div
-						class="flex flex-row justify-content-between md:justify-content-end w-full mt-0 mb-4">
+						class="flex sm:flex-row flex-column justify-content-between md:justify-content-end w-full mt-0 mb-4 gap">
 						<p:commandButton value="Status pojazdu" type="button"
 							onclick="PF('vehicleStatusDialog').show()"
-							styleClass="w-full md:w-auto mr-2" />
+							styleClass="w-full md:w-auto" />
 
 						<p:commandButton value="Silnik i napęd" type="button"
 							onclick="PF('engineDriveDialog').show()"
-							styleClass="w-full md:w-auto mr-2" />
+							styleClass="w-full md:w-auto" />
 
 						<p:commandButton value="Nadwozie" type="button"
 							onclick="PF('bodyDialog').show()" styleClass="w-full md:w-auto" />
@@ -448,37 +448,40 @@
 							value="#{o.brand.name} #{o.model.name} #{o.title}" />
 						<f:param name="o" value="#{o.idOffer}" />
 						<div
-							class="p-4 mt-2 border-1 border-200 list__content flex flex-row text-800">
+							class="p-4 mt-2 border-1 border-200 list__content flex flex-column sm:flex-row align-items-center sm:align-items-stretch text-800">
 							<p:graphicImage rendered="#{not empty o.image}"
 								value="/offer_images/#{o.image}"
 								styleClass="list__image flex-shrink-0 surface-200" />
-							<div class="mx-3 flex flex-column">
-								<span class="text-xl text-900 font-medium list__title">#{o.brand.name}
-									#{o.model.name} <h:outputText value="#{o.displacement / 1000}">
-										<f:convertNumber type="number" pattern="0.0" locale="en_US" />
-									</h:outputText>
-								</span> <span class="mt-1 text-sm">#{o.title}</span>
-								<ul
-									class="flex flex-row list-none list__list p-0 align-items-end flex-wrap text-sm">
-									<li>#{o.productionYear}</li>
-									<li><h:outputText value="#{o.mileage}">
-											<f:convertNumber type="number" />
-										</h:outputText> km</li>
-									<li><h:outputText value="#{o.displacement}">
-											<f:convertNumber type="number" />
-										</h:outputText> cm<sup>3</sup></li>
-									<li>#{o.fuel}</li>
-								</ul>
-								<div class="mt-2 text-sm">
-									<i class="pi pi-map-marker font-bold" /> <span
-										class="font-normal">#{o.city}</span>
+							<div
+								class="m-2 sm:mx-3 flex flex-column md:flex-row justify-content-between w-full">
+								<div class="flex flex-column">
+									<span class="text-xl text-900 font-medium list__title">#{o.brand.name}
+										#{o.model.name} <h:outputText value="#{o.displacement / 1000}">
+											<f:convertNumber type="number" pattern="0.0" locale="en_US" />
+										</h:outputText>
+									</span> <span class="mt-1 text-sm">#{o.title}</span>
+									<ul
+										class="flex flex-row list-none list__list p-0 align-items-end flex-wrap text-sm">
+										<li>#{o.productionYear}</li>
+										<li><h:outputText value="#{o.mileage}">
+												<f:convertNumber type="number" />
+											</h:outputText> km</li>
+										<li><h:outputText value="#{o.displacement}">
+												<f:convertNumber type="number" />
+											</h:outputText> cm<sup>3</sup></li>
+										<li>#{o.fuel}</li>
+									</ul>
+									<div class="mt-2 text-sm">
+										<i class="pi pi-map-marker font-bold" /> <span
+											class="font-normal">#{o.city}</span>
+									</div>
 								</div>
-							</div>
-							<div class="ml-auto font-bold text-xl text-orange-500 text-right">
-								<h:outputText value="#{o.price}">
-									<f:convertNumber type="number" />
-								</h:outputText>
-								PLN
+								<div class="flex font-bold text-xl text-orange-500">
+									<h:outputText value="#{o.price}">
+										<f:convertNumber type="number" />
+									</h:outputText>
+									PLN
+								</div>
 							</div>
 						</div>
 					</p:link>
