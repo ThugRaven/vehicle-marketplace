@@ -79,67 +79,59 @@
 				</div>
 
 				<div class="field col-12 md:col-6 mb-0">
+					<p:outputLabel for="priceFrom" value="Cena" />
 					<div class="formgrid grid">
-						<div class="field col mb-0">
-							<p:outputLabel for="priceFrom" value="Cena" />
-							<div class="formgrid grid">
-								<div class="col">
-									<p:inputNumber id="priceFrom"
-										value="#{offerListBB.offerFilterFrom.price}" decimalPlaces="0"
-										minValue="0" styleClass="inputfield w-full"
-										inputStyle="width:100%">
-										<p:ajax update="@obs(count)"
-											listener="#{offerListBB.countLazyList()}" />
-									</p:inputNumber>
-									<p:message for="priceFrom" />
-								</div>
-								<div class="col">
-									<p:inputNumber id="priceTo"
-										value="#{offerListBB.offerFilterTo.price}" decimalPlaces="0"
-										minValue="0" styleClass="inputfield w-full"
-										inputStyle="width:100%">
-										<p:ajax update="@obs(count)"
-											listener="#{offerListBB.countLazyList()}" />
-									</p:inputNumber>
-									<p:message for="priceTo" />
-								</div>
-							</div>
+						<div class="col">
+							<p:inputNumber id="priceFrom"
+								value="#{offerListBB.offerFilterFrom.price}" decimalPlaces="0"
+								minValue="0" styleClass="inputfield w-full"
+								inputStyle="width:100%">
+								<p:ajax update="@obs(count)"
+									listener="#{offerListBB.countLazyList()}" />
+							</p:inputNumber>
+							<p:message for="priceFrom" />
+						</div>
+						<div class="col">
+							<p:inputNumber id="priceTo"
+								value="#{offerListBB.offerFilterTo.price}" decimalPlaces="0"
+								minValue="0" styleClass="inputfield w-full"
+								inputStyle="width:100%">
+								<p:ajax update="@obs(count)"
+									listener="#{offerListBB.countLazyList()}" />
+							</p:inputNumber>
+							<p:message for="priceTo" />
 						</div>
 					</div>
 				</div>
 
 				<div class="field col-12 md:col-6 mb-0">
+					<p:outputLabel for="productionYearFrom" value="Rok produkcji" />
 					<div class="formgrid grid">
-						<div class="field col mb-0">
-							<p:outputLabel for="productionYearFrom" value="Rok produkcji" />
-							<div class="formgrid grid">
-								<div class="col">
-									<p:inputText id="productionYearFrom"
-										value="#{offerListBB.offerFilterFrom.productionYear}"
-										validatorMessage="Błąd formatu roku"
-										converterMessage="Błąd konwersji roku"
-										styleClass="inputfield w-full">
-										<f:validateLength minimum="4" maximum="4" />
-										<p:keyFilter mask="num" />
-										<p:ajax update="@obs(count)"
-											listener="#{offerListBB.countLazyList()}" />
-									</p:inputText>
-									<p:message for="productionYearFrom" />
-								</div>
-								<div class="col">
-									<p:inputText id="productionYearTo"
-										value="#{offerListBB.offerFilterTo.productionYear}"
-										validatorMessage="Błąd formatu roku"
-										converterMessage="Błąd konwersji roku"
-										styleClass="inputfield w-full">
-										<f:validateLength minimum="4" maximum="4" />
-										<p:keyFilter mask="num" />
-										<p:ajax update="@obs(count)"
-											listener="#{offerListBB.countLazyList()}" />
-									</p:inputText>
-									<p:message for="productionYearTo" />
-								</div>
-							</div>
+						<div class="col">
+							<p:inputText id="productionYearFrom"
+								value="#{offerListBB.offerFilterFrom.productionYear}"
+								validatorMessage="Błąd formatu roku"
+								converterMessage="Błąd konwersji roku"
+								styleClass="inputfield w-full">
+								<f:validateLength minimum="4" maximum="4" />
+								<p:keyFilter mask="num" />
+								<p:ajax update="@obs(count)"
+									listener="#{offerListBB.countLazyList()}" />
+							</p:inputText>
+							<p:message for="productionYearFrom" />
+						</div>
+						<div class="col">
+							<p:inputText id="productionYearTo"
+								value="#{offerListBB.offerFilterTo.productionYear}"
+								validatorMessage="Błąd formatu roku"
+								converterMessage="Błąd konwersji roku"
+								styleClass="inputfield w-full">
+								<f:validateLength minimum="4" maximum="4" />
+								<p:keyFilter mask="num" />
+								<p:ajax update="@obs(count)"
+									listener="#{offerListBB.countLazyList()}" />
+							</p:inputText>
+							<p:message for="productionYearTo" />
 						</div>
 					</div>
 				</div>
@@ -159,31 +151,27 @@
 				</div>
 
 				<div class="field col-12 md:col-6 mb-0">
+					<p:outputLabel for="mileageFrom" value="Przebieg" />
 					<div class="formgrid grid">
-						<div class="field col mb-0">
-							<p:outputLabel for="mileageFrom" value="Przebieg" />
-							<div class="formgrid grid">
-								<div class="col">
-									<p:inputNumber id="mileageFrom"
-										value="#{offerListBB.offerFilterFrom.mileage}"
-										decimalPlaces="0" minValue="0" styleClass="inputfield w-full"
-										inputStyle="width:100%">
-										<p:ajax update="@obs(count)"
-											listener="#{offerListBB.countLazyList()}" />
-									</p:inputNumber>
-									<p:message for="mileageFrom" />
-								</div>
-								<div class="col">
-									<p:inputNumber id="mileageTo"
-										value="#{offerListBB.offerFilterTo.mileage}" decimalPlaces="0"
-										minValue="0" styleClass="inputfield w-full"
-										inputStyle="width:100%">
-										<p:ajax update="@obs(count)"
-											listener="#{offerListBB.countLazyList()}" />
-									</p:inputNumber>
-									<p:message for="mileageTo" />
-								</div>
-							</div>
+						<div class="col">
+							<p:inputNumber id="mileageFrom"
+								value="#{offerListBB.offerFilterFrom.mileage}" decimalPlaces="0"
+								minValue="0" styleClass="inputfield w-full"
+								inputStyle="width:100%">
+								<p:ajax update="@obs(count)"
+									listener="#{offerListBB.countLazyList()}" />
+							</p:inputNumber>
+							<p:message for="mileageFrom" />
+						</div>
+						<div class="col">
+							<p:inputNumber id="mileageTo"
+								value="#{offerListBB.offerFilterTo.mileage}" decimalPlaces="0"
+								minValue="0" styleClass="inputfield w-full"
+								inputStyle="width:100%">
+								<p:ajax update="@obs(count)"
+									listener="#{offerListBB.countLazyList()}" />
+							</p:inputNumber>
+							<p:message for="mileageTo" />
 						</div>
 					</div>
 				</div>
