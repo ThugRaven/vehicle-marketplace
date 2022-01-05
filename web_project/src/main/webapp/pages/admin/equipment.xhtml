@@ -16,94 +16,100 @@
 			<ui:include src="/templates/header-dashboard.xhtml" />
 		</ui:insert>
 
-		<h:form id="equipmentForm">
-			<p:panel header="Dodaj wyposażenie" styleClass="my-3 shadow-2">
-				<h:panelGrid columns="3" cellpadding="5">
-					<p:outputLabel for="name" value="Wyposażenie" />
-					<p:inputText id="name" value="#{dashEquipmentBB.equipment.name}"
-						required="true" requiredMessage="Nazwa nie może być pusta" />
-					<p:message for="name" />
+		<div>
+			<h:form id="addEquipmentForm">
+				<p:panel header="Dodaj wyposażenie" styleClass="my-3 shadow-2">
+					<h:panelGrid columns="3" cellpadding="5">
+						<p:outputLabel for="name" value="Wyposażenie" />
+						<p:inputText id="name" value="#{dashEquipmentBB.equipment.name}"
+							required="true" requiredMessage="Nazwa nie może być pusta" />
+						<p:message for="name" />
 
-					<p:commandButton value="Dodaj"
-						action="#{dashEquipmentBB.addEquipment()}"
-						update="@form equipmentForm" />
-				</h:panelGrid>
+						<p:commandButton value="Dodaj"
+							action="#{dashEquipmentBB.addEquipment()}"
+							update="@form addEquipmentForm" />
+					</h:panelGrid>
 
-				<p:message for="equipmentForm" id="msg" />
-			</p:panel>
+					<p:message for="addEquipmentForm" id="msg" />
+				</p:panel>
+			</h:form>
 
-			<p:panel header="Lista wyposażenia" toggleable="true"
-				toggleableHeader="true" toggleSpeed="300" styleClass="my-3 shadow-2">
-				<p:dataTable id="equipmentTable" var="e" widgetVar="equipmentTable"
-					value="#{dashEquipmentBB.lazyEquipment}" paginator="true" rows="5"
-					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-					rowsPerPageTemplate="5,10,15" selectionMode="single"
-					selection="#{dashEquipmentBB.selectedEquipment}"
-					rowKey="#{e.idEquipment}" allowUnsorting="true" sortMode="multiple">
+			<h:form id="equipmentForm">
+				<p:panel header="Lista wyposażenia" toggleable="true"
+					toggleableHeader="true" toggleSpeed="300"
+					styleClass="my-3 shadow-2">
+					<p:dataTable id="equipmentTable" var="e" widgetVar="equipmentTable"
+						value="#{dashEquipmentBB.lazyEquipment}" paginator="true" rows="5"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15" selectionMode="single"
+						selection="#{dashEquipmentBB.selectedEquipment}"
+						rowKey="#{e.idEquipment}" allowUnsorting="true"
+						sortMode="multiple">
 
-					<f:facet name="header">
-						<p:panelGrid columns="4" layout="flex"
-							contentStyleClass="grid grid-nogutter align-items-center"
-							columnClasses="col-12 md:col-6 lg:col-3 p-2,col-12 md:col-6 lg:col-3 p-2 flex flex-column,col-12 md:col-6 lg:col-3 p-2,col-12 md:col-6 lg:col-3 p-2 flex flex-column">
+						<f:facet name="header">
+							<p:panelGrid columns="4" layout="flex"
+								contentStyleClass="grid grid-nogutter align-items-center"
+								columnClasses="col-12 md:col-6 lg:col-3 p-2,col-12 md:col-6 lg:col-3 p-2 flex flex-column,col-12 md:col-6 lg:col-3 p-2,col-12 md:col-6 lg:col-3 p-2 flex flex-column">
 
-							<p:outputLabel for="id" value="ID" />
-							<p:inputNumber id="id"
-								value="#{dashEquipmentBB.equipmentFilter.idEquipment}"
-								inputStyle="width:100%" />
+								<p:outputLabel for="id" value="ID" />
+								<p:inputNumber id="id"
+									value="#{dashEquipmentBB.equipmentFilter.idEquipment}"
+									inputStyle="width:100%" />
 
-							<p:outputLabel for="name" value="Wyposażenie" />
-							<p:inputText id="name"
-								value="#{dashEquipmentBB.equipmentFilter.name}" />
+								<p:outputLabel for="name" value="Wyposażenie" />
+								<p:inputText id="name"
+									value="#{dashEquipmentBB.equipmentFilter.name}" />
 
-						</p:panelGrid>
+							</p:panelGrid>
 
-						<div
-							class="flex flex-row justify-content-between md:justify-content-end w-full">
-							<p:commandButton value="Szukaj"
-								onclick="PF('equipmentTable').filter()"
-								styleClass="w-full md:w-auto mt-2" />
-						</div>
-					</f:facet>
+							<div
+								class="flex flex-row justify-content-between md:justify-content-end w-full">
+								<p:commandButton value="Szukaj"
+									onclick="PF('equipmentTable').filter()"
+									styleClass="w-full md:w-auto mt-2" />
+							</div>
+						</f:facet>
 
-					<p:column field="idEquipment" headerText="ID" filterable="false" />
+						<p:column field="idEquipment" headerText="ID" filterable="false" />
 
-					<p:column field="name" headerText="Wyposażenie" filterable="false" />
+						<p:column field="name" headerText="Wyposażenie" filterable="false" />
 
-					<f:facet name="footer">
-						<span>W sumie jest
-							#{dashEquipmentBB.lazyEquipment.rowCount} rekordów.</span>
-					</f:facet>
+						<f:facet name="footer">
+							<span>W sumie jest
+								#{dashEquipmentBB.lazyEquipment.rowCount} rekordów.</span>
+						</f:facet>
 
-				</p:dataTable>
+					</p:dataTable>
 
-				<p:contextMenu id="contextMenu" for="equipmentTable">
-					<p:menuitem value="Edytuj" process="equipmentTable"
-						update="equipmentEdit" icon="pi pi-pencil"
-						oncomplete="PF('equipmentEditDialog').show()" />
-					<p:menuitem value="Usuń" process="@this equipmentTable"
-						action="#{dashEquipmentBB.deleteEquipment}" update="@form"
-						icon="pi pi-times">
-						<p:confirm header="Potwierdzenie"
-							message="Usunąć wybrane wyposażenie?"
-							icon="pi pi-exclamation-triangle" />
-					</p:menuitem>
-					<p:menuitem value="Szczegóły" process="equipmentTable"
-						update="equipmentDetails" icon="pi pi-search"
-						oncomplete="PF('equipmentDetailsDialog').show()" />
-				</p:contextMenu>
-			</p:panel>
+					<p:contextMenu id="contextMenu" for="equipmentTable">
+						<p:menuitem value="Edytuj" process="equipmentTable"
+							update="equipmentEdit" icon="pi pi-pencil"
+							oncomplete="PF('equipmentEditDialog').show()" />
+						<p:menuitem value="Usuń" process="@this equipmentTable"
+							action="#{dashEquipmentBB.deleteEquipment}" update="@form"
+							icon="pi pi-times">
+							<p:confirm header="Potwierdzenie"
+								message="Usunąć wybrane wyposażenie?"
+								icon="pi pi-exclamation-triangle" />
+						</p:menuitem>
+						<p:menuitem value="Szczegóły" process="equipmentTable"
+							update="equipmentDetails" icon="pi pi-search"
+							oncomplete="PF('equipmentDetailsDialog').show()" />
+					</p:contextMenu>
+				</p:panel>
 
-			<p:growl id="growl" for="equipmentTable" showDetail="true"
-				skipDetailIfEqualsSummary="true" />
+				<p:growl id="growl" for="equipmentTable" showDetail="true"
+					skipDetailIfEqualsSummary="true" />
 
-			<p:confirmDialog global="true" showEffect="fade" responsive="true"
-				width="350">
-				<p:commandButton value="Nie" type="button"
-					styleClass="ui-confirmdialog-no ui-button-flat" />
-				<p:commandButton value="Tak" type="button"
-					styleClass="ui-confirmdialog-yes" />
-			</p:confirmDialog>
-		</h:form>
+				<p:confirmDialog global="true" showEffect="fade" responsive="true"
+					width="350">
+					<p:commandButton value="Nie" type="button"
+						styleClass="ui-confirmdialog-no ui-button-flat" />
+					<p:commandButton value="Tak" type="button"
+						styleClass="ui-confirmdialog-yes" />
+				</p:confirmDialog>
+			</h:form>
+		</div>
 
 		<p:dialog header="Edytuj wyposażenie" widgetVar="equipmentEditDialog"
 			modal="true" showEffect="fade" hideEffect="fade" resizable="false"

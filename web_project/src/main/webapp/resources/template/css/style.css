@@ -201,6 +201,10 @@ body .ui-panel {
 	color: #B71C1C !important;
 }
 
+body .ui-panelgrid .ui-panelgrid-cell {
+	background: transparent;
+}
+
 /*body {
 	font-family: "Montserrat", sans-serif;
 	background-color: #f8f9fa;
