@@ -192,7 +192,7 @@
 				<div class="main__list">
 					<ui:repeat value="#{offerListBB.mainViewList()}" var="o">
 						<p:link outcome="/pages/public/offer?faces-redirect=true"
-							styleClass="no-underline list__item">
+							styleClass="no-underline main__item">
 							<f:param name="c"
 								value="#{o.brand.name} #{o.model.name} #{o.title}" />
 							<f:param name="o" value="#{o.idOffer}" />
