@@ -23,6 +23,8 @@ import vehiclemarketplace.ConstantsBB;
 import vehiclemarketplace.classes.SelectFilter;
 import vehiclemarketplace.classes.SelectItemCount;
 import vehiclemarketplace.classes.SelectList;
+import vehiclemarketplace.classes.SelectOrder;
+import vehiclemarketplace.classes.SelectSort;
 import vehiclemarketplace.classes.SelectType;
 import vehiclemarketplace.dao.BodyStyleDAO;
 import vehiclemarketplace.dao.BrandDAO;
@@ -57,6 +59,7 @@ public class OfferListBB implements Serializable {
 	private Offer offerFilterFrom = new Offer();
 	private Offer offerFilterTo = new Offer();
 	private List<SelectList> offerFilterList = new ArrayList<>();
+	private Integer offerSort;
 
 	private List<SelectItemCount<Brand>> brands;
 	private List<SelectItemCount<Model>> models = new ArrayList<>();
@@ -94,6 +97,14 @@ public class OfferListBB implements Serializable {
 
 	public List<SelectList> getOfferFilterList() {
 		return offerFilterList;
+	}
+
+	public void setOfferSort(Integer offerSort) {
+		this.offerSort = offerSort;
+	}
+
+	public Integer getOfferSort() {
+		return offerSort;
 	}
 
 	public List<SelectItemCount<Brand>> getBrands() {
@@ -153,6 +164,7 @@ public class OfferListBB implements Serializable {
 	Flash flash;
 
 	public void onLoad() {
+		System.out.println("ON LOAD");
 		Offer loadedFilter = null;
 		Offer loadedFilterFrom = null;
 		Offer loadedFilterTo = null;
@@ -177,6 +189,7 @@ public class OfferListBB implements Serializable {
 
 	@PostConstruct
 	public void init() {
+		System.out.println("INIT");
 		offerFilter.setUser(new User());
 		offerFilter.setBrand(new Brand());
 		offerFilter.setModel(new Model());
@@ -223,10 +236,11 @@ public class OfferListBB implements Serializable {
 					Map<String, FilterMeta> filterBy) {
 
 				Map<String, String> sortMap = new HashMap<String, String>();
-				for (SortMeta sortMeta : sortBy.values()) {
-					sortMap.put(sortMeta.getField(), sortMeta.getOrder().toString());
+				if (offerSort != null) {
+					SelectSort sort = constantsBB.getSorts().get(offerSort);
+					sortMap.put(sort.getParameter(), sort.getOrder());
 				}
-
+				System.out.println("LAZY OFFERS LOAD");
 				List<SelectFilter> filter = new ArrayList<>();
 				filter = addFilters();
 

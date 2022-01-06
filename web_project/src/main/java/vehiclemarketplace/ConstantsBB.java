@@ -11,6 +11,9 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 
+import vehiclemarketplace.classes.SelectOrder;
+import vehiclemarketplace.classes.SelectSort;
+
 @Named
 @ApplicationScoped
 public class ConstantsBB implements Serializable {
@@ -26,6 +29,7 @@ public class ConstantsBB implements Serializable {
 	private List<String> prices = new ArrayList<>();
 	private List<String> years = new ArrayList<>();
 	private List<String> mileages = new ArrayList<>();
+	private List<SelectSort> sorts = new ArrayList<>();
 
 	public List<String> getFuels() {
 		return fuels;
@@ -65,6 +69,10 @@ public class ConstantsBB implements Serializable {
 
 	public List<String> getMileages() {
 		return mileages;
+	}
+
+	public List<SelectSort> getSorts() {
+		return sorts;
 	}
 
 	@PostConstruct
@@ -141,5 +149,14 @@ public class ConstantsBB implements Serializable {
 		mileages.add("150000");
 		mileages.add("200000");
 		mileages.add("250000");
+
+		sorts.add(new SelectSort("Najnowsze", "createTime", SelectOrder.DESC));
+		sorts.add(new SelectSort("Najstarsze", "createTime", SelectOrder.ASC));
+		sorts.add(new SelectSort("Najtańsze", "price", SelectOrder.ASC));
+		sorts.add(new SelectSort("Najdroższe", "price", SelectOrder.DESC));
+		sorts.add(new SelectSort("Najniższy przebieg", "mileage", SelectOrder.ASC));
+		sorts.add(new SelectSort("Najwyższy przebieg", "mileage", SelectOrder.DESC));
+		sorts.add(new SelectSort("Najniższa moc silnika", "power", SelectOrder.ASC));
+		sorts.add(new SelectSort("Najwyższa moc silnika", "power", SelectOrder.DESC));
 	}
 }

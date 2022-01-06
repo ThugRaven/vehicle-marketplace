@@ -438,6 +438,15 @@
 					<h2 class="text-left my-2">Samochody -
 						#{offerListBB.lazyOffers.rowCount}
 						#{offerListBB.getCountText(null)}</h2>
+
+					<p:selectOneMenu id="sort" value="#{offerListBB.offerSort}"
+						styleClass="inputfield w-full" autoWidth="false">
+						<f:selectItem itemLabel="Domyślne" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{constantsBB.sorts}" var="s"
+							itemLabel="#{s.label}" itemValue="#{constantsBB.sorts.indexOf(s)}" />
+					</p:selectOneMenu>
+					<p:message for="@previous" />
 				</f:facet>
 
 				<p:dataViewListItem>
