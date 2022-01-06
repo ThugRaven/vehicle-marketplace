@@ -124,7 +124,7 @@ public class OfferEditBB implements Serializable {
 			RemoteClient<User> client = (RemoteClient<User>) RemoteClient.load(session);
 			System.out.println("Client: " + client.getDetails().getLogin() + " " + client.getDetails().getIdUser());
 
-			if (loaded.getUser().getIdUser() != client.getDetails().getIdUser()) {
+			if (loaded.getUser().getIdUser() != client.getDetails().getIdUser() && !client.isInRole("admin")) {
 				System.out.println("No permission!");
 
 				String offerUrl = PAGE_OFFER + "c=" + loaded.getBrand().getName() + " " + loaded.getModel().getName()

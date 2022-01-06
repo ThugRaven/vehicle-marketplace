@@ -109,14 +109,14 @@
 							<f:convertDateTime type="both" timeStyle="short" dateStyle="long" />
 						</h:outputText>
 						<p:link
-							rendered="#{offerBB.offer.user.idUser eq remoteClient.details.idUser}"
+							rendered="#{(offerBB.offer.user.idUser eq remoteClient.details.idUser) or remoteClient.isInRole('admin')}"
 							outcome="/pages/offer/edit-offer?faces-redirect=true"
 							value="Edytuj ogłoszenie"
 							styleClass="text-orange-500 font-bold ml-1">
 							<f:param name="o" value="#{offerBB.offer.idOffer}" />
 						</p:link>
 						<p:commandLink
-							rendered="#{offerBB.offer.user.idUser eq remoteClient.details.idUser}"
+							rendered="#{(offerBB.offer.user.idUser eq remoteClient.details.idUser) or remoteClient.isInRole('admin')}"
 							value="Zakończ ogłoszenie" action="#{offerBB.endOffer()}"
 							styleClass="text-orange-500 font-bold ml-1">
 							<p:confirm header="Potwierdzenie"
