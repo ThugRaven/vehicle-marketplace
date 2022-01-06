@@ -537,7 +537,7 @@ public class OfferListBB implements Serializable {
 		List<SelectFilter> filter = new ArrayList<>();
 		filter.add(new SelectFilter("archived", false, SelectType.NORMAL));
 
-		offers = offerDAO.getLazyList(sortMap, filter, 0, 15);
+		offers = offerDAO.getLazyList(sortMap, filter, 0, 10);
 
 		return offers;
 	}
