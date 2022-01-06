@@ -8,10 +8,10 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -23,7 +23,6 @@ import vehiclemarketplace.ConstantsBB;
 import vehiclemarketplace.classes.SelectFilter;
 import vehiclemarketplace.classes.SelectItemCount;
 import vehiclemarketplace.classes.SelectList;
-import vehiclemarketplace.classes.SelectOrder;
 import vehiclemarketplace.classes.SelectSort;
 import vehiclemarketplace.classes.SelectType;
 import vehiclemarketplace.dao.BodyStyleDAO;
@@ -43,7 +42,7 @@ import vehiclemarketplace.entities.Offer;
 import vehiclemarketplace.entities.User;
 
 @Named
-@ViewScoped
+@SessionScoped
 public class OfferListBB implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -515,6 +514,7 @@ public class OfferListBB implements Serializable {
 		offerFilterList.add(new SelectList("seats", new ArrayList<>()));
 		offerFilterList.add(new SelectList("color", new ArrayList<>()));
 		offerFilterList.add(new SelectList("colorType", new ArrayList<>()));
+		offerSort = null;
 	}
 
 	public void clearVehicleStatus() {
