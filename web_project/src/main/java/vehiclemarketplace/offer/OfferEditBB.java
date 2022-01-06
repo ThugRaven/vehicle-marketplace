@@ -40,7 +40,6 @@ public class OfferEditBB implements Serializable {
 	private static final String PAGE_OFFERS = "/pages/public/offers?faces-redirect=true";
 
 	private Offer offer = new Offer();
-	private Offer oldOffer = new Offer();
 
 	private List<Brand> brands;
 	private List<Model> models;
@@ -54,10 +53,6 @@ public class OfferEditBB implements Serializable {
 
 	public void setOffer(Offer offer) {
 		this.offer = offer;
-	}
-
-	public Offer getOldOffer() {
-		return oldOffer;
 	}
 
 	public List<Brand> getBrands() {
@@ -140,7 +135,6 @@ public class OfferEditBB implements Serializable {
 			}
 
 			offer = loaded;
-			oldOffer = loaded;
 			changeBrand();
 			changeModel();
 			offer.setEquipments(equipmentDAO.getEquipmentsByOfferID(offer.getIdOffer()));
@@ -201,12 +195,6 @@ public class OfferEditBB implements Serializable {
 	public String editOffer() {
 		String offerUrl = PAGE_OFFER + "c=" + offer.getBrand().getName() + " " + offer.getModel().getName() + " "
 				+ offer.getTitle() + "&o=" + offer.getIdOffer();
-
-		if (oldOffer.equals(offer)) {
-			ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Nie wprowadzono żadnych zmian!", null));
-			extcontext.getFlash().setKeepMessages(true);
-			return offerUrl;
-		}
 
 		offerDAO.merge(offer);
 
