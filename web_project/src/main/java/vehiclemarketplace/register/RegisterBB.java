@@ -1,25 +1,20 @@
 package vehiclemarketplace.register;
 
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.New;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import vehiclemarketplace.dao.UserDAO;
 import vehiclemarketplace.dao.UserRoleDAO;
@@ -29,8 +24,7 @@ import vehiclemarketplace.entities.UserRole;
 @Named
 @RequestScoped
 public class RegisterBB {
-//	private static final String PAGE_PERSON_EDIT = "personEdit?faces-redirect=true";
-	private static final String PAGE_MAIN = "/pages/public/main?faces-redirect=true";
+	private static final String PAGE_LOGIN = "/pages/public/login?faces-redirect=true";
 	private static final String PAGE_STAY_AT_THE_SAME = null;
 
 	private User user = new User();
@@ -74,7 +68,7 @@ public class RegisterBB {
 
 		user.setArchived(false);
 		userDAO.create(user);
-		return PAGE_MAIN;
+		return PAGE_LOGIN;
 	}
 
 	private String generatePasswordHash(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
