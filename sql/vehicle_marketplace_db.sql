@@ -259,6 +259,8 @@ COMMIT;
 START TRANSACTION;
 USE `vehicle_marketplace_db`;
 INSERT INTO `vehicle_marketplace_db`.`user` (`id_user`, `login`, `password`, `email`, `id_user_role`, `name`, `surname`, `phone_number`, `create_time`, `archived`) VALUES (1, 'admin', 'ef4cf0fd:4f230caf9dd674891e057a810500f5cc2ce550d45f36d62a6a72cbc8788d26e7', 'admin@gmail.com', 2, 'Kamil', 'Wesołowski', '48123456789', '2021-11-18 21:05:00', 0);
+INSERT INTO `vehicle_marketplace_db`.`user` (`id_user`, `login`, `password`, `email`, `id_user_role`, `name`, `surname`, `phone_number`, `create_time`, `archived`) VALUES (2, 'user', '7c0d04d7:a6593a7bd6ad399df60521d09f98f54f9cbc885210cc0160a728d552b2820b16', 'user@gmail.com', 1, 'Name', 'Surname', '48123123123', '2022-01-06 16:04:51', 0);
+INSERT INTO `vehicle_marketplace_db`.`user` (`id_user`, `login`, `password`, `email`, `id_user_role`, `name`, `surname`, `phone_number`, `create_time`, `archived`) VALUES (3, 'kamil', '9890a311:2cb3a8f9c9fe56eb6126718be21c87585da9568eb828f745e3b4bb5cd6fc3ac4', 'kamil@gmail.com', 2, 'Kamil', 'Wesołowski', '48987654321', '2022-01-06 16:11:10', 0);
 
 COMMIT;
 
@@ -308,15 +310,125 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `vehicle_marketplace_db`;
-INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (DEFAULT, 'Auta małe');
-INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (DEFAULT, 'Auta miejskie');
-INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (DEFAULT, 'Coupe');
-INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (DEFAULT, 'Kabriolet');
-INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (DEFAULT, 'Kombi');
-INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (DEFAULT, 'Kompakt');
-INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (DEFAULT, 'Minivan');
-INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (DEFAULT, 'Sedan');
-INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (DEFAULT, 'SUV');
+INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (1, 'Auta małe');
+INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (2, 'Auta miejskie');
+INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (3, 'Coupe');
+INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (4, 'Kabriolet');
+INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (5, 'Kombi');
+INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (6, 'Kompakt');
+INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (7, 'Minivan');
+INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (8, 'Sedan');
+INSERT INTO `vehicle_marketplace_db`.`body_style` (`id_body_style`, `name`) VALUES (9, 'SUV');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `vehicle_marketplace_db`.`offer`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `vehicle_marketplace_db`;
+INSERT INTO `vehicle_marketplace_db`.`offer` (`id_offer`, `id_brand`, `id_model`, `id_generation`, `id_user`, `title`, `image`, `price`, `city`, `production_year`, `mileage`, `displacement`, `power`, `fuel`, `transmission`, `drive`, `id_body_style`, `doors`, `seats`, `color`, `color_type`, `description`, `license_plate`, `vin`, `first_registration`, `is_new`, `is_damaged`, `is_accident_free`, `is_first_owner`, `is_registered`, `is_right_hand_drive`, `archived`, `create_time`, `update_time`) VALUES (1, 1, 1, 4, 1, 'Seat Ibiza III 1.2 64KM', 'DSC_3777-8336529144170014815.jpg', 4500, 'Sosnowiec', 2002, 179000, 1198, 64, 'Benzyna', 'Manualna', 'FWD', 2, 3, 5, 'Srebrny', 'Metalik', 'Witam, do sprzedania mam Seat\'a Ibizę z 2002 roku. Wszystko działa, serdecznie polecam!', 'SO1892S', 'VSSZZZ6LZ4R191497', '2002-01-01', 0, 0, 0, 0, 1, 0, 0, '2022-01-06 00:21:15', '2022-01-06 00:21:15');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `vehicle_marketplace_db`.`equipment`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `vehicle_marketplace_db`;
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (1, 'ABS');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (2, 'Alarm');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (3, 'Alufelgi');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (4, 'ASR (kontrola trakcji)');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (5, 'Asystent parkowania');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (6, 'Asystent pasa ruchu');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (7, 'Bluetooth');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (8, 'CD');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (9, 'Centralny zamek');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (10, 'Czujnik deszczu');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (11, 'Czujniki parkowania przednie');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (12, 'Czujniki parkowania tylne');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (13, 'Czujniki martwego pola');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (14, 'Czujnik zmierzchu');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (15, 'Dach panoramiczny');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (16, 'Elektrochromatyczne lusterka boczne');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (17, 'Elektrochromatyczne lusterko wsteczne');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (18, 'Elektryczne szyby przednie');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (19, 'Elektryczne szyby tylne');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (20, 'Elektrycznie ustawiane fotele');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (21, 'Elektrycznie ustawiane lusterka');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (22, 'ESP (stabilizacja toru jazdy)');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (23, 'Gniazdo AUX');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (24, 'Gniazdo SD');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (25, 'Gniazdo USB');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (26, 'Hak');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (27, 'HUD (wyświetlacz przezierny)');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (28, 'Immobilizer');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (29, 'Isofix');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (30, 'Kamera cofania');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (31, 'Klimatyzacja automatyczna');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (32, 'Klimatyzacja czterostrefowa');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (33, 'Klimatyzacja dwustrefowa');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (34, 'Klimatyzacja manualna');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (35, 'Komputer pokładowy');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (36, 'Kurtyny powietrzne');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (37, 'MP3');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (38, 'Nawigacja GPS');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (39, 'Odtwarzacz DVD');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (40, 'Ogranicznik prędkości');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (41, 'Ogrzewanie postojowe');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (42, 'Podgrzewana przednia szyba');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (43, 'Podgrzewane lusterka boczne');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (44, 'Podgrzewane przednie siedzenia');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (45, 'Podgrzewane tylne siedzenia');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (46, 'Poduszka powietrzna chroniąca kolana');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (47, 'Poduszka powietrzna kierowcy');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (48, 'Poduszka powietrzna pasażera');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (49, 'Poduszki boczne przednie');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (50, 'Poduszki boczne tylne');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (51, 'Przyciemniane szyby');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (52, 'Radio fabryczne');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (53, 'Radio niefabryczne');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (54, 'Regulowane zawieszenie');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (55, 'Relingi dachowe');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (56, 'System Start-Stop');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (57, 'Szyberdach');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (58, 'Tapicerka skórzana');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (59, 'Tapicerka welurowa');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (60, 'Tempomat');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (61, 'Tempomat aktywny');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (62, 'Tuner TV');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (63, 'Wielofunkcyjna kierownica');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (64, 'Wspomaganie kierownicy');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (65, 'Zmieniarka CD');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (66, 'Łopatki zmiany biegów');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (67, 'Światła do jazdy dziennej');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (68, 'Światła LED');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (69, 'Światła przeciwmgielne');
+INSERT INTO `vehicle_marketplace_db`.`equipment` (`id_equipment`, `name`) VALUES (70, 'Światła Xenonowe');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `vehicle_marketplace_db`.`offer_equipment`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `vehicle_marketplace_db`;
+INSERT INTO `vehicle_marketplace_db`.`offer_equipment` (`id_offer`, `id_equipment`) VALUES (1, 1);
+INSERT INTO `vehicle_marketplace_db`.`offer_equipment` (`id_offer`, `id_equipment`) VALUES (1, 2);
+INSERT INTO `vehicle_marketplace_db`.`offer_equipment` (`id_offer`, `id_equipment`) VALUES (1, 3);
+INSERT INTO `vehicle_marketplace_db`.`offer_equipment` (`id_offer`, `id_equipment`) VALUES (1, 9);
+INSERT INTO `vehicle_marketplace_db`.`offer_equipment` (`id_offer`, `id_equipment`) VALUES (1, 18);
+INSERT INTO `vehicle_marketplace_db`.`offer_equipment` (`id_offer`, `id_equipment`) VALUES (1, 28);
+INSERT INTO `vehicle_marketplace_db`.`offer_equipment` (`id_offer`, `id_equipment`) VALUES (1, 34);
+INSERT INTO `vehicle_marketplace_db`.`offer_equipment` (`id_offer`, `id_equipment`) VALUES (1, 47);
+INSERT INTO `vehicle_marketplace_db`.`offer_equipment` (`id_offer`, `id_equipment`) VALUES (1, 48);
+INSERT INTO `vehicle_marketplace_db`.`offer_equipment` (`id_offer`, `id_equipment`) VALUES (1, 53);
+INSERT INTO `vehicle_marketplace_db`.`offer_equipment` (`id_offer`, `id_equipment`) VALUES (1, 64);
+INSERT INTO `vehicle_marketplace_db`.`offer_equipment` (`id_offer`, `id_equipment`) VALUES (1, 69);
 
 COMMIT;
 
