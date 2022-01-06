@@ -99,14 +99,14 @@
 						</p:panelGrid>
 
 						<div
-							class="flex flex-row justify-content-between md:justify-content-end w-full">
+							class="flex sm:flex-row flex-column justify-content-between md:justify-content-end w-full gap">
 							<p:commandButton value="Szukaj"
 								onclick="PF('offerTable').filter()"
-								styleClass="w-full md:w-auto mr-2" />
+								styleClass="w-full md:w-auto" />
 
 							<p:commandButton value="Wyczyść"
 								action="#{dashOffersBB.clearFilters()}" update="offerTable"
-								styleClass="w-full md:w-auto ui-button-outlined ui-button-danger mr-2" />
+								styleClass="w-full md:w-auto ui-button-outlined ui-button-danger" />
 
 							<p:commandButton id="toggler" type="button" value="Kolumny"
 								icon="pi pi-align-justify"

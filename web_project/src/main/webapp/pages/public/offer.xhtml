@@ -23,12 +23,12 @@
 				<p:menuitem value="Ogłoszenia"
 					outcome="/pages/public/offers?faces-redirect=true" />
 				<p:menuitem value="#{offerBB.offer.brand.name}"
-					outcome="/pages/public/offers?faces-redirect=true" />
+					action="#{offerBB.brandLink()}" />
 				<p:menuitem value="#{offerBB.offer.model.name}"
-					outcome="/pages/public/offers?faces-redirect=true" />
+					action="#{offerBB.modelLink()}" />
 				<p:menuitem
 					value="#{offerBB.offer.generation.name} (#{offerBB.offer.generation.productionStart}-#{offerBB.offer.generation.productionEnd})"
-					outcome="/pages/public/offers?faces-redirect=true" />
+					action="#{offerBB.generationLink()}" />
 			</p:breadCrumb>
 
 			<div>
@@ -129,14 +129,14 @@
 						class="flex flex-column lg:flex-row text-sm my-2 offer__details">
 						<div class="grid grid-nogutter details__list">
 							<span class="col-6">Marka pojazdu</span>
-							<h:outputText value="#{offerBB.offer.brand.name}"
-								styleClass="col-6" />
+							<p:commandLink value="#{offerBB.offer.brand.name}"
+								styleClass="col-6 text-sm" action="#{offerBB.brandLink()}" />
 							<span class="col-6">Model pojazdu</span>
-							<h:outputText value="#{offerBB.offer.model.name}"
-								styleClass="col-6" />
+							<p:commandLink value="#{offerBB.offer.model.name}"
+								styleClass="col-6 text-sm" action="#{offerBB.modelLink()}" />
 							<span class="col-6">Generacja</span>
-							<h:outputText value="#{offerBB.offer.generation.name}"
-								styleClass="col-6" />
+							<p:commandLink value="#{offerBB.offer.generation.name}"
+								styleClass="col-6 text-sm" action="#{offerBB.generationLink()}" />
 							<span class="col-6">Rok produkcji</span>
 							<h:outputText value="#{offerBB.offer.productionYear}"
 								styleClass="col-6" />
@@ -155,7 +155,8 @@
 								cm<sup>3</sup>
 							</div>
 							<span class="col-6">Rodzaj paliwa</span>
-							<h:outputText value="#{offerBB.offer.fuel}" styleClass="col-6" />
+							<p:commandLink value="#{offerBB.offer.fuel}"
+								styleClass="col-6 text-sm" action="#{offerBB.fuelLink()}" />
 							<span class="col-6">Moc</span>
 							<div class="col-6">
 								<h:outputText value="#{offerBB.offer.power}" />
@@ -169,8 +170,8 @@
 								value="#{offerBB.offer.drive eq 'AWD' ? 'Na wszystkie koła' : offerBB.offer.drive eq 'FWD' ? 'Na przednie koła' : 'Na tylne koła'}"
 								styleClass="col-6" />
 							<span class="col-6">Typ nadwozia</span>
-							<h:outputText value="#{offerBB.offer.bodyStyle.name}"
-								styleClass="col-6" />
+							<p:commandLink value="#{offerBB.offer.bodyStyle.name}"
+								styleClass="col-6 text-sm" action="#{offerBB.bodyStyleLink()}" />
 						</div>
 						<div class="grid grid-nogutter align-content-start details__list">
 							<span class="col-6">Liczba drzwi</span>
