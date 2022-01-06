@@ -193,7 +193,7 @@
 				styleClass="my-3 shadow-2">
 				<p:fileUpload mode="advanced" skinSimple="true"
 					listener="#{offerNewBB.handleFileUpload}" fileLimit="1"
-					sizeLimit="5000000" allowTypes="/(\.|\/)(jpe?g|png)$/"
+					sizeLimit="5000000" allowTypes="/(\.|\/)(jpe?g|png|webp)$/"
 					accept="image/*" update="@this fileUploadPanel" />
 				<p:graphicImage rendered="#{offerNewBB.filePath != null}"
 					value="/offer_images/#{offerNewBB.filePath.getFileName()}"
