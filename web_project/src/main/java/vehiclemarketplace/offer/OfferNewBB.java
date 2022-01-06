@@ -208,7 +208,9 @@ public class OfferNewBB implements Serializable {
 		userFileManager.confirmUploadedFile(filePath.toFile());
 		userFileManager.destroy();
 		offer.setImage(filePath.getFileName().toString());
-		System.out.println(offer);
+		if (offer.getLicensePlate().isEmpty()) {
+			offer.setLicensePlate(null);
+		}
 		offer.setArchived(false);
 		offerDAO.create(offer);
 		String offerUrl = PAGE_OFFER + "c=" + offer.getBrand().getName() + " " + offer.getModel().getName() + " "
