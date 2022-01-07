@@ -46,18 +46,6 @@ body, body .ui-widget {
 	font-family: "Montserrat", sans-serif;
 }
 
-.header {
-	gap: 0.5rem;
-}
-
-.header__nav {
-	gap: 0.5rem;
-}
-
-.header__side-nav {
-	gap: 1rem;
-}
-
 .header__side-nav>li {
 	padding-bottom: 1rem;
 	border-bottom: 1px solid #e0e0e0;
@@ -87,11 +75,16 @@ body, body .ui-widget {
 	border: 0 !important;
 }
 
-.list__item:hover .list__title {
+.offer__item:hover .offer__title {
 	color: white !important;
 	background-color: black !important;
 	transition: color 100ms ease-in-out, background-color 100ms ease-in-out
 		!important;
+}
+
+.offer__item:hover .offer__content {
+	background-color: #F5F5F5 !important;
+	transition: background-color 100ms ease-in-out !important;
 }
 
 .list__content:hover {
@@ -99,19 +92,19 @@ body, body .ui-widget {
 	transition: background-color 100ms ease-in-out !important;
 }
 
-.list__title {
+.offer__title {
 	width: max-content;
 }
 
-.list__list {
+.offer__list {
 	column-gap: 0.5em;
 }
 
-.list__list>li {
+.offer__list>li {
 	width: max-content;
 }
 
-.list__image {
+.offer__image {
 	width: 15rem;
 	aspect-ratio: 4/3;
 	object-fit: contain;
@@ -153,6 +146,10 @@ body, body .ui-widget {
 
 .gap {
 	gap: 0.5rem;
+}
+
+.gap-lg {
+	gap: 1rem;
 }
 
 .gap-xl {
@@ -224,55 +221,3 @@ body .ui-panel {
 body .ui-panelgrid .ui-panelgrid-cell {
 	background: transparent;
 }
-
-/*body {
-	font-family: "Montserrat", sans-serif;
-	background-color: #f8f9fa;
-	margin: 0 auto;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-		width: min(1500px, 75%);
-	margin: 0 auto;
-}
-
-body .ui-widget {
-	font-family: "Montserrat";
-}
-
-#header {
-	margin-top: 1em;
-}
-
-body .ui-panel {
-	margin: 0 0.5em 1em 0.5em;
-	box-shadow: 0 10px 35px rgb(50 50 93/ 10%), 0 5px 15px rgb(0 0 0/ 7%);
-	border: 0;
-	border-radius: 0.5em;
-}
-
-body .ui-panel .ui-panel-content {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	border: 0;
-	border-radius: 0.5em;
-}
-
-.archived {
-		background-color: #FFCDD2 !important; 
-	background-color: hsl(2, 83%, 31%, 0.1) !important;
-	color: #B71C1C !important;
-}
-
-.image {
-	width: 100%;
-	height: 100%;
-}
-
-.list__image {
-	height: 10em;
-	width: 15em;
-	object-fit: contain;
-	background-color: #AAAAAA;
-}*/

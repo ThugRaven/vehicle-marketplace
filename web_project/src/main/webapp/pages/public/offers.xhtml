@@ -19,11 +19,11 @@
 		<h:form id="offerForm">
 			<p:dataView id="offerTable" var="o" widgetVar="offerTable"
 				value="#{offerListBB.lazyOffers}" paginator="true"
-				paginatorPosition="bottom" rows="10"
+				paginatorPosition="bottom" rows="12"
 				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				rowsPerPageTemplate="10,25,50" allowUnsorting="true"
+				rowsPerPageTemplate="12,30,60" allowUnsorting="true"
 				sortMode="multiple" gridIcon="pi pi-th-large" listIcon="pi pi-bars"
-				multiViewState="true" layout="list">
+				multiViewState="true" layout="list" gridRowStyleClass="flex">
 
 				<f:facet name="header">
 					<div class="formgrid grid">
@@ -423,25 +423,26 @@
 					</p:dialog>
 
 					<div
-						class="flex flex-row justify-content-between md:justify-content-end w-full">
+						class="flex sm:flex-row flex-column justify-content-between md:justify-content-end w-full gap">
 						<p:commandButton
 							value="Pokaż wyniki (#{offerListBB.countListText()})"
-							update="offerTable" styleClass="w-full md:w-auto mr-2">
+							update="offerTable" styleClass="w-full md:w-auto">
 							<p:autoUpdate on="count" />
 						</p:commandButton>
 
-						<p:commandButton value="Wyczyść"
-							action="#{offerListBB.clearFilters()}" update="offerTable"
-							styleClass="w-full md:w-auto mr-2 ui-button-outlined ui-button-danger" />
-
 						<p:selectOneMenu id="sort" value="#{offerListBB.offerSort}"
-							autoWidth="false" styleClass="w-full md:w-auto flex align-items-center">
+							autoWidth="false"
+							styleClass="w-full md:w-auto flex align-items-center">
 							<f:selectItem itemLabel="Domyślne" itemValue="#{null}"
 								noSelectionOption="true" />
 							<f:selectItems value="#{constantsBB.sorts}" var="s"
 								itemLabel="#{s.label}"
 								itemValue="#{constantsBB.sorts.indexOf(s)}" />
 						</p:selectOneMenu>
+
+						<p:commandButton value="Wyczyść"
+							action="#{offerListBB.clearFilters()}" update="offerTable"
+							styleClass="w-full md:w-auto ui-button-outlined ui-button-danger" />
 					</div>
 
 					<h2 class="text-left my-2">Samochody -
@@ -451,25 +452,25 @@
 
 				<p:dataViewListItem>
 					<p:link outcome="/pages/public/offer?faces-redirect=true"
-						styleClass="no-underline list__item">
+						styleClass="mt-2 no-underline offer__item flex flex-column">
 						<f:param name="c"
 							value="#{o.brand.name} #{o.model.name} #{o.title}" />
 						<f:param name="o" value="#{o.idOffer}" />
 						<div
-							class="p-4 mt-2 border-1 border-200 list__content flex flex-column sm:flex-row align-items-center sm:align-items-stretch text-800">
+							class="p-4 border-1 border-200 offer__content flex flex-column sm:flex-row align-items-center sm:align-items-stretch text-800">
 							<p:graphicImage rendered="#{not empty o.image}"
 								value="/offer_images/#{o.image}"
-								styleClass="list__image flex-shrink-0 surface-200" />
+								styleClass="offer__image flex-shrink-0 surface-200" />
 							<div
 								class="m-2 sm:mx-3 flex flex-column md:flex-row justify-content-between w-full">
 								<div class="flex flex-column">
-									<span class="text-xl text-900 font-medium list__title">#{o.brand.name}
+									<span class="text-xl text-900 font-medium offer__title">#{o.brand.name}
 										#{o.model.name} <h:outputText value="#{o.displacement / 1000}">
 											<f:convertNumber type="number" pattern="0.0" locale="en_US" />
 										</h:outputText>
 									</span> <span class="mt-1 text-sm">#{o.title}</span>
 									<ul
-										class="flex flex-row list-none list__list p-0 align-items-end flex-wrap text-sm">
+										class="flex flex-row list-none offer__list p-0 align-items-end flex-wrap text-sm">
 										<li>#{o.productionYear}</li>
 										<li><h:outputText value="#{o.mileage}">
 												<f:convertNumber type="number" />
@@ -497,23 +498,23 @@
 
 				<p:dataViewGridItem>
 					<p:link outcome="/pages/public/offer?faces-redirect=true"
-						styleClass="no-underline list__item">
+						styleClass="no-underline offer__item main__item">
 						<f:param name="c"
 							value="#{o.brand.name} #{o.model.name} #{o.title}" />
 						<f:param name="o" value="#{o.idOffer}" />
 						<div
-							class="p-4 mt-2 border-1 border-200 list__content flex flex-column text-800">
+							class="border-1 border-200 main__content flex flex-column align-items-center text-800">
 							<p:graphicImage rendered="#{not empty o.image}"
 								value="/offer_images/#{o.image}"
-								styleClass="list__image flex-shrink-0 surface-200" />
-							<div class="mx-3 flex flex-column">
-								<span class="text-xl text-900 font-medium list__title">#{o.brand.name}
+								styleClass="main__image flex-shrink-0 surface-200" />
+							<div class="mt-2 flex flex-column">
+								<span class="text-xl text-900 font-medium offer__title">#{o.brand.name}
 									#{o.model.name} <h:outputText value="#{o.displacement / 1000}">
 										<f:convertNumber type="number" pattern="0.0" locale="en_US" />
 									</h:outputText>
-								</span> <span class="mt-1 text-sm">#{o.title}</span>
+								</span>
 								<ul
-									class="flex flex-row list-none list__list p-0 align-items-end flex-wrap text-sm">
+									class="flex flex-row list-none offer__list p-0 m-0 mt-1 align-items-end flex-wrap text-sm">
 									<li>#{o.productionYear}</li>
 									<li><h:outputText value="#{o.mileage}">
 											<f:convertNumber type="number" />
@@ -527,12 +528,12 @@
 									<i class="pi pi-map-marker font-bold" /> <span
 										class="font-normal">#{o.city}</span>
 								</div>
-							</div>
-							<div class="ml-auto font-bold text-xl text-orange-500 text-right">
-								<h:outputText value="#{o.price}">
-									<f:convertNumber type="number" />
-								</h:outputText>
-								PLN
+								<div class="font-bold text-xl text-orange-500 my-2 mr-auto">
+									<h:outputText value="#{o.price}">
+										<f:convertNumber type="number" />
+									</h:outputText>
+									PLN
+								</div>
 							</div>
 						</div>
 					</p:link>
