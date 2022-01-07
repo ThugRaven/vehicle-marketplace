@@ -221,3 +221,11 @@ body .ui-panel {
 body .ui-panelgrid .ui-panelgrid-cell {
 	background: transparent;
 }
+
+.menu-item .ui-menuitem-text {
+	color: #2196F3 !important;
+}
+
+.menu-item:hover .ui-menuitem-text {
+	text-decoration: underline !important;
+}

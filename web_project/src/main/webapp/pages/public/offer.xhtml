@@ -21,14 +21,15 @@
 		<h:form>
 			<p:breadCrumb homeDisplay="text">
 				<p:menuitem value="Ogłoszenia"
-					outcome="/pages/public/offers?faces-redirect=true" />
+					outcome="/pages/public/offers?faces-redirect=true"
+					styleClass="menu-item" />
 				<p:menuitem value="#{offerBB.offer.brand.name}"
-					action="#{offerBB.brandLink()}" />
+					action="#{offerBB.brandLink()}" styleClass="menu-item" />
 				<p:menuitem value="#{offerBB.offer.model.name}"
-					action="#{offerBB.modelLink()}" />
+					action="#{offerBB.modelLink()}" styleClass="menu-item" />
 				<p:menuitem
 					value="#{offerBB.offer.generation.name} (#{offerBB.offer.generation.productionStart}-#{offerBB.offer.generation.productionEnd})"
-					action="#{offerBB.generationLink()}" />
+					action="#{offerBB.generationLink()}" styleClass="menu-item" />
 			</p:breadCrumb>
 
 			<div>

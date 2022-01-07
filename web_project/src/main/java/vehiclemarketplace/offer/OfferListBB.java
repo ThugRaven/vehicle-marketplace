@@ -30,8 +30,6 @@ import vehiclemarketplace.dao.BrandDAO;
 import vehiclemarketplace.dao.GenerationDAO;
 import vehiclemarketplace.dao.ModelDAO;
 import vehiclemarketplace.dao.OfferDAO;
-import vehiclemarketplace.dao.UserDAO;
-import vehiclemarketplace.dao.UserRoleDAO;
 import vehiclemarketplace.entities.BodyStyle;
 import vehiclemarketplace.entities.Brand;
 import vehiclemarketplace.entities.Generation;
@@ -120,12 +118,6 @@ public class OfferListBB implements Serializable {
 
 	@Inject
 	ExternalContext extcontext;
-
-	@EJB
-	UserDAO userDAO;
-
-	@EJB
-	UserRoleDAO userRoleDAO;
 
 	@EJB
 	OfferDAO offerDAO;
