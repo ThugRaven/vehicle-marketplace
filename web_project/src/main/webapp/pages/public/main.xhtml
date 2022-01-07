@@ -18,14 +18,13 @@
 				<div class="field col-12 md:col-6 mb-0">
 					<p:outputLabel for="bodyStyle" value="Typ nadwozia" />
 					<p:selectOneMenu id="bodyStyle"
-						value="#{offerListBB.offerFilter.bodyStyle.idBodyStyle}"
+						value="#{mainBB.offerFilter.bodyStyle.idBodyStyle}"
 						styleClass="inputfield w-full">
 						<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
 							noSelectionOption="true" />
-						<f:selectItems value="#{offerListBB.bodyStyles}" var="b"
+						<f:selectItems value="#{mainBB.bodyStyles}" var="b"
 							itemLabel="#{b.name}" itemValue="#{b.idBodyStyle}" />
-						<p:ajax update="@obs(count)"
-							listener="#{offerListBB.countLazyList()}" />
+						<p:ajax update="@obs(count)" listener="#{mainBB.countLazyList()}" />
 					</p:selectOneMenu>
 					<p:message for="bodyStyle" />
 				</div>
@@ -33,14 +32,14 @@
 				<div class="field col-12 md:col-6 mb-0">
 					<p:outputLabel for="brand" value="Marka" />
 					<p:selectOneMenu id="brand"
-						value="#{offerListBB.offerFilter.brand.idBrand}"
+						value="#{mainBB.offerFilter.brand.idBrand}"
 						styleClass="inputfield w-full">
 						<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
 							noSelectionOption="true" />
-						<f:selectItems value="#{offerListBB.brands}" var="b"
+						<f:selectItems value="#{mainBB.brands}" var="b"
 							itemLabel="#{b.object.name} (#{b.count})"
 							itemValue="#{b.object.idBrand}" />
-						<p:ajax listener="#{offerListBB.changeBrand}"
+						<p:ajax listener="#{mainBB.changeBrand}"
 							update="model generation @obs(count)" />
 					</p:selectOneMenu>
 					<p:message for="brand" />
@@ -49,14 +48,14 @@
 				<div class="field col-12 md:col-6 mb-0">
 					<p:outputLabel for="model" value="Model" />
 					<p:selectOneMenu id="model"
-						value="#{offerListBB.offerFilter.model.idModel}"
+						value="#{mainBB.offerFilter.model.idModel}"
 						styleClass="inputfield w-full">
 						<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
 							noSelectionOption="true" />
-						<f:selectItems value="#{offerListBB.models}" var="m"
+						<f:selectItems value="#{mainBB.models}" var="m"
 							itemLabel="#{m.object.name} (#{m.count})"
 							itemValue="#{m.object.idModel}" />
-						<p:ajax listener="#{offerListBB.changeModel}"
+						<p:ajax listener="#{mainBB.changeModel}"
 							update="generation @obs(count)" />
 					</p:selectOneMenu>
 					<p:message for="model" />
@@ -65,15 +64,14 @@
 				<div class="field col-12 md:col-6 mb-0">
 					<p:outputLabel for="generation" value="Generacja" />
 					<p:selectOneMenu id="generation"
-						value="#{offerListBB.offerFilter.generation.idGeneration}"
+						value="#{mainBB.offerFilter.generation.idGeneration}"
 						styleClass="inputfield w-full">
 						<f:selectItem itemLabel="Wszystkie" itemValue="#{null}"
 							noSelectionOption="true" />
-						<f:selectItems value="#{offerListBB.generations}" var="g"
+						<f:selectItems value="#{mainBB.generations}" var="g"
 							itemLabel="#{g.object.name} (#{g.count})"
 							itemValue="#{g.object.idGeneration}" />
-						<p:ajax update="@obs(count)"
-							listener="#{offerListBB.countLazyList()}" />
+						<p:ajax update="@obs(count)" listener="#{mainBB.countLazyList()}" />
 					</p:selectOneMenu>
 					<p:message for="generation" />
 				</div>
@@ -83,21 +81,20 @@
 					<div class="formgrid grid">
 						<div class="col">
 							<p:inputNumber id="priceFrom"
-								value="#{offerListBB.offerFilterFrom.price}" decimalPlaces="0"
+								value="#{mainBB.offerFilterFrom.price}" decimalPlaces="0"
 								minValue="0" styleClass="inputfield w-full"
 								inputStyle="width:100%">
 								<p:ajax update="@obs(count)"
-									listener="#{offerListBB.countLazyList()}" />
+									listener="#{mainBB.countLazyList()}" />
 							</p:inputNumber>
 							<p:message for="priceFrom" />
 						</div>
 						<div class="col">
-							<p:inputNumber id="priceTo"
-								value="#{offerListBB.offerFilterTo.price}" decimalPlaces="0"
-								minValue="0" styleClass="inputfield w-full"
+							<p:inputNumber id="priceTo" value="#{mainBB.offerFilterTo.price}"
+								decimalPlaces="0" minValue="0" styleClass="inputfield w-full"
 								inputStyle="width:100%">
 								<p:ajax update="@obs(count)"
-									listener="#{offerListBB.countLazyList()}" />
+									listener="#{mainBB.countLazyList()}" />
 							</p:inputNumber>
 							<p:message for="priceTo" />
 						</div>
@@ -109,27 +106,27 @@
 					<div class="formgrid grid">
 						<div class="col">
 							<p:inputText id="productionYearFrom"
-								value="#{offerListBB.offerFilterFrom.productionYear}"
+								value="#{mainBB.offerFilterFrom.productionYear}"
 								validatorMessage="Błąd formatu roku"
 								converterMessage="Błąd konwersji roku"
 								styleClass="inputfield w-full">
 								<f:validateLength minimum="4" maximum="4" />
 								<p:keyFilter mask="num" />
 								<p:ajax update="@obs(count)"
-									listener="#{offerListBB.countLazyList()}" />
+									listener="#{mainBB.countLazyList()}" />
 							</p:inputText>
 							<p:message for="productionYearFrom" />
 						</div>
 						<div class="col">
 							<p:inputText id="productionYearTo"
-								value="#{offerListBB.offerFilterTo.productionYear}"
+								value="#{mainBB.offerFilterTo.productionYear}"
 								validatorMessage="Błąd formatu roku"
 								converterMessage="Błąd konwersji roku"
 								styleClass="inputfield w-full">
 								<f:validateLength minimum="4" maximum="4" />
 								<p:keyFilter mask="num" />
 								<p:ajax update="@obs(count)"
-									listener="#{offerListBB.countLazyList()}" />
+									listener="#{mainBB.countLazyList()}" />
 							</p:inputText>
 							<p:message for="productionYearTo" />
 						</div>
@@ -138,14 +135,13 @@
 
 				<div class="field col-12 md:col-6 mb-0">
 					<p:outputLabel for="fuel" value="Rodzaj paliwa" />
-					<p:selectOneMenu id="fuel" value="#{offerListBB.offerFilter.fuel}"
+					<p:selectOneMenu id="fuel" value="#{mainBB.offerFilter.fuel}"
 						styleClass="inputfield w-full">
 						<f:selectItem itemLabel="Wybierz" itemValue="#{null}"
 							noSelectionOption="true" />
 						<f:selectItems value="#{constantsBB.fuels}" var="f"
 							itemLabel="#{f}" itemValue="#{f}" />
-						<p:ajax update="@obs(count)"
-							listener="#{offerListBB.countLazyList()}" />
+						<p:ajax update="@obs(count)" listener="#{mainBB.countLazyList()}" />
 					</p:selectOneMenu>
 					<p:message for="fuel" />
 				</div>
@@ -155,21 +151,21 @@
 					<div class="formgrid grid">
 						<div class="col">
 							<p:inputNumber id="mileageFrom"
-								value="#{offerListBB.offerFilterFrom.mileage}" decimalPlaces="0"
+								value="#{mainBB.offerFilterFrom.mileage}" decimalPlaces="0"
 								minValue="0" styleClass="inputfield w-full"
 								inputStyle="width:100%">
 								<p:ajax update="@obs(count)"
-									listener="#{offerListBB.countLazyList()}" />
+									listener="#{mainBB.countLazyList()}" />
 							</p:inputNumber>
 							<p:message for="mileageFrom" />
 						</div>
 						<div class="col">
 							<p:inputNumber id="mileageTo"
-								value="#{offerListBB.offerFilterTo.mileage}" decimalPlaces="0"
+								value="#{mainBB.offerFilterTo.mileage}" decimalPlaces="0"
 								minValue="0" styleClass="inputfield w-full"
 								inputStyle="width:100%">
 								<p:ajax update="@obs(count)"
-									listener="#{offerListBB.countLazyList()}" />
+									listener="#{mainBB.countLazyList()}" />
 							</p:inputNumber>
 							<p:message for="mileageTo" />
 						</div>
@@ -178,10 +174,14 @@
 
 				<div class="field col-12">
 					<p:commandButton styleClass="w-full text-lg font-medium"
-						action="#{offerListBB.showOffers()}"
-						value="Pokaż #{offerListBB.countListText()}">
+						action="#{mainBB.showOffers()}"
+						value="Pokaż #{mainBB.countListText()}">
 						<p:autoUpdate on="count" />
 					</p:commandButton>
+
+					<p:commandButton value="Wyczyść" action="#{mainBB.clearFilters()}"
+						update="@form"
+						styleClass="w-full text-lg font-medium mt-2 ui-button-outlined ui-button-danger" />
 				</div>
 			</h:form>
 		</div>
@@ -190,9 +190,9 @@
 			<h:form id="offerForm">
 				<h3 class="mb-2">Ostatnie ogłoszenia</h3>
 				<div class="main__list">
-					<ui:repeat value="#{offerListBB.mainViewList()}" var="o">
+					<ui:repeat value="#{mainBB.mainViewList()}" var="o">
 						<p:link outcome="/pages/public/offer?faces-redirect=true"
-							styleClass="no-underline main__item">
+							styleClass="no-underline offer__item main__item">
 							<f:param name="c"
 								value="#{o.brand.name} #{o.model.name} #{o.title}" />
 							<f:param name="o" value="#{o.idOffer}" />
@@ -202,13 +202,13 @@
 									value="/offer_images/#{o.image}"
 									styleClass="main__image flex-shrink-0 surface-200 w-full" />
 								<div class="mt-2 flex flex-column">
-									<span class="text-xl text-900 font-medium list__title">#{o.brand.name}
+									<span class="text-xl text-900 font-medium offer__title">#{o.brand.name}
 										#{o.model.name} <h:outputText value="#{o.displacement / 1000}">
 											<f:convertNumber type="number" pattern="0.0" locale="en_US" />
 										</h:outputText>
 									</span>
 									<ul
-										class="flex flex-row list-none list__list p-0 m-0 mt-1 align-items-end flex-wrap text-sm">
+										class="flex flex-row list-none offer__list p-0 m-0 mt-1 align-items-end flex-wrap text-sm">
 										<li>#{o.productionYear}</li>
 										<li><h:outputText value="#{o.mileage}">
 												<f:convertNumber type="number" />

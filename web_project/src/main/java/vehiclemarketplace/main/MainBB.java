@@ -1,4 +1,4 @@
-package vehiclemarketplace.offer;
+package vehiclemarketplace.main;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,22 +8,18 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.SortMeta;
 
 import vehiclemarketplace.ConstantsBB;
 import vehiclemarketplace.classes.SelectFilter;
 import vehiclemarketplace.classes.SelectItemCount;
-import vehiclemarketplace.classes.SelectList;
-import vehiclemarketplace.classes.SelectSort;
 import vehiclemarketplace.classes.SelectType;
 import vehiclemarketplace.dao.BodyStyleDAO;
 import vehiclemarketplace.dao.BrandDAO;
@@ -40,11 +36,12 @@ import vehiclemarketplace.entities.Offer;
 import vehiclemarketplace.entities.User;
 
 @Named
-@SessionScoped
-public class OfferListBB implements Serializable {
+@ViewScoped
+public class MainBB implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private static final String PAGE_STAY_AT_THE_SAME = null;
+	private static final String PAGE_OFFERS = "/pages/public/offers?faces-redirect=true";
 
 	private LazyDataModel<Offer> lazyOffers;
 	private int countList;
@@ -54,8 +51,6 @@ public class OfferListBB implements Serializable {
 	private Offer offerFilter = new Offer();
 	private Offer offerFilterFrom = new Offer();
 	private Offer offerFilterTo = new Offer();
-	private List<SelectList> offerFilterList = new ArrayList<>();
-	private Integer offerSort;
 
 	private List<SelectItemCount<Brand>> brands;
 	private List<SelectItemCount<Model>> models = new ArrayList<>();
@@ -88,18 +83,6 @@ public class OfferListBB implements Serializable {
 
 	public Offer getOfferFilterTo() {
 		return offerFilterTo;
-	}
-
-	public List<SelectList> getOfferFilterList() {
-		return offerFilterList;
-	}
-
-	public void setOfferSort(Integer offerSort) {
-		this.offerSort = offerSort;
-	}
-
-	public Integer getOfferSort() {
-		return offerSort;
 	}
 
 	public List<SelectItemCount<Brand>> getBrands() {
@@ -151,30 +134,6 @@ public class OfferListBB implements Serializable {
 	@Inject
 	Flash flash;
 
-	public void onLoad() {
-		System.out.println("ON LOAD");
-		Offer loadedFilter = null;
-		Offer loadedFilterFrom = null;
-		Offer loadedFilterTo = null;
-
-		loadedFilter = (Offer) flash.get("offerFilter");
-		loadedFilterFrom = (Offer) flash.get("offerFilterFrom");
-		loadedFilterTo = (Offer) flash.get("offerFilterTo");
-
-		if (loadedFilter != null) {
-			offerFilter = loadedFilter;
-		}
-		if (loadedFilterFrom != null) {
-			offerFilterFrom = loadedFilterFrom;
-		}
-		if (loadedFilterTo != null) {
-			offerFilterTo = loadedFilterTo;
-		}
-
-		loadBrand();
-		loadModel();
-	}
-
 	@PostConstruct
 	public void init() {
 		System.out.println("INIT");
@@ -183,62 +142,12 @@ public class OfferListBB implements Serializable {
 		offerFilter.setModel(new Model());
 		offerFilter.setGeneration(new Generation());
 		offerFilter.setBodyStyle(new BodyStyle());
-		offerFilterList.add(new SelectList("transmission", new ArrayList<>()));
-		offerFilterList.add(new SelectList("drive", new ArrayList<>()));
-		offerFilterList.add(new SelectList("doors", new ArrayList<>()));
-		offerFilterList.add(new SelectList("seats", new ArrayList<>()));
-		offerFilterList.add(new SelectList("color", new ArrayList<>()));
-		offerFilterList.add(new SelectList("colorType", new ArrayList<>()));
 
 		countLazyList();
 
 		brands = getBrandList();
 
 		bodyStyles = getBodyStyleList();
-
-		lazyOffers = new LazyDataModel<Offer>() {
-			private static final long serialVersionUID = 1L;
-
-			private List<Offer> offers;
-
-			@Override
-			public Offer getRowData(String rowKey) {
-				for (Offer offer : offers) {
-					if (offer.getIdOffer() == Integer.parseInt(rowKey)) {
-						System.out.println(offer.getTitle());
-						return offer;
-					}
-				}
-				return null;
-			}
-
-			@Override
-			public String getRowKey(Offer offer) {
-				return String.valueOf(offer.getIdOffer());
-			}
-
-			@Override
-			public List<Offer> load(int offset, int pageSize, Map<String, SortMeta> sortBy,
-					Map<String, FilterMeta> filterBy) {
-
-				Map<String, String> sortMap = new HashMap<String, String>();
-				if (offerSort != null) {
-					SelectSort sort = constantsBB.getSorts().get(offerSort);
-					sortMap.put(sort.getParameter(), sort.getOrder());
-				}
-				System.out.println("LAZY OFFERS LOAD");
-				List<SelectFilter> filter = new ArrayList<>();
-				filter = addFilters();
-
-				offers = offerDAO.getLazyList(sortMap, filter, offset, pageSize);
-
-				int rowCount = (int) offerDAO.countLazyList(filter);
-				countList = rowCount;
-				setRowCount(rowCount);
-
-				return offers;
-			}
-		};
 	}
 
 	public List<SelectFilter> addFilters() {
@@ -285,51 +194,6 @@ public class OfferListBB implements Serializable {
 		if (offerFilterTo.getMileage() != null) {
 			filter.add(
 					new SelectFilter("mileage", "mileageTo", offerFilterTo.getMileage(), SelectType.LESS_EQUAL_THAN));
-		}
-		if (offerFilter.getLicensePlate() != null
-				&& Boolean.parseBoolean(String.valueOf(offerFilter.getLicensePlate()))) {
-			filter.add(new SelectFilter("licensePlate", offerFilter.getLicensePlate(), SelectType.IS_NOT_NULL));
-		}
-		if (offerFilter.getIsDamaged() != null) {
-			filter.add(new SelectFilter("isDamaged", offerFilter.getIsDamaged(), SelectType.NORMAL));
-		}
-		if (offerFilter.getIsAccidentFree() != null && offerFilter.getIsAccidentFree()) {
-			filter.add(new SelectFilter("isAccidentFree", offerFilter.getIsAccidentFree(), SelectType.NORMAL));
-		}
-		if (offerFilter.getIsFirstOwner() != null && offerFilter.getIsFirstOwner()) {
-			filter.add(new SelectFilter("isFirstOwner", offerFilter.getIsFirstOwner(), SelectType.NORMAL));
-		}
-		if (offerFilter.getIsRegistered() != null && offerFilter.getIsRegistered()) {
-			filter.add(new SelectFilter("isRegistered", offerFilter.getIsRegistered(), SelectType.NORMAL));
-		}
-		if (offerFilter.getIsRightHandDrive() != null && offerFilter.getIsRightHandDrive()) {
-			filter.add(new SelectFilter("isRightHandDrive", offerFilter.getIsRightHandDrive(), SelectType.NORMAL));
-		}
-		if (offerFilterFrom.getDisplacement() != null) {
-			filter.add(new SelectFilter("displacement", "displacementFrom", offerFilterFrom.getDisplacement(),
-					SelectType.GREATER_EQUAL_THAN));
-		}
-		if (offerFilterTo.getDisplacement() != null) {
-			filter.add(new SelectFilter("displacement", "displacementTo", offerFilterTo.getDisplacement(),
-					SelectType.LESS_EQUAL_THAN));
-		}
-		if (offerFilterFrom.getPower() != null) {
-			filter.add(
-					new SelectFilter("power", "powerFrom", offerFilterFrom.getPower(), SelectType.GREATER_EQUAL_THAN));
-		}
-		if (offerFilterTo.getPower() != null) {
-			filter.add(new SelectFilter("power", "powerTo", offerFilterTo.getPower(), SelectType.LESS_EQUAL_THAN));
-		}
-		if (offerFilterList != null && offerFilterList.size() > 0) {
-			for (SelectList selectList : offerFilterList) {
-				System.out.println("selectList: " + selectList.toString());
-
-				if (selectList.getValues() != null && selectList.getValues().size() > 0) {
-					System.out.println("add to where");
-					filter.add(new SelectFilter(selectList.getParameter(), selectList.getParameter(),
-							selectList.getValues(), SelectType.LIST));
-				}
-			}
 		}
 
 		filter.add(new SelectFilter("archived", false, SelectType.NORMAL));
@@ -433,20 +297,6 @@ public class OfferListBB implements Serializable {
 		countLazyList();
 	}
 
-	public void loadBrand() {
-		if (offerFilter.getBrand() != null && offerFilter.getBrand().getIdBrand() != 0) {
-			models = new ArrayList<>();
-			generations = new ArrayList<>();
-			List<Model> modelsList = modelDAO.getModelsByBrandID(offerFilter.getBrand().getIdBrand());
-			for (Model model : modelsList) {
-				models.add(new SelectItemCount<Model>(model, countOffersByModelID(model.getIdModel())));
-			}
-		} else {
-			models = null;
-			generations = null;
-		}
-	}
-
 	public void changeModel() {
 		if (offerFilter.getModel() != null && offerFilter.getModel().getIdModel() != 0) {
 			generations = new ArrayList<>();
@@ -463,20 +313,6 @@ public class OfferListBB implements Serializable {
 		countLazyList();
 	}
 
-	public void loadModel() {
-		if (offerFilter.getModel() != null && offerFilter.getModel().getIdModel() != 0) {
-			generations = new ArrayList<>();
-			List<Generation> generationsList = generationDAO
-					.getGenerationsByModelID(offerFilter.getModel().getIdModel());
-			for (Generation generation : generationsList) {
-				generations.add(new SelectItemCount<Generation>(generation,
-						countOffersByGenerationID(generation.getIdGeneration())));
-			}
-		} else {
-			generations = null;
-		}
-	}
-
 	public List<BodyStyle> getBodyStyleList() {
 		return bodyStyleDAO.getFullList();
 	}
@@ -490,38 +326,28 @@ public class OfferListBB implements Serializable {
 		offerFilter.setBodyStyle(new BodyStyle());
 		offerFilterFrom = new Offer();
 		offerFilterTo = new Offer();
-		offerFilterList.clear();
-		offerFilterList.add(new SelectList("transmission", new ArrayList<>()));
-		offerFilterList.add(new SelectList("drive", new ArrayList<>()));
-		offerFilterList.add(new SelectList("doors", new ArrayList<>()));
-		offerFilterList.add(new SelectList("seats", new ArrayList<>()));
-		offerFilterList.add(new SelectList("color", new ArrayList<>()));
-		offerFilterList.add(new SelectList("colorType", new ArrayList<>()));
-		offerSort = null;
+		countLazyList();
 	}
 
-	public void clearVehicleStatus() {
-		offerFilter.setLicensePlate(null);
-		offerFilter.setIsDamaged(null);
-		offerFilter.setIsAccidentFree(null);
-		offerFilter.setIsFirstOwner(null);
-		offerFilter.setIsRegistered(null);
-		offerFilter.setIsRightHandDrive(null);
+	public List<Offer> mainViewList() {
+		List<Offer> offers;
+
+		Map<String, String> sortMap = new HashMap<String, String>();
+		sortMap.put("createTime", "DESCENDING");
+
+		List<SelectFilter> filter = new ArrayList<>();
+		filter.add(new SelectFilter("archived", false, SelectType.NORMAL));
+
+		offers = offerDAO.getLazyList(sortMap, filter, 0, 10);
+
+		return offers;
 	}
 
-	public void clearEngineDrive() {
-		offerFilterFrom.setDisplacement(null);
-		offerFilterTo.setDisplacement(null);
-		offerFilterFrom.setPower(null);
-		offerFilterTo.setPower(null);
-		offerFilterList.set(0, new SelectList("transmission", new ArrayList<>()));
-		offerFilterList.set(1, new SelectList("drive", new ArrayList<>()));
-	}
+	public String showOffers() {
+		flash.put("offerFilter", offerFilter);
+		flash.put("offerFilterFrom", offerFilterFrom);
+		flash.put("offerFilterTo", offerFilterTo);
 
-	public void clearBody() {
-		offerFilterList.set(2, new SelectList("doors", new ArrayList<>()));
-		offerFilterList.set(3, new SelectList("seats", new ArrayList<>()));
-		offerFilterList.set(4, new SelectList("color", new ArrayList<>()));
-		offerFilterList.set(5, new SelectList("colorType", new ArrayList<>()));
+		return PAGE_OFFERS;
 	}
 }
