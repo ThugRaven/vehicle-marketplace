@@ -51,7 +51,7 @@
 						</p:dialog>
 					</div>
 					<div class="col-12 lg:col-4">
-						<div class="flex flex-column mx-3 my-1">
+						<div class="flex flex-column mx-3 my-1 xl:mr-0 xl:ml-3">
 							<span class="text-3xl text-900 font-medium">#{offerBB.offer.brand.name}
 								#{offerBB.offer.model.name} <h:outputText
 									value="#{offerBB.offer.displacement / 1000}">
@@ -92,7 +92,7 @@
 					</div>
 				</div>
 
-				<div class="m-3">
+				<div class="m-3 xl:m-0 xl:my-3">
 					<div class="my-2">
 						<ui:fragment
 							rendered="#{offerBB.offer.updateTime ne offerBB.offer.createTime}">
