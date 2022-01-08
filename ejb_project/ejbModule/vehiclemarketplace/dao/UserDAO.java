@@ -10,7 +10,6 @@ import javax.persistence.Query;
 
 import vehiclemarketplace.classes.SelectFilter;
 import vehiclemarketplace.classes.SelectUtilities;
-import vehiclemarketplace.entities.Brand;
 import vehiclemarketplace.entities.User;
 
 @Stateless

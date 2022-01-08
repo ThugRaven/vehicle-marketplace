@@ -10,7 +10,6 @@ import javax.persistence.Query;
 
 import vehiclemarketplace.classes.SelectUtilities;
 import vehiclemarketplace.entities.Generation;
-import vehiclemarketplace.entities.Model;
 
 @Stateless
 public class GenerationDAO {

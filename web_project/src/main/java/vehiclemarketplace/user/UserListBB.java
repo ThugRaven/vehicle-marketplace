@@ -15,7 +15,6 @@ import vehiclemarketplace.entities.User;
 @Named
 @RequestScoped
 public class UserListBB {
-//	private static final String PAGE_PERSON_EDIT = "personEdit?faces-redirect=true";
 	private static final String PAGE_STAY_AT_THE_SAME = null;
 
 	private String surname;

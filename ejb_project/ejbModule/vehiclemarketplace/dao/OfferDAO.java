@@ -11,7 +11,6 @@ import javax.persistence.Query;
 import vehiclemarketplace.classes.SelectFilter;
 import vehiclemarketplace.classes.SelectUtilities;
 import vehiclemarketplace.entities.Offer;
-import vehiclemarketplace.entities.User;
 
 @Stateless
 public class OfferDAO {
@@ -166,7 +165,8 @@ public class OfferDAO {
 	public long countOffersByGenerationID(int id) {
 		long count = 0;
 
-		Query query = em.createQuery("SELECT COUNT(o) FROM Offer o WHERE o.generation.idGeneration = :id AND o.archived = false");
+		Query query = em.createQuery(
+				"SELECT COUNT(o) FROM Offer o WHERE o.generation.idGeneration = :id AND o.archived = false");
 		query.setParameter("id", id);
 
 		try {

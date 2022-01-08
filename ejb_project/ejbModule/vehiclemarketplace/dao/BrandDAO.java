@@ -10,8 +10,6 @@ import javax.persistence.Query;
 
 import vehiclemarketplace.classes.SelectUtilities;
 import vehiclemarketplace.entities.Brand;
-import vehiclemarketplace.entities.Model;
-import vehiclemarketplace.entities.User;
 
 @Stateless
 public class BrandDAO {
