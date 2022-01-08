@@ -196,6 +196,9 @@ public class OfferEditBB implements Serializable {
 		String offerUrl = PAGE_OFFER + "c=" + offer.getBrand().getName() + " " + offer.getModel().getName() + " "
 				+ offer.getTitle() + "&o=" + offer.getIdOffer();
 
+		if (offer.getLicensePlate().isEmpty()) {
+			offer.setLicensePlate(null);
+		}
 		offerDAO.merge(offer);
 
 		ctx.addMessage(null,
