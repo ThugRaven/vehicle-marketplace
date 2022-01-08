@@ -67,7 +67,8 @@
 		<h:form id="offerForm" styleClass="w-full">
 			<p:panel
 				header="#{userProfileBB.user.idUser eq remoteClient.details.idUser ? 'Lista Twoich ogłoszeń' : 'Lista ogłoszeń użytkownika'}"
-				toggleable="true" toggleableHeader="true" toggleSpeed="300" styleClass="my-3 shadow-2">
+				toggleable="true" toggleableHeader="true" toggleSpeed="300"
+				styleClass="my-3 shadow-2">
 				<p:dataView id="userOfferTable" var="o" widgetVar="userOfferTable"
 					value="#{userProfileBB.lazyOffers}" paginator="true"
 					paginatorPosition="bottom" rows="5"
@@ -77,43 +78,46 @@
 
 					<p:dataViewListItem>
 						<p:link outcome="/pages/public/offer?faces-redirect=true"
-							styleClass="no-underline list__item">
+							styleClass="mt-2 no-underline offer__item flex flex-column">
 							<f:param name="c"
 								value="#{o.brand.name} #{o.model.name} #{o.title}" />
 							<f:param name="o" value="#{o.idOffer}" />
 							<div
-								class="p-4 mt-2 border-1 border-200 list__content flex flex-row text-800">
+								class="p-4 border-1 border-200 offer__content flex flex-column sm:flex-row align-items-center sm:align-items-stretch text-800">
 								<p:graphicImage rendered="#{not empty o.image}"
 									value="/offer_images/#{o.image}"
-									styleClass="list__image flex-shrink-0 surface-200" />
-								<div class="mx-3 flex flex-column">
-									<span class="text-xl text-900 font-medium list__title">#{o.brand.name}
-										#{o.model.name} <h:outputText value="#{o.displacement / 1000}">
-											<f:convertNumber type="number" pattern="0.0" locale="en_US" />
-										</h:outputText>
-									</span> <span class="mt-1 text-sm">#{o.title}</span>
-									<ul
-										class="flex flex-row list-none list__list p-0 align-items-end flex-wrap text-sm">
-										<li>#{o.productionYear}</li>
-										<li><h:outputText value="#{o.mileage}">
-												<f:convertNumber type="number" />
-											</h:outputText> km</li>
-										<li><h:outputText value="#{o.displacement}">
-												<f:convertNumber type="number" />
-											</h:outputText> cm<sup>3</sup></li>
-										<li>#{o.fuel}</li>
-									</ul>
-									<div class="mt-2 text-sm">
-										<i class="pi pi-map-marker font-bold" /> <span
-											class="font-normal">#{o.city}</span>
-									</div>
-								</div>
+									styleClass="offer__image flex-shrink-0 surface-200" />
 								<div
-									class="ml-auto font-bold text-xl text-orange-500 text-right">
-									<h:outputText value="#{o.price}">
-										<f:convertNumber type="number" />
-									</h:outputText>
-									PLN
+									class="m-2 sm:mx-3 flex flex-column md:flex-row justify-content-between w-full">
+									<div class="flex flex-column">
+										<span class="text-xl text-900 font-medium offer__title">#{o.brand.name}
+											#{o.model.name} <h:outputText
+												value="#{o.displacement / 1000}">
+												<f:convertNumber type="number" pattern="0.0" locale="en_US" />
+											</h:outputText>
+										</span> <span class="mt-1 text-sm">#{o.title}</span>
+										<ul
+											class="flex flex-row list-none offer__list p-0 align-items-end flex-wrap text-sm">
+											<li>#{o.productionYear}</li>
+											<li><h:outputText value="#{o.mileage}">
+													<f:convertNumber type="number" />
+												</h:outputText> km</li>
+											<li><h:outputText value="#{o.displacement}">
+													<f:convertNumber type="number" />
+												</h:outputText> cm<sup>3</sup></li>
+											<li>#{o.fuel}</li>
+										</ul>
+										<div class="mt-2 text-sm">
+											<i class="pi pi-map-marker font-bold" /> <span
+												class="font-normal">#{o.city}</span>
+										</div>
+									</div>
+									<div class="flex font-bold text-xl text-orange-500">
+										<h:outputText value="#{o.price}">
+											<f:convertNumber type="number" />
+										</h:outputText>
+										PLN
+									</div>
 								</div>
 							</div>
 						</p:link>
@@ -121,23 +125,23 @@
 
 					<p:dataViewGridItem>
 						<p:link outcome="/pages/public/offer?faces-redirect=true"
-							styleClass="no-underline list__item">
+							styleClass="no-underline offer__item main__item">
 							<f:param name="c"
 								value="#{o.brand.name} #{o.model.name} #{o.title}" />
 							<f:param name="o" value="#{o.idOffer}" />
 							<div
-								class="p-4 mt-2 border-1 border-200 list__content flex flex-column text-800">
+								class="border-1 border-200 main__content flex flex-column align-items-center text-800">
 								<p:graphicImage rendered="#{not empty o.image}"
 									value="/offer_images/#{o.image}"
-									styleClass="list__image flex-shrink-0 surface-200" />
-								<div class="mx-3 flex flex-column">
-									<span class="text-xl text-900 font-medium list__title">#{o.brand.name}
+									styleClass="main__image flex-shrink-0 surface-200" />
+								<div class="mt-2 flex flex-column">
+									<span class="text-xl text-900 font-medium offer__title">#{o.brand.name}
 										#{o.model.name} <h:outputText value="#{o.displacement / 1000}">
 											<f:convertNumber type="number" pattern="0.0" locale="en_US" />
 										</h:outputText>
-									</span> <span class="mt-1 text-sm">#{o.title}</span>
+									</span>
 									<ul
-										class="flex flex-row list-none list__list p-0 align-items-end flex-wrap text-sm">
+										class="flex flex-row list-none offer__list p-0 m-0 mt-1 align-items-end flex-wrap text-sm">
 										<li>#{o.productionYear}</li>
 										<li><h:outputText value="#{o.mileage}">
 												<f:convertNumber type="number" />
@@ -151,13 +155,12 @@
 										<i class="pi pi-map-marker font-bold" /> <span
 											class="font-normal">#{o.city}</span>
 									</div>
-								</div>
-								<div
-									class="ml-auto font-bold text-xl text-orange-500 text-right">
-									<h:outputText value="#{o.price}">
-										<f:convertNumber type="number" />
-									</h:outputText>
-									PLN
+									<div class="font-bold text-xl text-orange-500 my-2 mr-auto">
+										<h:outputText value="#{o.price}">
+											<f:convertNumber type="number" />
+										</h:outputText>
+										PLN
+									</div>
 								</div>
 							</div>
 						</p:link>
