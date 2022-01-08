@@ -127,8 +127,20 @@ body, body .ui-widget {
 
 .equipment__list {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: 1fr;
 	gap: 0.25rem;
+}
+
+@media screen and (min-width: 576px) {
+	.equipment__list {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media screen and (min-width: 992px) {
+	.equipment__list {
+		grid-template-columns: repeat(3, 1fr);
+	}
 }
 
 .description {
@@ -141,6 +153,7 @@ body, body .ui-widget {
 }
 
 .details__list {
+	flex: 1;
 	row-gap: 0.75rem;
 }
 
