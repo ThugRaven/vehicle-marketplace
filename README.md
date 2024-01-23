@@ -1,4 +1,4 @@
-# JAVA_JPDSI2_Projekt
+# Vehicle Marketplace
 
 Vehicle marketplace website made using JEE, EJB, JSF, Primefaces, Primeflex
 
