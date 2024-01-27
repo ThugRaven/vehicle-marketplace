@@ -2,9 +2,11 @@
 
 Vehicle marketplace website made using JEE, EJB, JSF, Primefaces, Primeflex
 
-![Project image](/project_images/img_02.png)
+![Main Page](/project_images/img_02.png)
+![Car info page - tablet](/project_images/img_17.png)
+![Car info page - mobile](/project_images/img_19.png)
 
-**[More images](project_images/)**
+**[More project images](project_images/)**
 
 ## Inspiration
 
